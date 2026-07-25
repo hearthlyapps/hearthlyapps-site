@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sustain: protect your muscle through your GLP-1 journey</title>
+<meta name="description" content="Sustain is the GLP-1 companion app that tracks doses, protein, weight, and side effects, with AI insights built around the one thing most trackers ignore: protecting your muscle." />
+<link rel="icon" href="../assets/img/app-icon.png" />
+<link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+
+<canvas id="scene-canvas"></canvas>
+
+<nav class="nav">
+  <a class="nav-brand" href="/">
+    <img src="../assets/img/app-icon.png" alt="" />
+    hearthlyapps
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="/support/">Support</a>
+    <a href="/privacy/">Privacy</a>
+  </div>
+  <a class="nav-cta" href="#pricing">Get Sustain</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-glow"></div>
+  <span class="eyebrow">Sustain, by hearthlyapps</span>
+  <h1 class="display-1">Lose fat.<br />Not muscle.</h1>
+  <p class="lede center">
+    The companion app for Ozempic, Wegovy, Zepbound, Mounjaro and more, built around
+    the #1 concern GLP-1 communities talk about, and the one thing most trackers ignore.
+  </p>
+  <div class="btn-row">
+    <a class="btn btn-disabled">Coming soon to the App Store</a>
+  </div>
+</header>
+
+<!-- Pinned cinematic reel: the persistent 3D phone + object scene (scene.js)
+     reads --steps plus data-screens/data-objects to choreograph itself. -->
+<section class="reel-track" style="--steps: 5;" data-screens='["../assets/img/screenshots/01-dashboard.png","../assets/img/screenshots/04-protein.png","../assets/img/screenshots/03-trends.png","../assets/img/screenshots/05-sideeffect.png","../assets/img/screenshots/06-maintenance.png"]' data-objects='["pen","plate","scale","capsule","leaf"]'>
+  <div class="reel-stage">
+    <div class="reel-caption">
+      <div data-step="0" class="pos-br">
+        <div class="caption-pane">
+          <span class="eyebrow">Your day, at a glance</span>
+          <h2>Dose, protein, and weight: one screen, zero digging.</h2>
+          <p class="caption-desc">
+            Your next dose, today's protein progress, and your weight trend all
+            live on one screen, so you're not digging through three different
+            tabs just to check in on your own day.
+          </p>
+        </div>
+      </div>
+      <div data-step="1" class="pos-tl">
+        <div class="caption-pane">
+          <span class="eyebrow">Photo-to-protein</span>
+          <h2>Snap a plate. Get grams. No manual logging grind.</h2>
+          <p class="caption-desc">
+            Point your camera at a meal and Sustain's AI breaks it down item by
+            item, estimating grams of protein in seconds. It's built specifically
+            for the #1 anxiety GLP-1 users share: losing muscle along with the fat.
+          </p>
+        </div>
+      </div>
+      <div data-step="2" class="pos-bl">
+        <div class="caption-pane">
+          <span class="eyebrow">Weekly recap</span>
+          <h2>AI insights that connect protein, adherence, and weight loss pace.</h2>
+          <p class="caption-desc">
+            Instead of restating a number you already saw on the chart above it,
+            Sustain's weekly recap connects the dots: how your protein intake
+            relates to how fast you're losing weight, and whether your habits are
+            the kind that carry you through a plateau.
+          </p>
+        </div>
+      </div>
+      <div data-step="3" class="pos-tr">
+        <div class="caption-pane">
+          <span class="eyebrow">Side effects</span>
+          <h2>Log symptoms, spot patterns, share them with your prescriber.</h2>
+          <p class="caption-desc">
+            Log nausea, fatigue, or anything else you notice, and Sustain builds a
+            pattern report you can actually bring to your next appointment, not
+            just a screenshot of a symptom diary.
+          </p>
+        </div>
+      </div>
+      <div data-step="4" class="pos-c">
+        <div class="caption-pane">
+          <span class="eyebrow">Reached your goal?</span>
+          <h2>A maintenance guide for phase two, not just phase one.</h2>
+          <p class="caption-desc">
+            Hitting your goal weight isn't the finish line, it's a new phase.
+            Sustain's Maintenance Program helps you navigate the "what now" moment
+            with a real range to aim for and questions worth asking your
+            prescriber.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="container" style="padding: 120px 24px;">
+    <span class="eyebrow reveal">Why Sustain</span>
+    <h2 class="display-2 reveal" style="max-width: 720px;">
+      Every other tracker was built around the scale.<br />Sustain is built around the mirror.
+    </h2>
+    <div class="grid">
+      <div class="feature-card reveal">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z" /><path d="M4 22V15" /></svg>
+        </div>
+        <h3>Muscle-preservation focus</h3>
+        <p>Fast weight loss on too little protein is a real risk, and Sustain is the first tracker built around catching it, not just logging the scale.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="7" /><path d="M9 3h6M12 3v3" /></svg>
+        </div>
+        <h3>Dose &amp; titration tracking</h3>
+        <p>Injection or oral, weekly or daily: log doses, rotate injection sites, and plan your next titration step ahead of time.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 12h8M8 8h5M8 16h5" /></svg>
+        </div>
+        <h3>Photo-to-protein, in seconds</h3>
+        <p>Snap a photo of your plate, and Sustain's AI estimates grams of protein instantly, no manual food-logging grind.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18" /><path d="M7 15l4-5 3 3 5-7" /></svg>
+        </div>
+        <h3>An AI recap worth reading</h3>
+        <p>Not a restated stat: three real findings each week connecting your protein, adherence, and weight trend, in plain language.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z" /></svg>
+        </div>
+        <h3>Private by default</h3>
+        <p>Everything lives on your device first. HealthKit sync is optional, off by default, and always yours to control.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5" /></svg>
+        </div>
+        <h3>A real plan for "what now?"</h3>
+        <p>Reaching your goal weight isn't the end. Sustain's Maintenance Program helps you navigate phase two, on your terms.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="container" style="padding: 130px 24px;">
+    <div style="max-width: 640px;">
+      <span class="eyebrow reveal">Pricing</span>
+      <h2 class="display-2 reveal">Manual logging is free, forever.</h2>
+      <p class="lede reveal" style="margin-top: 16px;">
+        Dose, weight, and protein logging never require a subscription. Sustain+ unlocks the
+        AI features and your full history.
+      </p>
+    </div>
+
+    <div class="price-grid">
+      <div class="price-card reveal featured">
+        <span class="badge">Best value</span>
+        <div class="plan-label">Annual</div>
+        <div class="amount">$59.99<span class="suffix">/year</span></div>
+        <div class="trial-note">30-day free trial</div>
+        <ul>
+          <li>Photo protein estimates</li>
+          <li>Full history &amp; trends</li>
+          <li>Weekly AI recap</li>
+          <li>Side-effect pattern reports</li>
+          <li>Save over 35% vs. monthly</li>
+        </ul>
+      </div>
+      <div class="price-card reveal">
+        <div class="plan-label">Monthly</div>
+        <div class="amount">$7.99<span class="suffix">/month</span></div>
+        <div class="trial-note">7-day free trial</div>
+        <ul>
+          <li>Photo protein estimates</li>
+          <li>Full history &amp; trends</li>
+          <li>Weekly AI recap</li>
+          <li>Side-effect pattern reports</li>
+          <li>Cancel anytime</li>
+        </ul>
+      </div>
+      <div class="price-card reveal">
+        <div class="plan-label">Maintenance Program</div>
+        <div class="amount">$19.99<span class="suffix">one-time</span></div>
+        <div class="trial-note">Unlocks when you reach your goal</div>
+        <ul>
+          <li>A maintenance range, not a falling number</li>
+          <li>A prescriber conversation guide</li>
+          <li>One-time purchase, no added subscription</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container center" style="padding: 130px 24px; max-width: 640px;">
+    <span class="eyebrow reveal">Not medical advice</span>
+    <h2 class="display-3 reveal">
+      Sustain helps you track and understand your own data. It never diagnoses,
+      never suggests a dose change, and always defers to your prescriber.
+    </h2>
+    <div class="btn-row reveal" style="justify-content: center; margin-top: 34px;">
+      <a class="btn btn-disabled">Coming soon to the App Store</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <a class="footer-brand" href="/">
+      <img src="../assets/img/app-icon.png" alt="" />
+      hearthlyapps
+    </a>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/support/">Support</a>
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 hearthlyapps. All rights reserved.</span>
+    <span>Sustain is not a substitute for medical advice.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="../assets/js/main.js"></script>
+<script type="module" src="../assets/js/scene.js"></script>
+</body>
+</html>

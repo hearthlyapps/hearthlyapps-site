@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sustain Privacy Policy</title>
+<style>
+  * { box-sizing: border-box; }
+  /* Background is set on html (not just body) and repeated with
+     background-color as a fallback — on overscroll/rubber-band scrolling
+     (dragging past the top or bottom of the page, common on trackpads),
+     the browser reveals whatever's behind the document itself, which
+     defaults to white if only body has a background. That's the white bar
+     that showed up while scrolling past the top/bottom edge. */
+  html {
+    min-height: 100%;
+    overscroll-behavior-y: none;
+    background-color: #0b0620;
+    background-image:
+      radial-gradient(circle at 16% 18%, rgba(47, 184, 159, 0.32), transparent 55%),
+      radial-gradient(circle at 86% 12%, rgba(255, 95, 168, 0.24), transparent 50%),
+      radial-gradient(circle at 50% 95%, rgba(70, 40, 150, 0.32), transparent 60%),
+      linear-gradient(160deg, #0b0620 0%, #16102e 45%, #0d2230 100%);
+  }
+  body {
+    min-height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #1a1a1a;
+    padding: 40px 20px 72px;
+    background: transparent;
+  }
+  .top-link {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .top-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #eafff8;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+  }
+  .top-link a:hover { background: rgba(255, 255, 255, 0.2); }
+  .page-card {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 44px 40px 56px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  }
+  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; }
+  .updated { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  a { color: #0a7d5c; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; color: #666; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<div class="top-link">
+  <a href="/sustain/">Sustain</a>
+</div>
+
+<div class="page-card">
+
+<h1>Sustain Privacy Policy</h1>
+<p class="updated">Last updated: July 21, 2026</p>
+
+<p>This policy explains what information the Sustain app ("Sustain," "we," "the app") collects, how it's used, and what choices you have. Sustain is a personal medication and nutrition tracker for people using GLP-1 medications, built around one principle: your health data belongs to you, not to us.</p>
+
+<h2>The short version</h2>
+<p>Sustain stores your health data, dose logs, weight, protein intake, and side-effect notes, on your own device. We don't operate a server that stores your data, we don't sell or share it with advertisers, and we don't use it to train any AI model. Two optional AI features (described below) send limited data to our AI provider only when you actively use them.</p>
+
+<h2>Information we collect</h2>
+
+<p><strong>Health and medication data you enter.</strong> Medication name, dose amounts and dates, injection site, titration plan, weight entries, protein intake, and side-effect logs. You control all of this, nothing is collected unless you type it in or (for weight/protein) sync it from Apple Health.</p>
+
+<p><strong>Apple Health data.</strong> If you grant permission, Sustain reads and writes your body weight and dietary protein entries to Apple Health, so the two stay in sync and you don't have to log the same thing twice. This data is exchanged directly between the app and Apple's HealthKit framework on your device, it does not pass through any server we operate.</p>
+
+<p><strong>Photos, only when you use the AI photo-estimate feature.</strong> If you choose to snap or select a photo to estimate a meal's protein content, that image is sent to our AI provider (Anthropic, maker of the Claude models) solely to generate the estimate. The photo isn't stored by Sustain after the estimate is returned, and per Anthropic's own API terms, data submitted through their API isn't used to train their models. See Anthropic's privacy policy at <a href="https://www.anthropic.com/privacy">anthropic.com/privacy</a> for how they handle data submitted to their API.</p>
+
+<p><strong>Weekly AI summary data, only when you use that feature.</strong> If you use the optional "your week" AI recap, a small set of already-aggregated numbers (your dose adherence, average protein intake, and weight trend for the past 7 days, not raw logs) is sent to our AI provider to generate the written summary. The same no-training terms apply.</p>
+
+<p><strong>Basic device and diagnostic information.</strong> Standard crash and performance diagnostics collected automatically by the operating system (not by us directly) if you've opted into sharing this with app developers in your iOS settings.</p>
+
+<h2>What we don't collect</h2>
+<p>We don't collect your name, contact information, precise location, or any advertising identifiers. We don't require an account or login. We don't use tracking technologies to follow you across other apps or websites, Sustain doesn't show ads and never will.</p>
+
+<h2>How your data is stored</h2>
+<p>All of your logged data (doses, weight, protein, side effects) is stored locally on your device using Apple's on-device data framework. As of this version of the app, there is no cloud backend and no account system, if you delete the app, your data is deleted with it (a good reason to keep Apple Health syncing on, or your own backups, if that data matters to you).</p>
+<p><em>If a future version of Sustain adds optional account-based cloud sync, this policy will be updated before that ships, and you'll be asked for consent separately.</em></p>
+
+<h2>Subscriptions</h2>
+<p>Sustain+ is an optional subscription that unlocks full history, the AI features, and a few other conveniences. Subscription purchases are handled by Apple's App Store billing system, Sustain does not receive or store your payment information; that relationship is between you and Apple, governed by Apple's own privacy policy.</p>
+
+<h2>Your choices</h2>
+<p>You can decline HealthKit permission at any time and Sustain will simply rely on manual entry. You can avoid the AI features entirely and use Sustain purely for manual logging, which is always free. You can delete all your data at any time by deleting the app. If you'd like a copy of what limited information we do process (e.g., logs related to a specific support request), contact us at the email below.</p>
+
+<h2>Children's privacy</h2>
+<p>Sustain is not directed at children and we do not knowingly collect information from anyone under 13 (or the relevant minimum age in your region). If you believe a child has provided us information, contact us and we'll address it.</p>
+
+<h2>Changes to this policy</h2>
+<p>If we change what data Sustain collects or how it's used, we'll update this page and, for material changes, make that clear within the app itself.</p>
+
+<h2>Contact us</h2>
+<p>Questions about this policy or your data can be sent to <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>.</p>
+
+<footer>
+This document describes Sustain's actual data practices as implemented in the app as of this writing. It is not legal advice, and hasn't been reviewed by an attorney.
+</footer>
+
+</div>
+
+</body>
+</html>

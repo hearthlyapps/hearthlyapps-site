@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sustain Support</title>
+<style>
+  * { box-sizing: border-box; }
+  /* Background is set on html (not just body) and repeated with
+     background-color as a fallback — on overscroll/rubber-band scrolling
+     (dragging past the top or bottom of the page, common on trackpads),
+     the browser reveals whatever's behind the document itself, which
+     defaults to white if only body has a background. That's the white bar
+     that showed up while scrolling past the top/bottom edge. */
+  html {
+    min-height: 100%;
+    overscroll-behavior-y: none;
+    background-color: #0b0620;
+    background-image:
+      radial-gradient(circle at 16% 18%, rgba(47, 184, 159, 0.32), transparent 55%),
+      radial-gradient(circle at 86% 12%, rgba(255, 95, 168, 0.24), transparent 50%),
+      radial-gradient(circle at 50% 95%, rgba(70, 40, 150, 0.32), transparent 60%),
+      linear-gradient(160deg, #0b0620 0%, #16102e 45%, #0d2230 100%);
+  }
+  body {
+    min-height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #1a1a1a;
+    padding: 40px 20px 72px;
+    background: transparent;
+  }
+  .top-link {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .top-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #eafff8;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+  }
+  .top-link a:hover { background: rgba(255, 255, 255, 0.2); }
+  .page-card {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 44px 40px 56px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  }
+  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; }
+  a { color: #0a7d5c; }
+  .email { font-size: 1.1rem; font-weight: 600; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; color: #666; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<div class="top-link">
+  <a href="/sustain/">Sustain</a>
+</div>
+
+<div class="page-card">
+
+<h1>Sustain Support</h1>
+<p>Sustain is a personal dose, protein, and weight tracker for people using GLP-1 medications.</p>
+
+<h2>Contact us</h2>
+<p>For questions, bug reports, or feedback, email:</p>
+<p class="email"><a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a></p>
+<p>We aim to respond within 2 business days.</p>
+
+<h2>Frequently asked questions</h2>
+
+<p><strong>How do I cancel my Sustain+ subscription?</strong><br>
+Subscriptions are billed and managed through your Apple ID. Go to Settings &rarr; [your name] &rarr; Subscriptions on your iPhone, or tap "Manage subscription" inside Sustain's Settings tab.</p>
+
+<p><strong>Is my health data private?</strong><br>
+Yes. Your logs are stored on your device, and we don't sell or share your data. See our <a href="/privacy">Privacy Policy</a> for full details.</p>
+
+<p><strong>Does Sustain replace medical advice?</strong><br>
+No. Sustain is a personal tracking tool, not a diagnostic or treatment device. Always talk to your prescriber about your treatment plan, dose changes, or any side effects.</p>
+
+<p><strong>How do I restore a purchase after reinstalling?</strong><br>
+Open the paywall in Sustain and tap "Restore purchases" at the bottom.</p>
+
+<footer>
+Sustain &middot; <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+</footer>
+
+</div>
+
+</body>
+</html>
