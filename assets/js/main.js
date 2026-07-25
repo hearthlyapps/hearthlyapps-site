@@ -27,6 +27,60 @@ document.addEventListener("DOMContentLoaded", () => {
   setNavState();
   window.addEventListener("scroll", setNavState, { passive: true });
 
+  /* ---------- Waitlist forms (pre-launch email capture) ----------
+     This is a static site with no backend of its own, so each
+     .waitlist-form POSTs directly to a third-party form-handling service
+     (Formspree by default — see the action URL in each page's HTML).
+     Plain HTML form submission already works with zero JS (the browser
+     just navigates to Formspree's own confirmation page); this only
+     intercepts that submit to show a nicer inline success/error message
+     without leaving the page. No GSAP dependency, so this runs
+     unconditionally rather than being gated behind the GSAP check below. */
+  document.querySelectorAll(".waitlist-form").forEach((form) => {
+    // The status message is always the next sibling right after the form's
+    // wrapping .btn-row in the markup (see index.html/sustain/index.html) —
+    // simpler and more reliable than searching for it.
+    const status = form.parentElement.nextElementSibling;
+    const button = form.querySelector("button[type='submit']");
+    const input = form.querySelector("input[type='email']");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        return;
+      }
+      const originalLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = "Joining...";
+      if (status) {
+        status.textContent = "";
+        status.classList.remove("is-success", "is-error");
+      }
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) throw new Error("Request failed");
+        form.hidden = true;
+        if (status) {
+          status.textContent = "You're on the list — we'll email you the moment Sustain is live.";
+          status.classList.add("is-success");
+        }
+      } catch (err) {
+        button.disabled = false;
+        button.textContent = originalLabel;
+        if (status) {
+          status.textContent = "Something went wrong — please try again in a moment.";
+          status.classList.add("is-error");
+        }
+      }
+    });
+  });
+
   /* Everything below needs GSAP + ScrollTrigger. If the CDN scripts didn't
      load, skip straight out — content is already visible by default (see
      style.css), so this is a silent, harmless no-op, not a blank page. */

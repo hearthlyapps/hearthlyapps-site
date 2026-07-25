@@ -241,6 +241,54 @@ p.lede {
   border: 1px solid var(--glass-border);
 }
 
+/* ---------- Waitlist form (pre-launch email capture) ----------
+   Static site, no backend — posts directly to Formspree (or whatever
+   form-handling service the action URL points at). Styled to sit in the
+   same .btn-row spot the old disabled "Coming soon" button used to. */
+.waitlist-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.waitlist-input {
+  padding: 13px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--white);
+  font-size: 15px;
+  font-family: var(--font);
+  min-width: 240px;
+  outline: none;
+  transition: border-color 0.2s var(--ease-out), background 0.2s var(--ease-out);
+}
+
+.waitlist-input::placeholder {
+  color: var(--ink-faint);
+}
+
+.waitlist-input:focus {
+  border-color: var(--teal);
+  background: rgba(47, 184, 159, 0.1);
+}
+
+.waitlist-status {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  min-height: 1.2em;
+}
+
+.waitlist-status.is-success {
+  color: var(--teal);
+}
+
+.waitlist-status.is-error {
+  color: #ff8a8a;
+}
+
 .btn-row {
   display: flex;
   gap: 14px;
