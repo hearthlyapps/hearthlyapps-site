@@ -1077,22 +1077,33 @@ function initScene() {
           om.group.visible = false;
           return;
         }
-        // Hold position is relative to the phone's own *actual rendered*
-        // position (phoneGroup.position, already updated by the lerp above
-        // this frame) rather than activeLayout, the step's target position.
-        // The phone's position lerps toward each new step's target instead
-        // of snapping instantly, so right at a step boundary (say, hero
-        // into step 0, or step 0's upper-left into step 1's lower-right —
-        // both large jumps) the phone visually lags several frames behind
-        // that target. Using activeLayout meant the incoming object's whole
-        // flight path (gap, holdX/Y, even farX's side) was calculated as if
-        // the phone were already sitting at its new spot, while it was
-        // actually still passing through the middle of the frame — exactly
-        // where the object's path also happened to cross, clipping straight
-        // through the phone body. Reading the phone's live position instead
-        // means the object recalculates clearance from wherever the phone
-        // actually is, every frame, so it can never get out ahead of it.
-        const base = { x: phoneGroup.position.x, y: phoneGroup.position.y };
+        // Hold position is relative to activeLayout — the step's fixed
+        // *target* position — not phoneGroup.position (the phone's actual,
+        // lerped, lagging position), which this used to read instead. That
+        // earlier version was deliberate, to stop an incoming object's
+        // flight path clipping straight through the phone's body while the
+        // phone was still lerping toward a big jump between steps. But it
+        // introduced a worse, direction-dependent bug: the caption pane's
+        // position is tied to the *current step index* only (a plain CSS
+        // rule, applied instantly, no lerp), while the phone's rendered
+        // position lags behind by a variable amount depending on scroll
+        // speed and — because each step's target is a big jump from the
+        // last one, and the lerp never fully "resets" between frames —
+        // effectively depending on scroll *direction* too (a run of
+        // consecutive downward steps accumulates more residual lag before
+        // each new one's hold phase begins than the same run does in
+        // reverse). Since the object's hold position was computed from that
+        // lagging value, it could land relative to where the phone *used to
+        // be*, not where the current step's caption actually is — reading
+        // as "the object spawns in the wrong spot, mainly scrolling one
+        // way." Using the stable target instead means the object is always
+        // correctly placed relative to the current step's caption
+        // regardless of scroll speed or direction; the trade-off (a
+        // brief chance of the object's flight path grazing the phone while
+        // it's still mid-lerp toward a big jump) is a much smaller, more
+        // transient cosmetic issue than a fully mispositioned "landed"
+        // object.
+        const base = { x: activeLayout.x, y: 0.15 + activeLayout.y };
         // dir must point *toward center* from wherever the phone sits for
         // this step, not just alternate by index — a step where the phone
         // sits on the right was pushing the object even further right, off
@@ -1101,16 +1112,9 @@ function initScene() {
         // near-centered phone position (the pos-c step), where there's no
         // "toward center" side.
         //
-        // Deliberately reads activeLayout.x (the step's fixed target x),
-        // not the live base.x used just above for the actual hold-position
-        // math. base.x changes continuously while the phone is still
-        // lerping toward that target, and on a step where the target x is
-        // near zero (pos-c), base.x drifts down through the +-0.05 dead
-        // zone as it settles — flipping dir's fallback branch mid-flight
-        // and making the object visibly teleport from one side of the
-        // phone to the other about a second after it had already landed.
-        // activeLayout.x is constant for the whole step, so dir is decided
-        // once and never flips underneath an already-settled object.
+        // base.x is now the same stable activeLayout.x used here (see
+        // above), so dir is decided once from a constant value and never
+        // flips mid-flight or after the object has already landed.
         const dir = activeLayout && activeLayout.x > 0.05 ? -1 : activeLayout && activeLayout.x < -0.05 ? 1 : i % 2 === 0 ? -1 : 1;
         // Gap must clear *both* half-widths (phone's and the object's), not
         // just be an arbitrary fixed number — 1.6 was less than
