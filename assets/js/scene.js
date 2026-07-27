@@ -90,22 +90,28 @@ function initScene() {
   // area (and matches the `100dvh` CSS the page now uses), so it's the one
   // to measure against, with innerWidth/innerHeight kept as the fallback for
   // browsers that don't implement it.
+  // Measured from the canvas element's OWN box rather than any window
+  // metric. The canvas is `position: fixed; inset: 0; height: 100dvh`, so
+  // its box is by definition the exact area the 3D scene is displayed in,
+  // already accounting for mobile Safari's collapsing toolbars, pinch-zoom,
+  // and every device pixel ratio, with no special-casing. Every window-based
+  // alternative (innerHeight, visualViewport) is an indirect proxy for this
+  // that can disagree with it, and any disagreement shows up as the 3D
+  // layout drifting out of alignment with the DOM captions.
   function viewportW() {
-    const vv = window.visualViewport;
-    // vv.width/height also shrink under pinch-zoom, which is a genuinely
-    // different situation (the layout viewport hasn't changed) — fall back
-    // to the layout viewport whenever the user is zoomed.
-    if (vv && Math.abs(vv.scale - 1) < 0.01) return vv.width;
-    return window.innerWidth;
+    return canvas.clientWidth || window.innerWidth;
   }
   function viewportH() {
-    const vv = window.visualViewport;
-    if (vv && Math.abs(vv.scale - 1) < 0.01) return vv.height;
-    return window.innerHeight;
+    return canvas.clientHeight || window.innerHeight;
   }
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setSize(viewportW(), viewportH());
+  // updateStyle = false: CSS already sizes the canvas (inset:0 + 100dvh),
+  // and that CSS box is what viewportW/H measure. Letting three.js also
+  // write inline width/height here would make the element's size depend on
+  // a value we derived from the element's own size — a feedback loop that
+  // can latch at a stale size. Only the drawing buffer is set here.
+  renderer.setSize(viewportW(), viewportH(), false);
   if ("outputColorSpace" in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
@@ -800,6 +806,86 @@ function initScene() {
   // rotation forward angles that top surface toward the viewer instead.
   const BASE_TILT_X = { plate: 0.42 };
 
+  // Representative object size, used for layout math. Every object factory
+  // uses a baseScale of 0.6–0.62 and each model spans roughly ±1.2 units in
+  // its own local space, so one shared estimate covers all five. This
+  // replaces an older hard-coded "1.05 world units" guess that badly
+  // over-estimated them (the dumbbell is really about ±0.74 world units at
+  // its rendered size) and therefore reserved far more clearance than any
+  // object needed — enough that on a phone-width screen the "is there room
+  // beside the phone?" test failed for every single step, silently sending
+  // all of them down the stacked fallback path below.
+  const OBJ_HALF_W_LOCAL = 1.2;
+  const OBJ_BASE_SCALE_REF = 0.62;
+
+  // Converts a screen-space (CSS pixel) Y — as returned by
+  // getBoundingClientRect — into a world-space Y at the phone/object depth,
+  // measured against the canvas's own box so the two coordinate systems
+  // can't disagree.
+  function screenYToWorldY(py, halfHWorld) {
+    const rect = canvas.getBoundingClientRect();
+    const h = rect.height || 1;
+    const ndc = 1 - ((py - rect.top) / h) * 2;
+    return ndc * halfHWorld;
+  }
+
+  // The caption pane is the one piece of DOM the phone and its object must
+  // never end up behind. How tall that pane actually is depends entirely on
+  // how its copy wraps at this exact screen width and font size — which no
+  // hard-coded position fraction can predict across every device, and which
+  // is exactly why the previous approach (hand-tuned STEP_LAYOUTS fractions
+  // chosen to sit "opposite" each caption's CSS corner) kept breaking on
+  // real phones as soon as a caption wrapped onto more lines than it did on
+  // the desktop viewport those numbers were tuned against.
+  //
+  // So instead of guessing around the caption, measure it: find the larger
+  // of the two empty bands (above the pane, or below it) and return it in
+  // world coordinates. That band is genuinely free space at any resolution,
+  // for any length of copy, in any font size the user has set.
+  // Cached because getBoundingClientRect forces a synchronous layout, and
+  // this runs inside the per-frame update — which also writes to
+  // pane.style.transform every frame, so an uncached read here would
+  // invalidate and re-run layout on every single frame. The measurement
+  // only actually changes when the step changes or the viewport resizes
+  // (the reel stage is position:sticky and therefore pinned in place for
+  // the whole time a step is active), so keying the cache on exactly those
+  // two things is both safe and enough.
+  let bandCache = { key: "", value: null };
+
+  function measureFreeBand(stepEl, halfHWorld, key) {
+    if (bandCache.key === key) return bandCache.value;
+    let value = null;
+    // Deliberately measures the [data-step] wrapper, NOT the .caption-pane
+    // inside it: the pane carries a per-frame 3D rotate transform (the
+    // "tilt with the phone" effect), and getBoundingClientRect reports the
+    // *transformed* box — so measuring the pane would feed the tilt back
+    // into the layout and make the free band wobble every frame. The
+    // wrapper is untransformed vertically, so its top/bottom are stable.
+    if (stepEl) {
+      const r = stepEl.getBoundingClientRect();
+      if (r.height) {
+        const cr = canvas.getBoundingClientRect();
+        const spaceAbove = r.top - cr.top;
+        const spaceBelow = cr.bottom - r.bottom;
+        const useBelow = spaceBelow >= spaceAbove;
+        const topPx = useBelow ? r.bottom : cr.top;
+        const bottomPx = useBelow ? cr.bottom : r.top;
+        // Too small to lay anything out in — caller falls back to the
+        // fraction-based layout rather than cramming the phone into a sliver.
+        if (bottomPx - topPx >= 60) {
+          const topWorld = screenYToWorldY(topPx, halfHWorld);
+          const bottomWorld = screenYToWorldY(bottomPx, halfHWorld);
+          value = {
+            centerY: (topWorld + bottomWorld) / 2,
+            halfH: Math.abs(topWorld - bottomWorld) / 2,
+          };
+        }
+      }
+    }
+    bandCache = { key, value };
+    return value;
+  }
+
   function updatePhoneAndObjects() {
     const active = getActiveReel();
     const y = window.scrollY;
@@ -889,14 +975,73 @@ function initScene() {
       activeScreenUrl = r.screens[idx];
       activeReelEntry = r;
       const layout = STEP_LAYOUTS[idx % STEP_LAYOUTS.length];
-      // Resolved to real world coordinates here (once per frame while
-      // active) rather than storing fractions on activeLayout, so the
-      // object-hold-position code below can keep using activeLayout.x/y
-      // directly, unchanged.
-      activeLayout = { x: layout.xf * usableHalfW, y: layoutY(layout.yf) };
-      targetPos = new THREE.Vector3(activeLayout.x, 0.15 + activeLayout.y, 0);
-      targetScale = ACTIVE_SCALE * sceneScale * STEP_SCALE[idx % STEP_SCALE.length];
+      // Caption must be marked active BEFORE measuring the free band below,
+      // since its CSS position (which half of the screen it occupies)
+      // depends on classes/layout that need to be settled to measure.
       r.captionSteps.forEach((c, i) => c.classList.toggle("is-active", i === idx));
+
+      const band = isMobileLayout
+        ? measureFreeBand(r.captionSteps[idx], halfH, `${reels.indexOf(r)}:${idx}:${viewportW()}x${viewportH()}`)
+        : null;
+
+      if (band) {
+        // ---- Measured layout (narrow screens) ----
+        // On a phone the caption spans nearly the full width, so there is no
+        // "opposite corner" to tuck the phone into — only the free band
+        // above or below it. Both the phone and its object go in that band,
+        // side by side, scaled to fit. Because the band is measured from the
+        // real caption every frame, this holds for any screen size, any
+        // amount of text wrapping, and any user font-size setting, instead
+        // of relying on fractions tuned against one specific viewport.
+        let scale = Math.min(
+          ACTIVE_SCALE * sceneScale * STEP_SCALE[idx % STEP_SCALE.length],
+          (band.halfH * 2 * 0.84) / phoneH
+        );
+        let objScaleMul = 1;
+        const oHalfW = OBJ_HALF_W_LOCAL * OBJ_BASE_SCALE_REF * sceneScale;
+        const pairGap = 0.22;
+        // Alternate which side the object flies in on, purely for variety.
+        const side = idx % 2 === 0 ? 1 : -1;
+        let pHalfW = (phoneW / 2) * scale;
+        // Center the phone+object PAIR on screen (rather than centering the
+        // phone and letting the object hang off one side), which is what
+        // makes them both fit within a narrow frame at a readable size.
+        let phoneX = side * (pairGap / 2 + oHalfW);
+        let objX = phoneX - side * (pHalfW + pairGap + oHalfW);
+
+        // If the pair is still wider than the frame, shrink everything
+        // together — never fall back to stacking the object above/below the
+        // phone, which is what used to push it into the caption.
+        const pairHalfW = Math.max(Math.abs(phoneX) + pHalfW, Math.abs(objX) + oHalfW);
+        const availHalfW = halfW - 0.12;
+        if (pairHalfW > availHalfW) {
+          const k = availHalfW / pairHalfW;
+          scale *= k;
+          objScaleMul = k;
+          phoneX *= k;
+          objX *= k;
+          pHalfW *= k;
+        }
+
+        activeLayout = {
+          x: phoneX,
+          y: band.centerY,
+          objX,
+          objY: band.centerY,
+          objScaleMul,
+        };
+        targetPos = new THREE.Vector3(phoneX, band.centerY, 0);
+        targetScale = scale;
+      } else {
+        // ---- Fraction-based layout (desktop / wide screens) ----
+        // Wide viewports have room for the phone in one corner and the
+        // caption in the opposite one, which reads better than a centered
+        // pair — so the original hand-tuned layout is kept here, where it
+        // has always worked.
+        activeLayout = { x: layout.xf * usableHalfW, y: layoutY(layout.yf) };
+        targetPos = new THREE.Vector3(activeLayout.x, 0.15 + activeLayout.y, 0);
+        targetScale = ACTIVE_SCALE * sceneScale * STEP_SCALE[idx % STEP_SCALE.length];
+      }
     } else if (y < firstReelTop) {
       // The hero heading/eyebrow/lede/button-row is anchored near the top of
       // the viewport (style.css's .hero justify-content: flex-start). A
@@ -1142,6 +1287,12 @@ function initScene() {
         // transient cosmetic issue than a fully mispositioned "landed"
         // object.
         const base = { x: activeLayout.x, y: 0.15 + activeLayout.y };
+        // Measured-layout path: the free-band code above already solved the
+        // phone's and the object's positions together, as a pair that fits
+        // the genuinely empty space beside the caption. Use those directly
+        // and skip all the fit/fallback math below, which exists only for
+        // the fraction-based (wide-screen) layout.
+        const measured = activeLayout && activeLayout.objX !== undefined;
         // dir must point *toward center* from wherever the phone sits for
         // this step, not just alternate by index — a step where the phone
         // sits on the right was pushing the object even further right, off
@@ -1153,7 +1304,17 @@ function initScene() {
         // base.x is now the same stable activeLayout.x used here (see
         // above), so dir is decided once from a constant value and never
         // flips mid-flight or after the object has already landed.
-        const dir = activeLayout && activeLayout.x > 0.05 ? -1 : activeLayout && activeLayout.x < -0.05 ? 1 : i % 2 === 0 ? -1 : 1;
+        const dir = measured
+          ? activeLayout.objX < activeLayout.x
+            ? -1
+            : 1
+          : activeLayout && activeLayout.x > 0.05
+          ? -1
+          : activeLayout && activeLayout.x < -0.05
+          ? 1
+          : i % 2 === 0
+          ? -1
+          : 1;
         // Gap must clear *both* half-widths (phone's and the object's), not
         // just be an arbitrary fixed number — 1.6 was less than
         // phoneHalfW (0.9) + the widest object's own half-width (the
@@ -1196,7 +1357,14 @@ function initScene() {
         // this fallback is already a compromise layout, shrinking it a bit
         // further buys back the room needed to actually clear the phone.
         let stackShrink = 1;
-        if (Math.abs(idealHoldX) <= maxObjX) {
+        if (measured) {
+          // Already solved above against the measured free band — always
+          // beside the phone, always inside the band, so it can never land
+          // on top of the caption at any screen size.
+          holdX = activeLayout.objX;
+          holdY = activeLayout.objY;
+          stackShrink = activeLayout.objScaleMul;
+        } else if (Math.abs(idealHoldX) <= maxObjX) {
           // Normal case: enough horizontal room to sit beside the phone
           // without either clipping off-frame or overlapping it. Clamped to
           // maxObjY (see above) so a phone sitting close to the top/bottom
@@ -1323,7 +1491,9 @@ function initScene() {
     appliedH = viewportH();
     camera.aspect = appliedW / appliedH;
     camera.updateProjectionMatrix();
-    renderer.setSize(appliedW, appliedH);
+    // updateStyle = false for the same reason as the initial setSize above:
+    // CSS owns the canvas's display size, this only matches the buffer to it.
+    renderer.setSize(appliedW, appliedH, false);
     measureReels();
     measureHero();
   }
