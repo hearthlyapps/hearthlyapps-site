@@ -1128,6 +1128,21 @@ function initScene() {
         const gap = phoneHalfW + objHalfW + 0.3;
         const idealHoldX = base.x + dir * gap;
         const maxObjX = Math.max(0.2, halfW - objHalfW - 0.15);
+        // General vertical clamp, used by the "normal" (beside-phone) branch
+        // below — previously only the stacked-fallback branch clamped its
+        // holdY to the visible frustum. The "beside" branch's holdY was
+        // simply base.y (the phone's own live Y) plus a small fixed offset,
+        // unclamped, on the assumption the phone itself was never close
+        // enough to the frame's top/bottom edge for that offset to matter.
+        // Pushing the phone further toward its own vertical extreme on
+        // mobile (the MOBILE_YF_BOOST fix above, for caption clearance)
+        // broke that assumption on several steps — the object's offset
+        // position ended up outside the visible frustum entirely, rendering
+        // off-screen (reading as "the object just isn't there") rather than
+        // beside the phone. Clamping here keeps it on-screen regardless of
+        // how close to the edge the phone itself now sits.
+        const objHalfH = 1.05 * sceneScale;
+        const maxObjY = Math.max(0.2, halfH - objHalfH - 0.15);
         let holdX;
         let holdY;
         // Extra shrink applied only in the stacked fallback below — the
@@ -1141,9 +1156,12 @@ function initScene() {
         let stackShrink = 1;
         if (Math.abs(idealHoldX) <= maxObjX) {
           // Normal case: enough horizontal room to sit beside the phone
-          // without either clipping off-frame or overlapping it.
+          // without either clipping off-frame or overlapping it. Clamped to
+          // maxObjY (see above) so a phone sitting close to the top/bottom
+          // edge of the frame can't push this offset position out past the
+          // visible frustum.
           holdX = idealHoldX;
-          holdY = base.y + [0, 0.45, -0.35][i % 3];
+          holdY = THREE.MathUtils.clamp(base.y + [0, 0.45, -0.35][i % 3], -maxObjY, maxObjY);
         } else {
           // Not enough width at this viewport size to hold beside the phone
           // at all (clamping alone would just force an overlap instead of
@@ -1152,11 +1170,11 @@ function initScene() {
           // usually more spare room, rather than beside.
           holdX = base.x;
           stackShrink = 0.7;
-          const objHalfH = 1.05 * sceneScale * stackShrink;
+          const objHalfHStacked = 1.05 * sceneScale * stackShrink;
           const vDir = i % 2 === 0 ? -1 : 1;
-          const idealHoldY = base.y + vDir * (phoneHalfH + objHalfH + 0.3);
-          const maxObjY = Math.max(0.2, halfH - objHalfH - 0.15);
-          holdY = THREE.MathUtils.clamp(idealHoldY, -maxObjY, maxObjY);
+          const idealHoldY = base.y + vDir * (phoneHalfH + objHalfHStacked + 0.3);
+          const maxObjYStacked = Math.max(0.2, halfH - objHalfHStacked - 0.15);
+          holdY = THREE.MathUtils.clamp(idealHoldY, -maxObjYStacked, maxObjYStacked);
         }
         const farX = dir * 9;
         let x;
