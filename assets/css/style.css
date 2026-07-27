@@ -57,6 +57,14 @@ body {
   inset: 0;
   width: 100vw;
   height: 100vh;
+  /* dvh (dynamic viewport height) tracks the *actual* visible area on
+     mobile Safari, which shrinks/grows as its address bar and bottom
+     toolbar collapse or reappear. Plain 100vh there is fixed to the
+     largest possible viewport (toolbars fully collapsed), so a real page
+     load with the toolbar still showing renders shorter than what 100vh
+     assumes — Safari support only, so this line is layered on top of the
+     100vh fallback above rather than replacing it. */
+  height: 100dvh;
   z-index: -1;
   display: block;
 }
@@ -300,6 +308,7 @@ p.lede {
 
 .hero {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -360,6 +369,7 @@ p.lede {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -466,14 +476,30 @@ p.lede {
   width: min(600px, 88vw);
 }
 
+/* On mobile every step's caption re-centers horizontally (no room for
+   left/right corners on a narrow screen), but it's critical that each one
+   KEEPS whichever vertical half (top vs bottom) it originally had, not
+   collapse to one shared edge. Each reel step alternates the phone between
+   the upper and lower half of the screen (scene.js's STEP_LAYOUTS), with
+   the caption always placed in the *opposite* half so the two never
+   overlap — pos-tl/pos-tr are the steps where the phone sits low (so the
+   caption stays up top), pos-bl/pos-br/pos-c are the steps where the phone
+   sits high or dead-center-low (so the caption stays at the bottom, or for
+   pos-c, at the top — see its own rule above). A single earlier version of
+   this media query forced every one of these to `bottom: 8%` regardless of
+   which half its paired phone position used, which broke that opposite-side
+   pairing for 3 of the 5 reel steps: on an actual narrow phone (where the
+   longer captions also wrap onto more lines and grow taller), the
+   bottom-anchored caption pane grew tall enough to visually cover most of
+   the phone sitting in that same lower half, leaving only a sliver of the
+   phone peeking out above the pane — most noticeable on the last
+   (maintenance) step, whose phone position and caption both live in/near
+   the lower half by design. */
 @media (max-width: 640px) {
   .reel-caption [data-step].pos-tl,
-  .reel-caption [data-step].pos-tr,
-  .reel-caption [data-step].pos-bl,
-  .reel-caption [data-step].pos-br,
-  .reel-caption [data-step].pos-c {
-    top: auto;
-    bottom: 8%;
+  .reel-caption [data-step].pos-tr {
+    top: 8%;
+    bottom: auto;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
@@ -481,8 +507,47 @@ p.lede {
     text-align: center;
   }
 
+  .reel-caption [data-step].pos-bl,
+  .reel-caption [data-step].pos-br {
+    bottom: 8%;
+    top: auto;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 92%;
+    text-align: center;
+  }
+
+  .reel-caption [data-step].pos-c {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    text-align: center;
+  }
+
   .reel-caption [data-step].pos-c .caption-pane {
     width: 100%;
+  }
+
+  /* Extra safety margin: even with the correct half restored above, a
+     long caption (the maintenance step's three short paragraphs, in
+     particular) can still wrap onto enough lines on a narrow phone to grow
+     tall and creep toward the middle of the screen where the phone sits.
+     Trimming the pane's own padding/type-scale on narrow screens keeps
+     every caption noticeably more compact without touching the copy
+     itself. */
+  .caption-pane {
+    padding: 24px 26px;
+  }
+
+  .reel-caption h2 {
+    font-size: clamp(20px, 5.5vw, 26px);
+  }
+
+  .caption-desc {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 10px;
   }
 }
 
