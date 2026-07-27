@@ -258,6 +258,15 @@ p.lede {
   gap: 10px;
   flex-wrap: wrap;
   align-items: center;
+  /* The form sits inside .btn-row, which centers the form itself as a
+     whole within its row (.hero .btn-row's justify-content: center), but
+     that doesn't touch how the form's OWN children (the email input and
+     the button) line up inside it. Without this, flexbox's default
+     justify-content: flex-start left-aligns the input+button as a pair —
+     visible on a narrow phone screen once the input drops to its own line,
+     where the input and the button below it both hugged the left edge
+     instead of sitting centered like the rest of the hero content. */
+  justify-content: center;
 }
 
 .waitlist-input {

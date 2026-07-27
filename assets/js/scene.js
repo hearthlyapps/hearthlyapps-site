@@ -823,6 +823,25 @@ function initScene() {
     // with every other inactive caption.
     let earlyCaptionEl = null;
 
+    // On mobile, style.css's own max-width:640px media query is what
+    // decides whether each caption sits at the top or bottom of the screen
+    // (always the opposite half from wherever the phone sits that step —
+    // see the comment above that media query). A long caption (several
+    // wrapped lines on a narrow phone) can still grow tall enough to reach
+    // past the halfway point and graze the edge of the phone sitting in the
+    // other half, even though the two are nominally on opposite sides —
+    // exactly what happened on the side-effects step, whose caption is 4
+    // heading lines plus a 5-line paragraph. Nudging the phone a bit further
+    // toward its own extreme (away from center) on mobile only buys back
+    // clearance for exactly this case, without touching the desktop layout
+    // at all (isMobileLayout is false there).
+    const isMobileLayout = window.innerWidth < 640;
+    const MOBILE_YF_BOOST = 1.25;
+    function layoutY(yf) {
+      const boosted = isMobileLayout ? THREE.MathUtils.clamp(yf * MOBILE_YF_BOOST, -1, 1) : yf;
+      return boosted * usableHalfH;
+    }
+
     if (active) {
       const { r, progress } = active;
       const steps = r.screens.length || 1;
@@ -836,7 +855,7 @@ function initScene() {
       // active) rather than storing fractions on activeLayout, so the
       // object-hold-position code below can keep using activeLayout.x/y
       // directly, unchanged.
-      activeLayout = { x: layout.xf * usableHalfW, y: layout.yf * usableHalfH };
+      activeLayout = { x: layout.xf * usableHalfW, y: layoutY(layout.yf) };
       targetPos = new THREE.Vector3(activeLayout.x, 0.15 + activeLayout.y, 0);
       targetScale = ACTIVE_SCALE * sceneScale * STEP_SCALE[idx % STEP_SCALE.length];
       r.captionSteps.forEach((c, i) => c.classList.toggle("is-active", i === idx));
@@ -896,7 +915,7 @@ function initScene() {
       if (approachEase > 0 && reels[0]) {
         const step0Layout = STEP_LAYOUTS[0];
         const step0X = step0Layout.xf * usableHalfW;
-        const step0Y = 0.15 + step0Layout.yf * usableHalfH;
+        const step0Y = 0.15 + layoutY(step0Layout.yf);
         const step0Scale = ACTIVE_SCALE * sceneScale * STEP_SCALE[0];
         targetPos = new THREE.Vector3(
           THREE.MathUtils.lerp(0, step0X, approachEase),
