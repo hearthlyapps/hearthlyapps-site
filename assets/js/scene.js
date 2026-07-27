@@ -740,7 +740,13 @@ function initScene() {
   // sits directly above the phone rather than to a side, so it has the
   // least built-in vertical clearance; a slightly smaller phone there
   // buys back headroom without touching every other step.
-  const STEP_SCALE = [1, 1, 1, 1, 0.86];
+  // Step 4 (maintenance/pos-c) was shrunk more than the rest (0.86) back
+  // when its caption pane and the phone were both competing for the lower
+  // half of a narrow mobile screen. Now that the mobile media query keeps
+  // pos-c's caption at the top (its original, non-colliding half — see
+  // style.css) that extra shrink is mostly just wasted space on a real
+  // phone; only a small amount (0.94) is kept for a little breathing room.
+  const STEP_SCALE = [1, 1, 1, 1, 0.94];
 
   // Objects whose recognizable side only faces one way (trophy, pill
   // bottle, plate/salad) get a small bounded wobble instead of the
@@ -779,7 +785,15 @@ function initScene() {
     // reasonably wide desktop view); sceneScale only kicks in once the
     // actual frustum is narrower than that.
     const REFERENCE_HALF_W = 3.3;
-    const sceneScale = THREE.MathUtils.clamp(halfW / REFERENCE_HALF_W, 0.5, 1);
+    // Floor raised from 0.5 to 0.68 — a real narrow phone (iPhone-shaped
+    // viewport) was hitting this floor and shrinking the phone (and its
+    // baked-in screenshot texture) enough to make the in-phone UI genuinely
+    // hard to read, which is the opposite of the point of showing a
+    // screenshot at all. The usableHalfW/usableHalfH math below already
+    // reserves clearance based on this same value, so raising the floor
+    // can't reopen the original off-frame clipping bug — it just makes the
+    // reserved phone silhouette itself bigger.
+    const sceneScale = THREE.MathUtils.clamp(halfW / REFERENCE_HALF_W, 0.68, 1);
 
     // Half-size at the ACTIVE-state scale specifically (the biggest of the
     // three states, and the one objects need clearance from) — hero and
