@@ -66,12 +66,50 @@ function initScene() {
     console.warn("hearthlyapps: WebGL unavailable, 3D scene skipped.", err);
     return;
   }
+
+  // ---------- Viewport measurement ----------
+  // On mobile Safari the visible viewport height CHANGES DURING SCROLL as
+  // the address bar and bottom toolbar collapse and reappear — and crucially,
+  // Safari does not reliably fire a window `resize` event when that happens
+  // (it updates window.visualViewport instead). Everything in this file that
+  // positions the phone and the five objects is derived from the viewport
+  // height: the camera's aspect ratio, the renderer's size, the frustum
+  // extents that every layout fraction resolves against, and each reel's
+  // scroll progress. Reading window.innerHeight once at load and only
+  // refreshing it on `resize` meant all of that silently went stale the
+  // moment the toolbar collapsed mid-scroll, so the 3D objects were being
+  // laid out against a viewport shape that no longer matched the one the
+  // DOM captions were being laid out against — the objects drifted out of
+  // position relative to the caption panes, and ended up behind them.
+  //
+  // This also explains the specific symptoms: leaving Safari and coming
+  // back, or scrolling down and back up, both force a real relayout/resize
+  // that re-synced everything, which is why the objects looked correct in
+  // exactly those cases and only misplaced during an ordinary first scroll
+  // down. visualViewport is the value that actually tracks the live visible
+  // area (and matches the `100dvh` CSS the page now uses), so it's the one
+  // to measure against, with innerWidth/innerHeight kept as the fallback for
+  // browsers that don't implement it.
+  function viewportW() {
+    const vv = window.visualViewport;
+    // vv.width/height also shrink under pinch-zoom, which is a genuinely
+    // different situation (the layout viewport hasn't changed) — fall back
+    // to the layout viewport whenever the user is zoomed.
+    if (vv && Math.abs(vv.scale - 1) < 0.01) return vv.width;
+    return window.innerWidth;
+  }
+  function viewportH() {
+    const vv = window.visualViewport;
+    if (vv && Math.abs(vv.scale - 1) < 0.01) return vv.height;
+    return window.innerHeight;
+  }
+
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(viewportW(), viewportH());
   if ("outputColorSpace" in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+  const camera = new THREE.PerspectiveCamera(45, viewportW() / viewportH(), 0.1, 200);
   camera.position.set(0, 0, 9);
 
   // Returns how much world-space width/height is actually visible at a given
@@ -667,7 +705,7 @@ function initScene() {
 
   function getActiveReel() {
     const y = window.scrollY;
-    const vh = window.innerHeight;
+    const vh = viewportH();
     for (const r of reels) {
       const start = r.top;
       const end = r.top + r.height - vh;
@@ -879,7 +917,7 @@ function initScene() {
         // resize only) rather than re-read live here — see its definition
         // above for why using a live getBoundingClientRect() every frame
         // was the actual bug.
-        const ndcY = 1 - (heroContentBottomDocY / window.innerHeight) * 2;
+        const ndcY = 1 - (heroContentBottomDocY / viewportH()) * 2;
         const worldYAtHeroBottom = ndcY * halfH;
         heroRestY = worldYAtHeroBottom - phoneHalfH_hero - heroGap;
       }
@@ -907,7 +945,7 @@ function initScene() {
       // post-boundary snap — by the time you reach the reel, the phone is
       // already exactly at step 0's target, so the hand-off itself is
       // seamless.
-      const approachDist = window.innerHeight * 0.9;
+      const approachDist = viewportH() * 0.9;
       const distToReel = firstReelTop - y;
       const approachT = THREE.MathUtils.clamp(1 - distToReel / approachDist, 0, 1);
       const approachEase = approachT * approachT * (3 - 2 * approachT); // smoothstep
@@ -955,9 +993,9 @@ function initScene() {
       // the reel itself has fully finished. Normalized over 3/4 of a
       // viewport height so it clears the frame at a natural scroll pace,
       // not immediately or interminably.
-      const reelEnd = lastReel ? lastReel.top + lastReel.height - window.innerHeight : y;
+      const reelEnd = lastReel ? lastReel.top + lastReel.height - viewportH() : y;
       const overshoot = Math.max(0, y - reelEnd);
-      const exitT = Math.min(1, overshoot / (window.innerHeight * 0.75));
+      const exitT = Math.min(1, overshoot / (viewportH() * 0.75));
       const exitX = halfW + dockedHalfW + 1.5; // well clear of the right edge
       const dockX = THREE.MathUtils.lerp(restX, exitX, exitT);
       targetPos = new THREE.Vector3(dockX, 1.5, -2.4);
@@ -1257,6 +1295,15 @@ function initScene() {
   const clock = new THREE.Clock();
   function animate() {
     const dt = Math.min(clock.getDelta(), 0.05);
+    // Belt-and-braces viewport sync. The two resize listeners above cover
+    // the cases browsers actually announce, but mobile Safari's toolbar
+    // collapse is inconsistent about firing either one, and getting it wrong
+    // silently desynchronizes the whole 3D layout from the DOM captions for
+    // the rest of the scroll (see the viewportW/viewportH comment). Two
+    // property reads per frame is a negligible cost for a guarantee that the
+    // scene can never be rendering against a stale viewport for more than a
+    // single frame, whatever the browser does or doesn't report.
+    if (viewportW() !== appliedW || viewportH() !== appliedH) onResize();
     idleAngle += dt * 0.25;
     bgUniforms.uTime.value += dt;
     updateCamera();
@@ -1266,14 +1313,27 @@ function initScene() {
     requestAnimationFrame(animate);
   }
 
+  // Last viewport size actually applied to the camera/renderer/measurements,
+  // so the per-frame check in animate() can tell when they've gone stale.
+  let appliedW = viewportW();
+  let appliedH = viewportH();
+
   function onResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    appliedW = viewportW();
+    appliedH = viewportH();
+    camera.aspect = appliedW / appliedH;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(appliedW, appliedH);
     measureReels();
     measureHero();
   }
   window.addEventListener("resize", onResize, { passive: true });
+  // visualViewport fires its own resize when mobile Safari's toolbars
+  // collapse/expand mid-scroll, which is exactly the case window's `resize`
+  // misses (see the viewportW/viewportH comment above).
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", onResize, { passive: true });
+  }
 
   animate();
 }
