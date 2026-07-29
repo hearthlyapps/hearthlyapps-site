@@ -439,7 +439,39 @@ background. `initScene()` also checks `document.readyState` and defers to
   a fuller accessibility pass would gate `scene.js`'s animation intensity (or GSAP's
   reveals) behind this media query too, not just CSS scrolling. Not done.
 
-## 8. Verification status — genuinely unverified visually, read this before assuming anything works
+## 8. Verification status — UPDATE (2026-07-27): this section is now historical, not current
+
+**Everything below this line in §8, describing "no real-browser verification has ever
+happened," is now out of date and kept only for its still-accurate technical detail about
+*why* the sandbox couldn't do it (headless Chromium remains genuinely unlaunchable here,
+missing `libxdamage1`, no root — see also `../Sustain/marketing/VIDEO_AD_HANDOFF.md` §5 for
+the same finding rediscovered independently during later video-ad work).** What's changed
+since this was originally written: the site has since been deployed live to
+hearthlyapps.com (see the updated §9 below) and gone through several real rounds of actual
+verification — not from this sandbox, but via the developer's own real iPhone. The working
+loop, confirmed effective, was exactly what §8 originally speculated it would have to be:
+make a change, the developer loads the real page on their iPhone (Safari, both normal and
+Private-tab to rule out caching), sends a screenshot back, the next fix is made from that.
+
+This caught and fixed several real mobile-only bugs that static syntax-checking never
+could have: a caption/phone overlap bug (root-caused through several iterations — first a
+CSS media query that collapsed every reel-step caption to the same screen half regardless
+of which half its paired phone position used, then a deeper issue where mobile Safari's
+address-bar collapse mid-scroll was silently desyncing `scene.js`'s whole layout from the
+actual live viewport, and finally fixed properly by rewriting the mobile layout path in
+`scene.js` to measure each caption's real on-screen bounding box every frame and place the
+phone/object in the genuinely free space next to it, rather than trusting hand-tuned
+position fractions that only ever held up on the desktop viewport they were tuned against).
+Also fixed the same session: a direction-dependent object-misplacement bug (the object's
+hold position was being computed from the phone's live, lerping — and therefore
+scroll-direction-and-speed-dependent — position instead of its stable per-step target), and
+a waitlist-form centering bug. **The lesson worth carrying forward: every mobile-specific
+bug found here was invisible to this sandbox's own tooling (`node --check`, CSS
+parse-checking, tag-balance counting) and was only ever caught by a real screenshot from a
+real device — don't trust "the code looks right" for anything view­port/scroll-dependent
+without that loop.**
+
+The original §8 text (kept for its still-relevant technical detail on sandbox limitations):
 
 **No screenshot, no browser render, no visual QA of this site has been possible from the
 sandbox this was built in.** The sandbox has no root access (`sudo` blocked by the
@@ -481,22 +513,54 @@ Things especially worth double-checking once real-browser verification is possib
   CORS issues loading the screenshot textures? (Likely fine since they're same-origin
   relative paths, but genuinely untested.)
 
-## 9. Explicit pending tasks for a new session
+## 9. Explicit pending tasks for a new session — UPDATE (2026-07-27)
 
-1. **Get real-browser eyes on the current 3D build** (§8) — this is the most important next
-   step; nothing else matters much until this happens.
-2. **Deploy.** `site/` has no git repo of its own yet, but `CNAME` strongly implies GitHub
-   Pages is the intended host (matching how `/privacy` and `/support` are already live at
-   hearthlyapps.com). Figure out which existing repo/branch currently serves
-   hearthlyapps.com, connect `site/` to it (or `git init` fresh if none exists locally), and
-   push once the 3D build is verified.
+Tasks 1 and 2 below are done as of 2026-07-27; kept struck-through rather than deleted so
+the history isn't lost. Current open items follow.
+
+1. ~~Get real-browser eyes on the current 3D build~~ — **done**, extensively, via the
+   developer's real iPhone (see the updated §8 above).
+2. ~~Deploy~~ — **done**. The site is live at hearthlyapps.com via GitHub Pages, repo
+   `github.com/hearthlyapps/hearthlyapps-site`, custom domain via `CNAME` as this section
+   originally guessed.
 3. Consider the reduced-motion gap (§7) if accessibility is a priority before wider launch.
+   Still open, not revisited.
 4. Homepage's "what's next" section content was originally scoped to pull from
-   `../iPhone-App-Opportunity-Report.md` (the market research doc one level up, shared with
-   the Sustain app project) — verify the current three teaser cards
-   ("Photo-to-estimate for solo trades," "fairer mileage & expense tracker,"
-   "task-initiation coaching") still match whatever's considered current/accurate in that
-   report, since that report may have been updated independently of this site.
-5. If/when Sustain's real App Store listing goes live (see `../Sustain/PROJECT_HANDOFF.md`
-   §18 for submission status), swap the `/sustain` page's "Coming soon to the App Store"
-   disabled buttons for real App Store links.
+   `../iPhone-App-Opportunity-Report.md` — still open, not revisited this session.
+5. ~~If/when Sustain's real App Store listing goes live, swap the `/sustain` page's "Coming
+   soon" buttons for real App Store links~~ — **still open**: v1.0 has been submitted and
+   was rejected once (Guideline 3.1.2, metadata-only issue, fixed and resubmitted — see
+   `../Sustain/CHANGELOG.md`), but as of this writing has not yet cleared review, so the
+   waitlist form (added this session, see item 6) is still the right CTA. Swap it for real
+   App Store links once the app is actually live — check `../Sustain/CHANGELOG.md`'s most
+   recent entries for current status before assuming either way.
+6. **New this session**: a Formspree-backed waitlist form was added to both CTA spots on
+   `/sustain` (replacing the old disabled "Coming soon" buttons), styled to match the glass/
+   pill design system, with its notification email routed to a dedicated
+   `waitlist@hearthlyapps.com` alias (set up specifically so signup notifications don't
+   clutter the main admin inbox). Zero signups as of this writing.
+7. ~~A video ad (for YouTube Shorts/TikTok) was attempted using this site's real
+   screenshots/brand assets as source material~~ — **done, UPDATE (2026-07-27, later
+   session)**: v1 and v2 (pure ffmpeg/Python, 2D image with a fake perspective warp,
+   built in the constrained sandbox described below) were superseded by v3, built in a
+   later, meaningfully less-restricted session that had a real browser with working
+   WebGL. v3 actually renders this site's real `scene.js` phone/lighting/background
+   through that real WebGL context, driven by a scripted cinematic camera, captured
+   frame-by-frame and composited — genuine 3D depth and camera movement, not a 2D
+   illusion, closing the exact gap the developer had flagged. Output:
+   `../Sustain/marketing/sustain_short_ad_v3_real3d.mp4`. Full technical detail,
+   including how that later session verified real WebGL availability (against the live
+   `hearthlyapps.com/sustain` domain, not a local copy — see the caveat logged there
+   about a local-serving quirk) before committing to this approach, lives in
+   `../Sustain/marketing/VIDEO_AD_HANDOFF.md` §8. The original note below (kept for
+   history) describes the pre-v3 state and the sandbox limits that shaped v1/v2 — no
+   longer the current constraints, but still useful context for why v1/v2 look the way
+   they do.
+
+   Original note: two versions were built via pure code (ffmpeg + Python) in the same
+   constrained sandbox this whole site was built in; the developer's verdict was
+   "better, but still not Apple-commercial quality, wants more 3D." That handoff
+   documents a detailed list of exactly which environment limits shaped what was
+   possible then (no root, blocked network paths, a one-library-short-of-working
+   headless Chromium) — worth knowing as background even though a later session's
+   environment didn't share those limits.
