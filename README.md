@@ -1,13 +1,20 @@
 # hearthlyapps.com
 
+**Status as of 2026-07-29: live** at hearthlyapps.com via GitHub Pages
+(`github.com/hearthlyapps/hearthlyapps-site`), verified through several rounds of
+real-iPhone visual review. Both pages now link directly to Sustain's real App Store
+listing (`apps.apple.com/us/app/sustain-glp-1-companion/id6793802192`) — the pre-launch
+"Notify me at launch" waitlist forms have been removed now that the app has shipped.
+
 Static marketing site for hearthlyapps and its first product, Sustain. No build step —
 plain HTML/CSS/JS, GSAP + Three.js loaded from CDN.
 
 **Read `PROJECT_HANDOFF.md` in this same directory before making any changes.** It's a
 full, lossless engineering record of how this site was built, every design decision and
-bug fix, and everything still open (most importantly: the current 3D build has not yet been
-verified in a real browser, and the site is not yet deployed — both explained in detail
-there).
+bug fix, and everything still open. Its §8/§9 sections were written before deployment and
+real-device verification happened — both have since been corrected in place with dated
+update notes rather than rewritten, so read the update notes at the top of each rather
+than trusting the original prose below them at face value.
 
 Quick orientation:
 
@@ -21,4 +28,5 @@ Quick orientation:
 - `CNAME` — GitHub Pages custom domain file (`hearthlyapps.com`)
 
 Sibling project: `../Sustain/` is the actual iOS app this site markets — a separate
-Swift/SwiftUI codebase with its own `PROJECT_HANDOFF.md`.
+Swift/SwiftUI codebase with its own handoff document at
+`../Sustain/Documentation/PROJECT_HANDOFF.md`.

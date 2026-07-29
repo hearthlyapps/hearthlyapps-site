@@ -8,7 +8,7 @@ open. Treat it as this project's permanent engineering journal, not a summary.
 
 **Sibling project:** this repo root (`Claude Idea/`) also contains `Sustain/`, a separate
 native iOS app (Swift/SwiftUI) that hearthlyapps' first product page (`/sustain`) markets.
-That project has its own much larger handoff document at `../Sustain/PROJECT_HANDOFF.md`
+That project has its own much larger handoff document at `../Sustain/Documentation/PROJECT_HANDOFF.md`
 — read it if you need to understand Sustain-the-app itself (features, architecture,
 pricing, App Store submission status). This document only covers the **website**, which is
 a completely separate static HTML/CSS/JS codebase with no build step and no shared code
@@ -33,14 +33,18 @@ left alone unless the user asks: `/privacy/` and `/support/` (both simple, non-a
 HTML — see `privacy/index.html`, `support/index.html`).
 
 Domain: **hearthlyapps.com** (see `CNAME` at repo root — GitHub Pages custom domain file,
-containing exactly `hearthlyapps.com`). This strongly implies the intended host is
-**GitHub Pages**, matching how `/privacy` and `/support` were already being served before
-this session started. **However, `site/` currently has no `.git` directory of its own** —
-confirmed via `find`/`ls`. Nothing in this session initialized git or pushed anything
-live. The homepage and `/sustain` rebuild described in this document exists only on the
-local filesystem as of this handoff. **Deploying it (git init + push to whatever repo/branch
-already serves hearthlyapps.com via Pages, or connecting this folder to that existing repo)
-is an explicit open task — see §8.**
+containing exactly `hearthlyapps.com`), served via **GitHub Pages**. **[UPDATED
+2026-07-29, corrects the paragraph below]**: `site/` now has a real git repo,
+`git remote -v` shows `origin https://github.com/hearthlyapps/hearthlyapps-site.git`,
+and the site is live and has been deployed for some time — the "currently has no `.git`
+directory" claim right below is stale, kept only for the historical note about what
+state this was in when first built.
+
+Original note, now historical: at the time this document was first written, `site/`
+had no `.git` directory of its own — confirmed via `find`/`ls`. Nothing in that session
+initialized git or pushed anything live; the homepage and `/sustain` rebuild existed only
+on the local filesystem as of that handoff. Deploying it was flagged as an explicit open
+task — see §8/§9, both since resolved.
 
 ## 2. Origin / why this was built
 
@@ -528,17 +532,19 @@ the history isn't lost. Current open items follow.
 4. Homepage's "what's next" section content was originally scoped to pull from
    `../iPhone-App-Opportunity-Report.md` — still open, not revisited this session.
 5. ~~If/when Sustain's real App Store listing goes live, swap the `/sustain` page's "Coming
-   soon" buttons for real App Store links~~ — **still open**: v1.0 has been submitted and
-   was rejected once (Guideline 3.1.2, metadata-only issue, fixed and resubmitted — see
-   `../Sustain/CHANGELOG.md`), but as of this writing has not yet cleared review, so the
-   waitlist form (added this session, see item 6) is still the right CTA. Swap it for real
-   App Store links once the app is actually live — check `../Sustain/CHANGELOG.md`'s most
-   recent entries for current status before assuming either way.
-6. **New this session**: a Formspree-backed waitlist form was added to both CTA spots on
-   `/sustain` (replacing the old disabled "Coming soon" buttons), styled to match the glass/
-   pill design system, with its notification email routed to a dedicated
-   `waitlist@hearthlyapps.com` alias (set up specifically so signup notifications don't
-   clutter the main admin inbox). Zero signups as of this writing.
+   soon" buttons for real App Store links~~ — **[DONE, 2026-07-29]**. Sustain has been live
+   since 1.0(3) (`apps.apple.com/us/app/sustain-glp-1-companion/id6793802192`); the nav CTA,
+   hero CTA, and a new post-pricing CTA on both `index.html` and `sustain/index.html` now
+   link there directly with a "Download on the App Store" button (Apple icon SVG, opens in
+   a new tab). See `../Sustain/Documentation/CHANGELOG.md`'s "iPad device-support fix"
+   entry (2026-07-29) for the session this happened in.
+6. ~~A Formspree-backed waitlist form was added to both CTA spots on `/sustain`~~ —
+   **[REMOVED, 2026-07-29]**. Now that the app is live, the "Notify me at launch" waitlist
+   forms were stale and actively misleading (signing up for a launch that already
+   happened). Both were removed and replaced by the real App Store download buttons in
+   item 5 above. Final tally before removal: zero signups. The Formspree endpoint and
+   `waitlist@hearthlyapps.com` alias are no longer wired into either page but haven't been
+   deleted/decommissioned externally — worth doing if they're not needed for anything else.
 7. ~~A video ad (for YouTube Shorts/TikTok) was attempted using this site's real
    screenshots/brand assets as source material~~ — **done, UPDATE (2026-07-27, later
    session)**: v1 and v2 (pure ffmpeg/Python, 2D image with a fake perspective warp,
