@@ -84,6 +84,8 @@
 
 <h2>Information we collect</h2>
 
+<p><strong>Account information.</strong> Sustain requires a free account, created with Sign in with Apple, so your data can be backed up and made available if you switch phones or reinstall the app. This means we receive an email address (either your real one, or the private relay address Apple generates if you choose to hide your email) and a unique account identifier. Both are used only to authenticate you and keep your data linked to your own account, never for marketing, and never shared with anyone else.</p>
+
 <p><strong>Health and medication data you enter.</strong> Medication name, dose amounts and dates, injection site, titration plan, weight entries, protein intake, and side-effect logs. You control all of this, nothing is collected unless you type it in or (for weight/protein) sync it from Apple Health.</p>
 
 <p><strong>Apple Health data.</strong> If you grant permission, Sustain reads and writes your body weight and dietary protein entries to Apple Health, so the two stay in sync and you don't have to log the same thing twice. This data is exchanged directly between the app and Apple's HealthKit framework on your device, it does not pass through any server we operate.</p>
@@ -95,11 +97,11 @@
 <p><strong>Basic device and diagnostic information.</strong> Standard crash and performance diagnostics collected automatically by the operating system (not by us directly) if you've opted into sharing this with app developers in your iOS settings.</p>
 
 <h2>What we don't collect</h2>
-<p>We don't collect your name, contact information, precise location, or any advertising identifiers. We don't require an account or login. We don't use tracking technologies to follow you across other apps or websites, Sustain doesn't show ads and never will.</p>
+<p>We don't collect your name, precise location, or any advertising identifiers. We don't use tracking technologies to follow you across other apps or websites, and Sustain doesn't show ads and never will.</p>
 
 <h2>How your data is stored</h2>
-<p>All of your logged data (doses, weight, protein, side effects) is stored locally on your device using Apple's on-device data framework. As of this version of the app, there is no cloud backend and no account system, if you delete the app, your data is deleted with it (a good reason to keep Apple Health syncing on, or your own backups, if that data matters to you).</p>
-<p><em>If a future version of Sustain adds optional account-based cloud sync, this policy will be updated before that ships, and you'll be asked for consent separately.</em></p>
+<p>Your logged data (doses, weight, protein, side effects) is stored on your device and synced to your Sustain account, so it's backed up and available again if you switch phones, reinstall the app, or sign in on a new device. It's stored on our infrastructure provider's servers (Supabase) and protected with row-level security, so only your own signed-in account can ever read or write your data. We don't sell it, share it with third parties, or use it for anything beyond providing Sustain's own features to you.</p>
+<p>You can permanently delete your account and all of the data linked to it at any time, from within the app, at Settings &rarr; Account &amp; Sync &rarr; Delete account. This actually deletes the underlying account and its data, not a deactivation you could later undo.</p>
 
 <h2>Subscriptions</h2>
 <p>Sustain+ is an optional subscription that unlocks full history, the AI features, and a few other conveniences. Subscription purchases are handled by Apple's App Store billing system, Sustain does not receive or store your payment information; that relationship is between you and Apple, governed by Apple's own privacy policy.</p>
