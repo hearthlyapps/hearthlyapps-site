@@ -45,7 +45,7 @@
 
 <!-- Pinned cinematic reel: the persistent 3D phone + object scene (scene.js)
      reads --steps plus data-screens/data-objects to choreograph itself. -->
-<section class="reel-track" style="--steps: 5;" data-screens='["../assets/img/screenshots/01-dashboard.png","../assets/img/screenshots/07-ai-camera-viewfinder.jpg","../assets/img/screenshots/03-trends.png","../assets/img/screenshots/05-sideeffect.png","../assets/img/screenshots/06-maintenance.png"]' data-objects='["pen","plate","scale","capsule","leaf"]'>
+<section class="reel-track" style="--steps: 7;" data-screens='["../assets/img/screenshots/01-dashboard.jpg","../assets/img/screenshots/02-camera-viewfinder.jpg","../assets/img/screenshots/12-ask-sustain.jpg","../assets/img/screenshots/03-trends.jpg","../assets/img/screenshots/13-medication-level.jpg","../assets/img/screenshots/05-sideeffect.png","../assets/img/screenshots/06-maintenance.png"]' data-objects='["pen","plate","capsule","scale","pen","capsule","leaf"]'>
   <div class="reel-stage">
     <div class="reel-caption">
       <div data-step="0" class="pos-br">
@@ -54,8 +54,9 @@
           <h2>Dose, protein, and weight: one screen, zero digging.</h2>
           <p class="caption-desc">
             Your next dose, today's protein progress, and your weight trend all
-            live on one screen, so you're not digging through three different
-            tabs just to check in on your own day.
+            live on one screen, with quick links to snap a photo or ask a
+            question, so you're not digging through tabs just to check in on
+            your own day.
           </p>
         </div>
       </div>
@@ -72,6 +73,17 @@
       </div>
       <div data-step="2" class="pos-bl">
         <div class="caption-pane">
+          <span class="eyebrow">Ask Sustain</span>
+          <h2>A chat that actually knows your data, not a generic bot.</h2>
+          <p class="caption-desc">
+            Ask about your dose timing, protein trends, or side-effect patterns
+            and get an answer grounded in what you've actually logged. It never
+            diagnoses, never evaluates a lab value, and never suggests a dose.
+          </p>
+        </div>
+      </div>
+      <div data-step="3" class="pos-tr">
+        <div class="caption-pane">
           <span class="eyebrow">Weekly recap</span>
           <h2>AI insights that connect protein, adherence, and weight loss pace.</h2>
           <p class="caption-desc">
@@ -82,7 +94,19 @@
           </p>
         </div>
       </div>
-      <div data-step="3" class="pos-tr">
+      <div data-step="4" class="pos-c">
+        <div class="caption-pane">
+          <span class="eyebrow">Where your dose is headed</span>
+          <h2>See your medication level, not just your weight.</h2>
+          <p class="caption-desc">
+            An estimate from your logged doses and your medication's published
+            half-life, shown alongside your weight trend, with a projection of
+            where it's headed if your next dose lands on schedule. Never a
+            reason to change your schedule.
+          </p>
+        </div>
+      </div>
+      <div data-step="5" class="pos-br">
         <div class="caption-pane">
           <span class="eyebrow">Side effects</span>
           <h2>Log symptoms, spot patterns, share them with your prescriber.</h2>
@@ -93,7 +117,7 @@
           </p>
         </div>
       </div>
-      <div data-step="4" class="pos-c">
+      <div data-step="6" class="pos-tl">
         <div class="caption-pane">
           <span class="eyebrow">Reached your goal?</span>
           <h2>A maintenance guide for phase two, not just phase one.</h2>
@@ -177,9 +201,7 @@
     </h2>
     <div class="grid">
       <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="1" width="10" height="22" rx="3" /><path d="M10 5h4" /></svg>
-        </div>
+        <img class="shot" src="../assets/img/screenshots/16-watch-dose.jpg" alt="Real Apple Watch screenshot of the Sustain dose-logging complication" />
         <h3>Sustain on your wrist</h3>
         <p>A Watch complication shows your next-dose countdown and protein progress right on your watch face, and you can log a dose in one tap. Sustain+.</p>
       </div>
@@ -191,9 +213,7 @@
         <p>7, 14, 30, 60, 100, 180, and 365-day streaks each get their own badge and a moment to mark the win.</p>
       </div>
       <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M9 12a3 3 0 106 0 3 3 0 00-6 0z" /></svg>
-        </div>
+        <img class="shot" src="../assets/img/screenshots/14-body-composition.jpg" alt="Real screenshot of body fat percentage and lean mass charts" />
         <h3>Body composition, from your scale</h3>
         <p>If you use a compatible smart scale, import body fat percentage and lean mass through HealthKit and watch both trend over time. Sustain+.</p>
       </div>
@@ -247,9 +267,7 @@
         <p>A quick look at your last four injection sites, oldest to newest, right under the site diagram.</p>
       </div>
       <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 2h6l1 4H8l1-4z" /><path d="M8 6h8l2 14H6L8 6z" /></svg>
-        </div>
+        <img class="shot" src="../assets/img/screenshots/15-lab-results.jpg" alt="Real screenshot of the lab results list screen" />
         <h3>Bring your labs in</h3>
         <p>Snap a photo of a lab result and Sustain transcribes the values for you to review and save. No interpretation added, that part stays with your prescriber.</p>
       </div>
