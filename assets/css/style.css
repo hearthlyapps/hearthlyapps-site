@@ -576,9 +576,26 @@ p.lede {
   margin-top: 56px;
 }
 
+.shots-grid .feature-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.shots-grid .feature-card .shot-frame {
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
 .shots-grid .feature-card .shot {
-  width: 100%;
-  max-width: 220px;
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  max-height: 100%;
+  object-fit: contain;
+  margin: 0;
 }
 
 @media (max-width: 860px) {
