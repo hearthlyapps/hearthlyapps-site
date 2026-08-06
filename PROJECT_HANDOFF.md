@@ -28,9 +28,14 @@ scroll-driven animation, not a typical scroll-and-read brochure site. Two live p
   for future apps)
 - `/sustain/` — full Sustain product page (features, pricing, App Store CTA)
 
-Plus two pre-existing static pages that were **not** touched in this build and should be
-left alone unless the user asks: `/privacy/` and `/support/` (both simple, non-animated
-HTML — see `privacy/index.html`, `support/index.html`).
+Plus two pre-existing static pages that were **not** touched in the original build and
+were, for a long time, left alone: `/privacy/` and `/support/` (both simple, non-animated
+HTML — see `privacy/index.html`, `support/index.html`). **`/privacy/` is no longer
+untouched** — it's been updated in place each time Sustain's actual data practices
+changed (Google sign-in added 2026-08-01, lab result import disclosed 2026-08-06, commit
+`50d206f`/`50d256f` — see `../Sustain/Documentation/CHANGELOG.md`'s corresponding entries
+for what changed and why), and should keep being treated as a living document tied to the
+app's real behavior, not a fixed pre-existing page.
 
 Domain: **hearthlyapps.com** (see `CNAME` at repo root — GitHub Pages custom domain file,
 containing exactly `hearthlyapps.com`), served via **GitHub Pages**. **[UPDATED

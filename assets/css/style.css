@@ -598,6 +598,14 @@ p.lede {
   color: var(--teal);
 }
 
+.feature-card .shot {
+  width: 128px;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  margin-bottom: 18px;
+  display: block;
+}
+
 .feature-card h3 {
   font-size: 19px;
   margin-bottom: 8px;
