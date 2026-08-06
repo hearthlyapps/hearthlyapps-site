@@ -45,7 +45,7 @@
 
 <!-- Pinned cinematic reel: the persistent 3D phone + object scene (scene.js)
      reads --steps plus data-screens/data-objects to choreograph itself. -->
-<section class="reel-track" style="--steps: 7;" data-screens='["../assets/img/screenshots/01-dashboard.jpg","../assets/img/screenshots/02-camera-viewfinder.jpg","../assets/img/screenshots/12-ask-sustain.jpg","../assets/img/screenshots/03-trends.jpg","../assets/img/screenshots/13-medication-level.jpg","../assets/img/screenshots/05-sideeffect.png","../assets/img/screenshots/06-maintenance.png"]' data-objects='["pen","plate","capsule","scale","pen","capsule","leaf"]'>
+<section class="reel-track" style="--steps: 7;" data-screens='["../assets/img/screenshots/01-dashboard.jpg","../assets/img/screenshots/02-camera-viewfinder.jpg","../assets/img/screenshots/12-ask-sustain.jpg","../assets/img/screenshots/03-trends.jpg","../assets/img/screenshots/13-medication-level.jpg","../assets/img/screenshots/05-sideeffect.png","../assets/img/screenshots/06-maintenance.png"]' data-objects='["pen","plate","capsule","scale","leaf","capsule","pen"]'>
   <div class="reel-stage">
     <div class="reel-caption">
       <div data-step="0" class="pos-br">
@@ -199,23 +199,32 @@
     <h2 class="display-2 reveal" style="max-width: 720px;">
       A big update, built from what people actually asked for.
     </h2>
-    <div class="grid">
+
+    <div class="shots-grid">
       <div class="feature-card reveal">
         <img class="shot" src="../assets/img/screenshots/16-watch-dose.jpg" alt="Real Apple Watch screenshot of the Sustain dose-logging complication" />
         <h3>Sustain on your wrist</h3>
         <p>A Watch complication shows your next-dose countdown and protein progress right on your watch face, and you can log a dose in one tap. Sustain+.</p>
       </div>
       <div class="feature-card reveal">
+        <img class="shot" src="../assets/img/screenshots/14-body-composition.jpg" alt="Real screenshot of body fat percentage and lean mass charts" />
+        <h3>Body composition, from your scale</h3>
+        <p>If you use a compatible smart scale, import body fat percentage and lean mass through HealthKit and watch both trend over time. Sustain+.</p>
+      </div>
+      <div class="feature-card reveal">
+        <img class="shot" src="../assets/img/screenshots/15-lab-results.jpg" alt="Real screenshot of the lab results list screen" />
+        <h3>Bring your labs in</h3>
+        <p>Snap a photo of a lab result and Sustain transcribes the values for you to review and save. No interpretation added, that part stays with your prescriber.</p>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top: 20px;">
+      <div class="feature-card reveal">
         <div class="icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c3 4-1 6-1 10a4 4 0 108 0c0-2-1-3-2-4 1 5-2 6-2 6" /></svg>
         </div>
         <h3>Milestones worth celebrating</h3>
         <p>7, 14, 30, 60, 100, 180, and 365-day streaks each get their own badge and a moment to mark the win.</p>
-      </div>
-      <div class="feature-card reveal">
-        <img class="shot" src="../assets/img/screenshots/14-body-composition.jpg" alt="Real screenshot of body fat percentage and lean mass charts" />
-        <h3>Body composition, from your scale</h3>
-        <p>If you use a compatible smart scale, import body fat percentage and lean mass through HealthKit and watch both trend over time. Sustain+.</p>
       </div>
       <div class="feature-card reveal">
         <div class="icon">
@@ -230,13 +239,6 @@
         </div>
         <h3>Better, same, or worse</h3>
         <p>Logging a symptom you've noted before is now a one-tap check-in instead of resetting a slider from scratch.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-8.5 8.4A8.5 8.5 0 014 12a8.38 8.38 0 018.4-8.5 8.5 8.5 0 018.5 8.5z" /><path d="M8 12h.01M12 12h.01M16 12h.01" /></svg>
-        </div>
-        <h3>Ask Sustain</h3>
-        <p>A chat that answers questions using your own logged data. It never diagnoses and never suggests a dose change, only helps you understand your own history.</p>
       </div>
       <div class="feature-card reveal">
         <div class="icon">
@@ -265,18 +267,6 @@
         </div>
         <h3>Know where you last injected</h3>
         <p>A quick look at your last four injection sites, oldest to newest, right under the site diagram.</p>
-      </div>
-      <div class="feature-card reveal">
-        <img class="shot" src="../assets/img/screenshots/15-lab-results.jpg" alt="Real screenshot of the lab results list screen" />
-        <h3>Bring your labs in</h3>
-        <p>Snap a photo of a lab result and Sustain transcribes the values for you to review and save. No interpretation added, that part stays with your prescriber.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-5 4 4 8-8" /><path d="M15 6h6v6" stroke-dasharray="2 2" /></svg>
-        </div>
-        <h3>See where your dose is headed</h3>
-        <p>A projected line shows where your medication level trends if your next dose lands on schedule, alongside your weight trend on the same chart.</p>
       </div>
       <div class="feature-card reveal">
         <div class="icon">
