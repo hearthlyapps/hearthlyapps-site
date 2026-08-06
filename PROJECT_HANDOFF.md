@@ -93,6 +93,13 @@ six (`01`, `03`, `04`, `05`, `06`) are wired into the `/sustain` reel; the homep
 uses three of those five (`01`, `04`, `03`). `02-paywall.png` exists on disk but is not
 referenced anywhere — available if a future pricing-focused animation step is added.
 
+**[STALENESS FLAG, 2026-08-01]**: these six screenshots predate Sustain's mandatory
+account/sign-in gate, specific-days-of-week dose scheduling UI, and the new branded
+camera viewfinder (all shipped in v2.0). They still work visually as generic app
+screenshots, but if any future update wants the reel to reflect current UI exactly, these
+should be recaptured against a build running v2.0 or later — unconfirmed without a
+side-by-side visual diff, flagged here as an open item rather than fixed silently.
+
 No build tooling, no `package.json`, no bundler. Pure static files, GSAP/ScrollTrigger and
 Three.js both loaded directly from CDN (`cdnjs.cloudflare.com` and `cdn.jsdelivr.net`
 respectively) via `<script>` tags — this means **the site requires a live internet
@@ -533,7 +540,10 @@ the history isn't lost. Current open items follow.
    `../iPhone-App-Opportunity-Report.md` — still open, not revisited this session.
 5. ~~If/when Sustain's real App Store listing goes live, swap the `/sustain` page's "Coming
    soon" buttons for real App Store links~~ — **[DONE, 2026-07-29]**. Sustain has been live
-   since 1.0(3) (`apps.apple.com/us/app/sustain-glp-1-companion/id6793802192`); the nav CTA,
+   since 1.0(3) (`apps.apple.com/us/app/sustain-glp-1-companion/id6793802192`); a major 2.0
+   update (mandatory account sync, real camera viewfinder, specific-days-of-week
+   scheduling) was accepted and went live 2026-08-01 — see
+   `../Sustain/Documentation/CHANGELOG.md` for current status. The nav CTA,
    hero CTA, and a new post-pricing CTA on both `index.html` and `sustain/index.html` now
    link there directly with a "Download on the App Store" button (Apple icon SVG, opens in
    a new tab). See `../Sustain/Documentation/CHANGELOG.md`'s "iPad device-support fix"
