@@ -63,15 +63,16 @@
      seconds. So the hero names the thing the visitor already
      distrusts about app companies, and takes a position on it.
      ============================================================ -->
-<header class="hero">
+<header class="hero" data-scene="exit">
   <div class="wrap hero-grid">
-    <div>
+    <div class="hero-copy">
       <span class="eyebrow reveal">hearthlyapps</span>
       <!-- max-width lives on the h1, not a wrapper: `ch` resolves against the
            element's own font-size, so a ch limit set on a 17px parent silently
            crushes a 72px headline into seven lines. -->
       <h1 class="d1 reveal" style="margin: 16px 0 0; max-width: 15ch;">
-        Apps that don't hold<br /><span class="mark--ember mark">your life hostage.</span>
+        <span class="line"><span>Apps that don't hold</span></span>
+        <span class="line"><span class="mark--ember mark">your life hostage.</span></span>
       </h1>
       <p class="lede reveal" style="margin-top: 28px;">
         A small studio making focused iPhone apps for the parts of life you're
@@ -88,9 +89,9 @@
          decoration. It means the first screen answers both "who are you"
          and "what have you actually made", and it is honest about the
          ratio: one shipped, three not yet. -->
-    <aside class="reveal" aria-label="What hearthlyapps is working on">
+    <aside aria-label="What hearthlyapps is working on" data-scene="enter" class="index-list">
       <div class="foot-h" style="color: var(--ink-4); margin-bottom: 14px;">The workshop</div>
-      <a class="index-row" href="/sustain/">
+      <a data-slice="0.1,0.45" class="index-row" href="/sustain/">
         <span class="product-status"><span class="dot dot--live"></span>Live</span>
         <span class="index-name">
           Sustain
@@ -103,17 +104,17 @@
         </span>
         <span class="index-note">GLP-1 companion, on the App Store</span>
       </a>
-      <div class="index-row">
+      <div data-slice="0.25,0.6" class="index-row">
         <span class="product-status"><span class="dot dot--build"></span>Building</span>
         <span class="index-name">Estimates for solo trades</span>
         <span class="index-note">Photo to priced quote</span>
       </div>
-      <div class="index-row">
+      <div data-slice="0.4,0.75" class="index-row">
         <span class="product-status"><span class="dot"></span>Exploring</span>
         <span class="index-name">Mileage &amp; expenses</span>
         <span class="index-note">Honest pricing, no hikes</span>
       </div>
-      <div class="index-row">
+      <div data-slice="0.55,0.9" class="index-row">
         <span class="product-status"><span class="dot"></span>Exploring</span>
         <span class="index-name">Task-initiation coaching</span>
         <span class="index-note">Less planner, more companion</span>
@@ -131,7 +132,7 @@
      gives up. Three items, but deliberately not three identical
      cards in a row: a numbered editorial list, full width.
      ============================================================ -->
-<section class="band" id="rules">
+<section class="band" id="rules" data-scene="cover">
   <div class="wrap">
     <span class="eyebrow reveal">How we build</span>
     <h2 class="d2 reveal" style="margin: 16px 0 12px; max-width: 20ch;">
@@ -142,7 +143,7 @@
       paid for.
     </p>
 
-    <div class="product-row reveal" style="border-top: 1px solid var(--rule);">
+    <div class="product-row rule-row" data-slice="0.12,0.42" style="border-top: 1px solid var(--rule);">
       <div class="product-status"><span class="dot dot--live"></span>Rule 01</div>
       <div>
         <h3 class="d3" style="margin-bottom: 10px;">The free tier is free forever.</h3>
@@ -155,7 +156,7 @@
       <p class="small" style="max-width: 22ch;"><em>The cost:</em> most of our users will never pay us anything, and we built the pricing knowing that.</p>
     </div>
 
-    <div class="product-row reveal">
+    <div class="product-row rule-row" data-slice="0.3,0.6">
       <div class="product-status"><span class="dot dot--live"></span>Rule 02</div>
       <div>
         <h3 class="d3" style="margin-bottom: 10px;">Your health data is not the product.</h3>
@@ -168,7 +169,7 @@
       <p class="small" style="max-width: 22ch;"><em>The cost:</em> the entire revenue model that most free health apps run on is closed to us.</p>
     </div>
 
-    <div class="product-row reveal">
+    <div class="product-row rule-row" data-slice="0.48,0.78">
       <div class="product-status"><span class="dot dot--live"></span>Rule 03</div>
       <div>
         <h3 class="d3" style="margin-bottom: 10px;">One magic moment, not AI everywhere.</h3>
@@ -337,5 +338,6 @@
 </footer>
 
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/motion.js" defer></script>
 </body>
 </html>

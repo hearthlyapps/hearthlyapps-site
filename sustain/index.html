@@ -68,11 +68,14 @@
      One ask: download. The product is visible immediately rather
      than being teased three screens down.
      ============================================================ -->
-<header class="hero">
+<header class="hero" data-scene="exit">
   <div class="wrap hero-grid">
-    <div>
+    <div class="hero-copy">
       <span class="eyebrow reveal">Sustain · GLP-1 companion</span>
-      <h1 class="d1 reveal">The scale can't tell you<br /><span class="mark">what you're losing.</span></h1>
+      <h1 class="d1 reveal">
+        <span class="line"><span>The scale can't tell you</span></span>
+        <span class="line"><span class="mark">what you're losing.</span></span>
+      </h1>
       <p class="lede reveal">
         On a GLP-1, appetite drops fast and protein usually goes with it.
         Sustain tracks your dose, your protein and your weight in one place,
@@ -88,14 +91,107 @@
       <p class="cta-note reveal">Manual logging is free forever. No trial, no card.</p>
     </div>
 
-    <div class="device-halo reveal">
-      <div class="device device--lg">
-        <picture>
-          <source srcset="../assets/img/screenshots/01-dashboard.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/01-dashboard.jpg"
-             width="700" height="1520"
-             alt="The Sustain Today screen: next dose with a Log dose button, AI Photo Estimate, Ask Sustain, protein progress at 143g of a 132g goal, and a weight trend." />
-        </picture>
+    <!-- The hero phone is not a screenshot. It is Sustain's real Today
+         screen rebuilt in HTML so the live parts can actually live: the
+         protein ring fills to its real 143g-of-132g state, the weight
+         trend draws itself, and the cards arrive in reading order. Values
+         and colours are taken from the shipping app. -->
+    <div class="device-halo hero-phone" aria-label="The Sustain Today screen" role="img">
+      <div class="device device--lg ui-wrap">
+        <div class="ui ui-boot" data-boot>
+
+          <div class="ui-status">
+            <span>12:51</span>
+            <span class="ui-island"></span>
+            <span class="ui-sigs"><i></i><i></i><i class="bat"></i></span>
+          </div>
+
+          <h4 class="ui-title">Today</h4>
+
+          <div class="ui-card">
+            <div class="ui-dose-top">
+              <span class="ui-drug">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:4.4cqw;height:4.4cqw"><path d="M18 2l4 4M17 7l-11 11-4 1 1-4L14 4z"/></svg>
+                Wegovy
+              </span>
+              <span class="ui-mg">1.7 mg</span>
+            </div>
+            <div class="ui-k">Next dose</div>
+            <div class="ui-date">Monday, Aug 10</div>
+            <div class="ui-sub">In 4 Days</div>
+            <div class="ui-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+              Log dose
+            </div>
+          </div>
+
+          <div class="ui-card ui-row">
+            <span class="ui-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 012-2h2l1.5-2h7L17 6h2a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><circle cx="12" cy="12" r="3.4"/></svg>
+            </span>
+            <span class="ui-rowtext"><b>AI Photo Estimate</b><span>Snap a photo of your food for an instant protein estimate</span></span>
+            <span class="ui-chev">›</span>
+          </div>
+
+          <div class="ui-card ui-row">
+            <span class="ui-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13a2 2 0 01-2 2H8l-4 3V6a2 2 0 012-2h12a2 2 0 012 2z"/></svg>
+            </span>
+            <span class="ui-rowtext"><b>Ask Sustain</b><span>Ask a question about your own dose, protein, or side-effect data</span></span>
+            <span class="ui-chev">›</span>
+          </div>
+
+          <div class="ui-card ui-protein">
+            <div class="ui-ring">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="trk" cx="50" cy="50" r="42"></circle>
+                <circle class="val" cx="50" cy="50" r="42"></circle>
+              </svg>
+              <b>143g<em>of 132g</em></b>
+            </div>
+            <div class="ui-pinfo">
+              <b>Protein today</b>
+              <div class="ui-goal">Goal reached</div>
+              <div class="ui-streak">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:3.6cqw;height:3.6cqw"><path d="M12 2c2 4-1 5-1 8a3 3 0 006 0c0-1-.5-2-1-3 2 2 3 4 3 6a7 7 0 11-14 0c0-5 5-6 7-11z"/></svg>
+                7-day streak
+              </div>
+              <span class="ui-chip">+ Log protein</span>
+            </div>
+          </div>
+
+          <div class="ui-card">
+            <div class="ui-wtop">
+              <div>
+                <div class="ui-k" style="margin-top:0">Weight</div>
+                <div class="ui-wnum">198 lb</div>
+              </div>
+              <span class="ui-wpill">-16 lb</span>
+            </div>
+            <div class="ui-spark">
+              <svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+                <path class="fl" d="M0,14 C60,17 110,20 160,24 S250,31 300,33 L300,40 L0,40 Z"/>
+                <path class="ln" d="M0,14 C60,17 110,20 160,24 S250,31 300,33"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="ui-tabs">
+            <span class="ui-tab on">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>
+              Today
+            </span>
+            <span class="ui-tab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-6 4 4 6-8"/><path d="M17 7h4v4"/></svg>
+              Trends
+            </span>
+            <span class="ui-tab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1A1.7 1.7 0 008 19.4a1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H2a2 2 0 110-4h.1A1.7 1.7 0 003.6 8a1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H8a1.7 1.7 0 001-1.5V2a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V8a1.7 1.7 0 001.5 1H22a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+              Settings
+            </span>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -118,23 +214,23 @@
       Most of the time the sequence looks like this, and every step of it feels like progress.
     </p>
 
-    <div class="stack stack--4">
-      <div class="reveal">
+    <div class="stack stack--4 chain" data-scene="cover">
+      <div data-slice="0.02,0.2">
         <div class="step-n" style="margin-bottom: 10px;">01</div>
         <h4>The dose goes up</h4>
         <p>Titration is working exactly the way it's supposed to.</p>
       </div>
-      <div class="reveal">
+      <div data-slice="0.22,0.4">
         <div class="step-n" style="margin-bottom: 10px;">02</div>
         <h4>Food stops appealing</h4>
         <p>Half a plate is plenty. Dinner gets skipped without much thought.</p>
       </div>
-      <div class="reveal">
+      <div data-slice="0.44,0.62">
         <div class="step-n" style="margin-bottom: 10px;">03</div>
         <h4>Protein drops first</h4>
         <p>It's the hardest thing to eat when nothing sounds good.</p>
       </div>
-      <div class="reveal">
+      <div data-slice="0.66,0.84">
         <div class="step-n" style="margin-bottom: 10px;">04</div>
         <h4>The body makes up the difference</h4>
         <p>Some of it comes from muscle. The scale reads it as a good week.</p>
@@ -153,7 +249,7 @@
          It also deliberately makes no claim that the app changes the
          outcome — only that it shows you the second line.
          ------------------------------------------------------------ -->
-    <div class="figure reveal" style="margin-top: 72px;" data-figure>
+    <div class="figure" style="margin-top: 72px;" data-figure data-scene="cover">
       <p class="eyebrow eyebrow--pale" style="margin-bottom: 8px;">The same twelve weeks</p>
       <h3 class="d3" style="max-width: 20ch; margin-bottom: 4px;">One line down. Made of what?</h3>
 
@@ -174,15 +270,15 @@
         <text class="fig-label" x="700" y="330" text-anchor="end">Week 12</text>
 
         <!-- 1. what the scale reports -->
-        <path class="fig-line fig-line--total"
+        <path data-slice="0.05,0.42" class="fig-line fig-line--total"
               d="M60,70 C240,120 380,160 500,180 S660,192 700,195" />
         <!-- 2. the same period, taken apart -->
-        <path class="fig-line fig-line--fat"
+        <path data-slice="0.24,0.62" class="fig-line fig-line--fat"
               d="M60,70 C240,140 380,200 500,240 S660,272 700,279" />
-        <path class="fig-line fig-line--lean"
+        <path data-slice="0.40,0.78" class="fig-line fig-line--lean"
               d="M60,70 C240,92 380,110 500,122 S660,131 700,133" />
 
-        <g class="fig-note">
+        <g class="fig-note" data-slice="0.68,0.86">
           <!-- The bracket measures the LEAN line's own fall, from the week-1
                baseline down to where it ends. An earlier version bracketed
                the gap between the lean and fat lines, which looks similar
@@ -235,7 +331,15 @@
      Sticky phone, one thought per step. Every image is a real
      screenshot of the shipping app; nothing here is a mockup.
      ============================================================ -->
-<section class="band" id="how">
+<!-- ============================================================
+     SCENE 3 — THE PRODUCT TOUR
+     A pinned sequence, not a slideshow. One phone holds position and
+     drifts with the scroll while its screen changes underneath, so six
+     features read as one object being operated. The step rail on the
+     left tells the visitor how long the scene is and where they are —
+     the thing pinned sections most often fail to communicate.
+     ============================================================ -->
+<section class="band" id="how" data-scene="pin">
   <div class="wrap">
     <span class="eyebrow reveal">How it works</span>
     <h2 class="d2 reveal" style="margin: 16px 0 8px; max-width: 22ch;">
@@ -245,139 +349,140 @@
     <div class="scenes" style="margin-top: 64px;">
       <div class="scene-rail">
         <div class="device-halo">
-          <div class="rail-stack device-stack" data-rail>
-            <div class="device" data-frame>
-              <picture>
-          <source srcset="../assets/img/screenshots/01-dashboard.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/01-dashboard.jpg" width="700" height="1520" loading="lazy"
-                   alt="Sustain Today screen showing next dose, protein progress and weight trend together." />
-        </picture>
+          <div class="rail-stack" data-rail>
+            <div class="pips" aria-hidden="true">
+            <span class="pip" data-pip></span>
+            <span class="pip" data-pip></span>
+            <span class="pip" data-pip></span>
+            <span class="pip" data-pip></span>
+            <span class="pip" data-pip></span>
+            <span class="pip" data-pip></span>
             </div>
-            <div class="device" data-frame>
+            <div class="device device--lg device-shell">
+            <div class="rail-screen" data-frame>
               <picture>
-          <source srcset="../assets/img/screenshots/02-camera-viewfinder.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/02-camera-viewfinder.jpg" width="700" height="1520" loading="lazy"
-                   alt="Sustain camera pointed at a plate of salmon, eggs and greens, ready to estimate protein." />
-        </picture>
+                <source srcset="../assets/img/screenshots/01-dashboard.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/01-dashboard.jpg" width="700" height="1520" loading="lazy" alt="Sustain Today screen showing next dose, protein progress and weight trend together." />
+              </picture>
             </div>
-            <div class="device" data-frame>
+            <div class="rail-screen" data-frame>
               <picture>
-          <source srcset="../assets/img/screenshots/12-ask-sustain.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/12-ask-sustain.jpg" width="700" height="1520" loading="lazy"
-                   alt="Ask Sustain answering a question about this week's protein trend using the user's own logged data." />
-        </picture>
+                <source srcset="../assets/img/screenshots/02-camera-viewfinder.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/02-camera-viewfinder.jpg" width="700" height="1520" loading="lazy" alt="Sustain camera pointed at a plate, ready to estimate protein." />
+              </picture>
             </div>
-            <div class="device" data-frame>
+            <div class="rail-screen" data-frame>
               <picture>
-          <source srcset="../assets/img/screenshots/13-medication-level.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/13-medication-level.jpg" width="700" height="1520" loading="lazy"
-                   alt="An estimated medication level chart plotted alongside the weight trend." />
-        </picture>
+                <source srcset="../assets/img/screenshots/12-ask-sustain.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/12-ask-sustain.jpg" width="700" height="1520" loading="lazy" alt="Ask Sustain answering a protein question from the user's own logged data." />
+              </picture>
             </div>
-            <div class="device" data-frame>
+            <div class="rail-screen" data-frame>
               <picture>
-          <source srcset="../assets/img/screenshots/14-body-composition.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/14-body-composition.jpg" width="700" height="1520" loading="lazy"
-                   alt="Body composition charts showing body fat percentage falling while lean mass holds steady." />
-        </picture>
+                <source srcset="../assets/img/screenshots/13-medication-level.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/13-medication-level.jpg" width="700" height="1520" loading="lazy" alt="An estimated medication level chart plotted alongside the weight trend." />
+              </picture>
             </div>
-            <div class="device" data-frame>
+            <div class="rail-screen" data-frame>
               <picture>
-          <source srcset="../assets/img/screenshots/06-maintenance.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/06-maintenance.png" width="700" height="1521" loading="lazy"
-                   alt="The Sustain maintenance program screen, shown after reaching a goal weight." />
-        </picture>
+                <source srcset="../assets/img/screenshots/14-body-composition.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/14-body-composition.jpg" width="700" height="1520" loading="lazy" alt="Body composition charts showing body fat and lean mass tracked separately." />
+              </picture>
+            </div>
+            <div class="rail-screen" data-frame>
+              <picture>
+                <source srcset="../assets/img/screenshots/06-maintenance.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/06-maintenance.png" width="700" height="1520" loading="lazy" alt="The Sustain maintenance program screen, shown after reaching a goal weight." />
+              </picture>
+            </div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="scene-steps">
-        <article class="step reveal" data-step="0">
+        <article class="step" data-step="0">
           <div class="step-n">01 — Today</div>
           <h3 class="d3">Dose, protein and weight on one screen.</h3>
-          <p class="body">
-            Not three apps and a notes file. Your next dose, today's protein
-            against a target set for your body, and where your weight is
-            actually heading, in a single glance before you put the phone down.
-          </p>
-          <div class="step-shot"><div class="device"><picture>
-          <source srcset="../assets/img/screenshots/01-dashboard.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/01-dashboard.jpg" width="700" height="1520" loading="lazy" alt="Sustain Today screen." />
-        </picture></div></div>
+          <p class="body">Not three apps and a notes file. Your next dose, today's protein against a target set for your body, and where your weight is actually heading, in a single glance before you put the phone down.</p>
+          <div class="step-shot">
+            <div class="device">
+              <picture>
+                <source srcset="../assets/img/screenshots/01-dashboard.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/01-dashboard.jpg" width="700" height="1520" loading="lazy" alt="Sustain Today screen showing next dose, protein progress and weight trend together." />
+              </picture>
+            </div>
+          </div>
         </article>
 
-        <article class="step reveal" data-step="1">
+        <article class="step" data-step="1">
           <div class="step-n">02 — AI photo estimate</div>
           <h3 class="d3">Point the camera at dinner. Get the protein.</h3>
-          <p class="body">
-            No database searching, no weighing, no guessing at portions. Snap the
-            plate and Sustain estimates the protein in seconds. It shows its work
-            and you can edit the number, because an estimate you can't correct is
-            just a guess with better manners.
-          </p>
-          <div class="step-shot"><div class="device"><picture>
-          <source srcset="../assets/img/screenshots/02-camera-viewfinder.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/02-camera-viewfinder.jpg" width="700" height="1520" loading="lazy" alt="Sustain camera estimating protein from a plate." />
-        </picture></div></div>
+          <p class="body">No database searching, no weighing, no guessing at portions. Snap the plate and Sustain estimates the protein in seconds. It shows its work and you can edit the number, because an estimate you can't correct is just a guess with better manners.</p>
+          <div class="step-shot">
+            <div class="device">
+              <picture>
+                <source srcset="../assets/img/screenshots/02-camera-viewfinder.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/02-camera-viewfinder.jpg" width="700" height="1520" loading="lazy" alt="Sustain camera pointed at a plate, ready to estimate protein." />
+              </picture>
+            </div>
+          </div>
         </article>
 
-        <article class="step reveal" data-step="2">
+        <article class="step" data-step="2">
           <div class="step-n">03 — Ask Sustain</div>
           <h3 class="d3">Ask about your data, not the internet's.</h3>
-          <p class="body">
-            "How's my protein trending this week?" gets an answer built from what
-            you actually logged. It never diagnoses, never reads a lab value and
-            never suggests a dose. Those conversations belong to your prescriber,
-            and Sustain is built to send you back to them better prepared.
-          </p>
-          <div class="step-shot"><div class="device"><picture>
-          <source srcset="../assets/img/screenshots/12-ask-sustain.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/12-ask-sustain.jpg" width="700" height="1520" loading="lazy" alt="Ask Sustain answering a protein question." />
-        </picture></div></div>
+          <p class="body">"How's my protein trending this week?" gets an answer built from what you actually logged. It never diagnoses, never reads a lab value and never suggests a dose. Those conversations belong to your prescriber, and Sustain is built to send you back to them better prepared.</p>
+          <div class="step-shot">
+            <div class="device">
+              <picture>
+                <source srcset="../assets/img/screenshots/12-ask-sustain.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/12-ask-sustain.jpg" width="700" height="1520" loading="lazy" alt="Ask Sustain answering a protein question from the user's own logged data." />
+              </picture>
+            </div>
+          </div>
         </article>
 
-        <article class="step reveal" data-step="3">
+        <article class="step" data-step="3">
           <div class="step-n">04 — Trends</div>
           <h3 class="d3">See where your dose is, not just where your weight is.</h3>
-          <p class="body">
-            Sustain estimates your medication level from the doses you've logged
-            and your medication's published half-life, and plots it against your
-            weight trend, so a rough week has context instead of being a mystery.
-          </p>
-          <div class="step-shot"><div class="device"><picture>
-          <source srcset="../assets/img/screenshots/13-medication-level.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/13-medication-level.jpg" width="700" height="1520" loading="lazy" alt="Medication level chart with weight trend." />
-        </picture></div></div>
+          <p class="body">Sustain estimates your medication level from the doses you've logged and your medication's published half-life, and plots it against your weight trend, so a rough week has context instead of being a mystery.</p>
+          <div class="step-shot">
+            <div class="device">
+              <picture>
+                <source srcset="../assets/img/screenshots/13-medication-level.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/13-medication-level.jpg" width="700" height="1520" loading="lazy" alt="An estimated medication level chart plotted alongside the weight trend." />
+              </picture>
+            </div>
+          </div>
         </article>
 
-        <article class="step reveal" data-step="4">
+        <article class="step" data-step="4">
           <div class="step-n">05 — Body composition</div>
           <h3 class="d3">The chart that answers the actual question.</h3>
-          <p class="body">
-            Connect a compatible smart scale through Apple Health and watch body
-            fat and lean mass move separately. This is the whole point: two lines
-            where the scale only ever gave you one.
-          </p>
-          <div class="step-shot"><div class="device"><picture>
-          <source srcset="../assets/img/screenshots/14-body-composition.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/14-body-composition.jpg" width="700" height="1520" loading="lazy" alt="Body fat and lean mass charts." />
-        </picture></div></div>
+          <p class="body">Connect a compatible smart scale through Apple Health and watch body fat and lean mass move separately. This is the whole point: two lines where the scale only ever gave you one.</p>
+          <div class="step-shot">
+            <div class="device">
+              <picture>
+                <source srcset="../assets/img/screenshots/14-body-composition.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/14-body-composition.jpg" width="700" height="1520" loading="lazy" alt="Body composition charts showing body fat and lean mass tracked separately." />
+              </picture>
+            </div>
+          </div>
         </article>
 
-        <article class="step reveal" data-step="5">
+        <article class="step" data-step="5">
           <div class="step-n">06 — Maintenance</div>
           <h3 class="d3">And a plan for the day the number stops falling.</h3>
-          <p class="body">
-            Hitting your goal isn't the end of the story, it's the part nobody
-            prepared you for. Sustain's maintenance program gives you a range to
-            hold instead of a number to chase, and the questions worth bringing
-            to your next appointment.
-          </p>
-          <div class="step-shot"><div class="device"><picture>
-          <source srcset="../assets/img/screenshots/06-maintenance.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/06-maintenance.png" width="700" height="1521" loading="lazy" alt="Sustain maintenance program screen." />
-        </picture></div></div>
+          <p class="body">Hitting your goal isn't the end of the story, it's the part nobody prepared you for. Sustain's maintenance program gives you a range to hold instead of a number to chase, and the questions worth bringing to your next appointment.</p>
+          <div class="step-shot">
+            <div class="device">
+              <picture>
+                <source srcset="../assets/img/screenshots/06-maintenance.webp" type="image/webp" />
+                <img src="../assets/img/screenshots/06-maintenance.png" width="700" height="1520" loading="lazy" alt="The Sustain maintenance program screen, shown after reaching a goal weight." />
+              </picture>
+            </div>
+          </div>
         </article>
       </div>
     </div>
@@ -598,5 +703,6 @@
 </footer>
 
 <script src="../assets/js/main.js" defer></script>
+<script src="../assets/js/motion.js" defer></script>
 </body>
 </html>

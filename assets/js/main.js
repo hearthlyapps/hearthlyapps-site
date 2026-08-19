@@ -46,44 +46,13 @@
     });
   }
 
-  /* ---------------------------------------------------- sticky rail
-
-     The product tour: copy steps scroll past a pinned phone, and the
-     phone swaps to the screenshot belonging to whichever step is
-     currently centred. Desktop only — below 940px the steps carry their
-     own inline screenshot instead (see .step-shot in the CSS), because
-     pinning inside a short viewport strands the reader.                  */
-
-  var rail = document.querySelector("[data-rail]");
-  if (rail) {
-    var frames = rail.querySelectorAll("[data-frame]");
-    var steps  = document.querySelectorAll("[data-step]");
-
-    var show = function (idx) {
-      Array.prototype.forEach.call(frames, function (f, i) {
-        f.classList.toggle("is-live", i === idx);
-      });
-    };
-    show(0);
-
-    if ("IntersectionObserver" in window && steps.length) {
-      var stepObs = new IntersectionObserver(function (entries) {
-        // Pick the entry closest to the middle of the viewport, so fast
-        // scrolling can't leave the phone on a step that's already gone.
-        var best = null, bestDist = Infinity;
-        var mid = window.innerHeight / 2;
-        Array.prototype.forEach.call(steps, function (s) {
-          var r = s.getBoundingClientRect();
-          if (r.bottom < 0 || r.top > window.innerHeight) return;
-          var d = Math.abs(r.top + r.height / 2 - mid);
-          if (d < bestDist) { bestDist = d; best = s; }
-        });
-        if (best) show(Number(best.getAttribute("data-step")));
-      }, { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: "-10% 0px -10% 0px" });
-
-      Array.prototype.forEach.call(steps, function (s) { stepObs.observe(s); });
-    }
-  }
+  /* The product rail used to be driven from here by an
+     IntersectionObserver. It is now owned entirely by motion.js, which
+     derives the active step from scroll progress instead. Both running
+     at once meant two writers racing for the same `is-live` class, and
+     the loser left a screen marked live *and* past simultaneously —
+     visible as the phone lagging a step behind the copy. Deleted rather
+     than disabled so there is one owner, not a dormant second one.      */
 
   /* ---------------------------------------------------- figure
 

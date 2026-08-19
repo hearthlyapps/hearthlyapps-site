@@ -324,6 +324,64 @@ section { position: relative; }
 .hero { padding: var(--s-7) 0 var(--s-8); }
 @media (min-width: 900px) { .hero { padding: var(--s-8) 0 var(--s-9); } }
 
+/* ---- hero camera move -------------------------------------------
+   Scroll is the dolly. As the visitor leaves the hero the phone comes
+   toward the lens and rotates from a slight three-quarter angle to
+   square-on, while the words it belongs to drift back and release it.
+   The point is continuity: the phone doesn't get scrolled away and
+   replaced, it advances into the page and becomes the subject of the
+   scene that follows.
+
+   Everything below is transform and opacity only, driven off the single
+   --p custom property the engine publishes. No layout is read or
+   written during scroll.                                                */
+
+.hero { perspective: 1400px; }
+
+.hero-phone {
+  /* rest state: a small angle, so the push to square-on has somewhere
+     to travel from and the object reads as dimensional at a glance */
+  --rot: calc((1 - var(--p, 0)) * 7deg);
+  --lift: calc(var(--p, 0) * -54px);
+  --zoom: calc(1 + var(--p, 0) * 0.13);
+  transform: translate3d(0, var(--lift), 0) scale(var(--zoom)) rotateX(var(--rot)) rotateZ(calc((1 - var(--p, 0)) * -1.2deg));
+  transform-origin: 50% 40%;
+  will-change: transform;
+}
+
+/* The copy recedes as the product advances — a depth cue, and it keeps
+   the eye from being pulled two places at once. */
+.hero-copy {
+  transform: translate3d(0, calc(var(--p, 0) * -26px), 0);
+  opacity: calc(1 - var(--p, 0) * 0.55);
+}
+
+@media (max-width: 939px) {
+  /* On a phone the hero stacks and the camera move fights the reading
+     order, so it keeps only the lift — enough to feel alive, not enough
+     to shove the headline around. */
+  .hero-phone { --zoom: 1; --rot: 0deg; }
+  .hero-copy { opacity: 1; transform: none; }
+}
+
+/* ---- masked headline reveal --------------------------------------
+   Each line sits in its own overflow-hidden band and rises into place,
+   so the words are uncovered rather than faded up. Reads as authored
+   typography instead of a generic opacity transition.                  */
+
+.line { display: block; overflow: hidden; }
+.line > span {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 0.95s var(--ease);
+}
+.reveal.in .line > span,
+.line.in > span { transform: none; }
+.line:nth-child(2) > span { transition-delay: 0.10s; }
+.line:nth-child(3) > span { transition-delay: 0.20s; }
+
+.no-motion .line > span { transform: none; transition: none; }
+
 .hero-grid {
   display: grid; gap: var(--s-8);
   grid-template-columns: 1fr;
@@ -360,6 +418,54 @@ section { position: relative; }
 a.index-row { transition: background 0.2s var(--ease), padding-left 0.2s var(--ease); }
 a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
 .index-name { font-weight: 600; letter-spacing: -0.012em; }
+
+/* The index rows wipe in from their own rule line rather than fading, so
+   the list assembles like a printed contents page being set. */
+.index-list .index-row {
+  opacity: var(--s, 0);
+  transform: translate3d(calc((1 - var(--s, 0)) * -14px), 0, 0);
+}
+.index-list .index-row::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+  background: var(--teal); transform-origin: 0 50%;
+  transform: scaleX(var(--s, 0)); opacity: 0.5;
+}
+.index-list .index-row { position: relative; }
+
+/* Rules arrive one at a time, each dragging its own hairline across. */
+.rule-row {
+  opacity: calc(0.3 + var(--s, 0) * 0.7);
+  transform: translate3d(0, calc((1 - var(--s, 0)) * 18px), 0);
+  position: relative;
+}
+.rule-row::after {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+  background: var(--teal); transform-origin: 0 50%;
+  transform: scaleX(var(--s, 0));
+}
+
+.no-motion .index-list .index-row,
+.no-motion .rule-row { opacity: 1; transform: none; }
+.no-motion .index-list .index-row::before,
+.no-motion .rule-row::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .index-list .index-row, .rule-row { opacity: 1 !important; transform: none !important; }
+  .index-list .index-row::before, .rule-row::after { transform: scaleX(1) !important; }
+}
+
+/* ---------------------------------------------------------- magnetic
+   Buttons lean a few pixels toward the cursor before it arrives. It is
+   the smallest possible interaction and the only one on the site that
+   responds to the pointer, which is what keeps it feeling like a
+   detail rather than a gimmick. Pointer-fine only — on touch there is
+   no hover state to anticipate. */
+
+@media (hover: hover) and (pointer: fine) {
+  .btn { will-change: transform; }
+  .btn.is-mag {
+    transform: translate3d(var(--mx, 0px), calc(var(--my, 0px) - 2px), 0);
+  }
+}
 .index-note { grid-column: 2; font-size: 0.9rem; color: var(--ink-3); }
 .index-row .product-status { font-size: 0.66rem; }
 
@@ -398,6 +504,216 @@ a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
   z-index: -1;
 }
 
+/* ==========================================================
+   LIVE PRODUCT UI
+   A rebuild of Sustain's real Today screen in HTML/CSS rather than a
+   flat screenshot, so the parts that move in the actual app can move
+   here: the protein ring fills, the weight trend draws, the cards
+   arrive in the order the eye should read them.
+
+   Every value is taken from the real app screenshot in
+   assets/img/screenshots/01-dashboard.jpg — page ground #f3f2f7, the
+   log-dose button sampled at #288c74, title ink at #09090b — so this
+   is a reconstruction of a shipping screen, not an invented one. No
+   feature is shown here that the app does not actually have.
+
+   Sizing is in cqw against the device frame, so the whole interface
+   scales exactly with its container at any viewport with no media
+   queries and no transform scaling blur.
+   ========================================================== */
+
+.ui-wrap { container-type: inline-size; width: 100%; }
+
+.ui {
+  --app-bg:    #f3f2f7;
+  --app-card:  #ffffff;
+  --app-ink:   #09090b;
+  /* Contrast-corrected against white cards and the teal wash. The first
+     pass copied the screenshot's sampled values literally, which put nine
+     labels between 2.6:1 and 4.1:1 — fine as pixels inside a JPEG, not
+     fine as live DOM text a low-vision visitor is expected to read. iOS's
+     own secondaryLabel is nearer #767680 than the #8b8b90 sampled off a
+     compressed screenshot, so the corrected values are arguably closer to
+     the real interface, not further from it. */
+  --app-mute:  #6e6e73;
+  --app-teal:  #1b7a63;
+  --app-tealw: #e6f2ee;
+  --app-amber: #9c5716;
+  --app-line:  #ececf0;
+
+  background: var(--app-bg);
+  color: var(--app-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Instrument Sans", sans-serif;
+  letter-spacing: -0.01em;
+  aspect-ratio: 700 / 1520;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 4.6cqw;
+}
+
+.ui-status {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 3.4cqw 1cqw 0;
+  font-size: 3.9cqw; font-weight: 600;
+}
+.ui-island {
+  width: 27cqw; height: 7.6cqw; border-radius: 99cqw; background: #000;
+}
+.ui-sigs { display: flex; gap: 1.4cqw; align-items: center; }
+.ui-sigs i { display: block; width: 4.4cqw; height: 3.4cqw; background: #09090b;
+  border-radius: 0.6cqw; opacity: 0.9; font-style: normal; }
+.ui-sigs i.bat { width: 7.4cqw; border-radius: 1.2cqw; }
+
+.ui-title { font-size: 8.6cqw; font-weight: 800; letter-spacing: -0.03em;
+  margin: 4.2cqw 1cqw 2.8cqw; line-height: 1; }
+
+.ui-card {
+  background: var(--app-card);
+  border-radius: 3.4cqw;
+  padding: 3.1cqw 3.6cqw;
+  margin-bottom: 2.2cqw;
+}
+
+/* --- dose card --- */
+.ui-dose-top { display: flex; align-items: center; justify-content: space-between; }
+.ui-drug { display: flex; align-items: center; gap: 1.6cqw;
+  color: var(--app-teal); font-weight: 700; font-size: 4.6cqw; }
+.ui-mg { color: var(--app-mute); font-size: 4.2cqw; }
+.ui-k { color: var(--app-mute); font-size: 3.5cqw; margin-top: 2.4cqw; }
+.ui-date { font-size: 5.4cqw; font-weight: 700; letter-spacing: -0.02em; margin-top: 0.4cqw; }
+.ui-sub { color: var(--app-mute); font-size: 3.4cqw; }
+.ui-btn {
+  margin-top: 3.2cqw; background: #237e68; color: #fff;
+  border-radius: 99cqw; padding: 2.9cqw; text-align: center;
+  font-weight: 600; font-size: 4.2cqw;
+  display: flex; align-items: center; justify-content: center; gap: 1.8cqw;
+}
+.ui-btn svg { width: 4.4cqw; height: 4.4cqw; }
+
+/* --- action rows --- */
+.ui-row { display: flex; align-items: center; gap: 3cqw; }
+.ui-ico {
+  width: 9.6cqw; height: 9.6cqw; border-radius: 99cqw; flex: none;
+  background: var(--app-tealw); color: var(--app-teal);
+  display: grid; place-items: center;
+}
+.ui-ico svg { width: 5cqw; height: 5cqw; }
+.ui-rowtext { flex: 1; min-width: 0; }
+.ui-rowtext b { display: block; font-size: 4.3cqw; font-weight: 700; }
+.ui-rowtext span { display: block; color: var(--app-mute); font-size: 3.3cqw; line-height: 1.35; margin-top: 0.4cqw; }
+.ui-chev { color: #c4c4c9; font-size: 4.6cqw; flex: none; }
+
+/* --- protein card --- */
+.ui-protein { display: flex; align-items: center; gap: 4cqw; }
+.ui-ring { width: 24cqw; height: 24cqw; flex: none; position: relative; }
+.ui-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ui-ring circle { fill: none; stroke-width: 9; }
+.ui-ring .trk { stroke: var(--app-tealw); }
+.ui-ring .val {
+  stroke: var(--app-teal); stroke-linecap: round;
+  stroke-dasharray: 264;
+  /* Filled by the boot sequence; starts empty so the ring has somewhere
+     to travel from. */
+  stroke-dashoffset: 264;
+}
+.ui-ring b {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  flex-direction: column; font-size: 5.2cqw; font-weight: 800; letter-spacing: -0.03em;
+}
+.ui-ring b em { font-style: normal; display: block; font-size: 2.9cqw;
+  font-weight: 500; color: var(--app-mute); margin-top: 0.4cqw; }
+.ui-pinfo b { display: block; font-size: 4.6cqw; font-weight: 700; }
+.ui-goal { color: #248059; font-size: 3.4cqw; margin-top: 0.5cqw; }
+.ui-streak { display: flex; align-items: center; gap: 1.2cqw;
+  color: var(--app-amber); font-size: 3.4cqw; font-weight: 600; margin-top: 1cqw; }
+.ui-chip {
+  display: inline-flex; align-items: center; gap: 1.4cqw; margin-top: 1.8cqw;
+  background: var(--app-tealw); color: #166b59;
+  border-radius: 99cqw; padding: 1.5cqw 3.2cqw; font-size: 3.5cqw; font-weight: 600;
+}
+
+/* --- weight card --- */
+.ui-wtop { display: flex; align-items: flex-start; justify-content: space-between; }
+.ui-wpill { background: var(--app-tealw); color: #1f6654; border-radius: 99cqw;
+  padding: 1cqw 2.6cqw; font-size: 3.2cqw; font-weight: 600; }
+.ui-wnum { font-size: 6.4cqw; font-weight: 800; letter-spacing: -0.03em; margin-top: 0.4cqw; }
+.ui-spark { margin-top: 2cqw; height: 12cqw; }
+.ui-spark svg { width: 100%; height: 100%; overflow: visible; }
+.ui-spark path.ln { fill: none; stroke: #248059; stroke-width: 2.5;
+  stroke-linecap: round; stroke-dasharray: 300; stroke-dashoffset: 300; }
+.ui-spark path.fl { fill: rgba(47,158,111,0.10); opacity: 0; }
+
+/* --- tab bar --- */
+/* Floating, not in flow. In the real app the tab bar hovers over the
+   scrolling content and the weight chart runs underneath it — matching
+   that is both more faithful and what lets the full card stack sit in
+   the true 700:1520 frame without being squeezed. */
+.ui-tabs {
+  position: absolute; left: 6cqw; right: 6cqw; bottom: 2.6cqw;
+  background: rgba(255,255,255,0.94);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border-radius: 99cqw; padding: 2cqw;
+  display: flex; justify-content: space-around; align-items: center;
+  box-shadow: 0 0.8cqw 3cqw rgba(0,0,0,0.10);
+}
+.ui-tab { display: grid; justify-items: center; gap: 0.6cqw;
+  font-size: 2.9cqw; color: var(--app-mute); font-weight: 600; padding: 0.8cqw 3.4cqw;
+  border-radius: 99cqw; }
+.ui-tab svg { width: 5cqw; height: 5cqw; }
+.ui-tab.on { color: #166b59; background: var(--app-tealw); }
+
+/* ---------------------------------------------------------- boot
+   The hero's opening sequence. The interface assembles the way a real
+   screen does — chrome, then title, then cards in reading order — and
+   the two live values (protein ring, weight trend) animate to their
+   real numbers last, because those are the payoff the whole page is
+   about. Runs once, on load, and only in the hero.                     */
+
+.ui-boot > * { opacity: 0; transform: translateY(2.4cqw); }
+.ui-boot.go > * { animation: uiIn 0.62s var(--ease) forwards; }
+.ui-boot.go > *:nth-child(1) { animation-delay: 0.05s; }
+.ui-boot.go > *:nth-child(2) { animation-delay: 0.12s; }
+.ui-boot.go > *:nth-child(3) { animation-delay: 0.20s; }
+.ui-boot.go > *:nth-child(4) { animation-delay: 0.27s; }
+.ui-boot.go > *:nth-child(5) { animation-delay: 0.34s; }
+.ui-boot.go > *:nth-child(6) { animation-delay: 0.41s; }
+.ui-boot.go > *:nth-child(7) { animation-delay: 0.48s; }
+.ui-boot.go > *:nth-child(8) { animation-delay: 0.55s; }
+
+@keyframes uiIn { to { opacity: 1; transform: none; } }
+
+.ui-boot.go .ui-ring .val {
+  animation: ringFill 1.15s cubic-bezier(0.22,1,0.36,1) 0.62s forwards;
+}
+@keyframes ringFill { to { stroke-dashoffset: 0; } }
+
+.ui-boot.go .ui-spark path.ln {
+  animation: sparkDraw 1.1s var(--ease) 0.72s forwards;
+}
+@keyframes sparkDraw { to { stroke-dashoffset: 0; } }
+.ui-boot.go .ui-spark path.fl {
+  animation: sparkFill 0.7s var(--ease) 1.4s forwards;
+}
+@keyframes sparkFill { to { opacity: 1; } }
+
+/* The log-dose button gets one slow breath so the screen reads as live
+   rather than frozen. One element only — if several pulse it becomes
+   noise instead of a signal. */
+.ui-boot.go .ui-btn { animation: doseBreath 3.6s ease-in-out 2s infinite; }
+@keyframes doseBreath {
+  0%, 88%, 100% { transform: none; box-shadow: 0 0 0 0 rgba(40,140,116,0); }
+  92% { transform: translateY(-0.4cqw); box-shadow: 0 0.8cqw 2.4cqw rgba(35,126,104,0.32); }
+}
+
+.no-motion .ui-boot > *,
+.no-motion .ui-boot.go > * { opacity: 1; transform: none; animation: none; }
+.no-motion .ui-ring .val { stroke-dashoffset: 0; animation: none; }
+.no-motion .ui-spark path.ln { stroke-dashoffset: 0; animation: none; }
+.no-motion .ui-spark path.fl { opacity: 1; animation: none; }
+.no-motion .ui-btn { animation: none; }
+
 /* ---------------------------------------------------------- scenes
    The scroll narrative. One screen, one thought, one image — the
    "one ask per screen" rule applied to the product tour. On desktop the
@@ -428,15 +744,94 @@ a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
 .step-shot { margin-top: var(--s-5); }
 @media (min-width: 940px) { .step-shot { display: none; } }
 
-.rail-stack { position: relative; }
-.rail-stack .device {
-  position: absolute; inset: 0;
-  opacity: 0; transform: scale(0.97) translateY(10px);
-  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
-  pointer-events: none;
+/* ---- the pinned tour -----------------------------------------------
+   One phone, six screens. The device itself never leaves — it holds
+   position and tilts with the scroll while its *screen* changes, so the
+   sequence reads as one object being operated rather than six separate
+   images being swapped. That continuity is the whole difference between
+   a slideshow and a demo.
+
+   Screens cross-dissolve with a slight scale and vertical offset in the
+   direction of travel, which is what a push transition looks like on
+   iOS and therefore what this product's own transitions look like.     */
+
+.rail-stack {
+  position: relative;
+  transform-style: preserve-3d;
 }
-.rail-stack .device.is-live { opacity: 1; transform: none; }
-.rail-stack .device:first-child { position: relative; }
+.scene-rail { perspective: 1600px; }
+
+/* the shell tilts a little across the whole pinned run: a slow camera
+   drift, not a per-step animation */
+.rail-stack .device-shell {
+  transform: rotateX(calc((0.5 - var(--p, 0)) * 5deg))
+             rotateZ(calc((0.5 - var(--p, 0)) * 1.4deg))
+             translate3d(0, calc((var(--p, 0) - 0.5) * 22px), 0);
+  will-change: transform;
+}
+
+.rail-screen {
+  /* inset:8px, not 0. Absolutely positioned children resolve against the
+     containing block's *padding box*, so inset:0 would sit on top of the
+     device's 8px bezel and erase the frame. 8px lines the stacked screens
+     up exactly with the in-flow first one. */
+  position: absolute; inset: 8px;
+  opacity: 0;
+  transform: scale(1.035) translateY(2.2%);
+  transition: opacity 0.55s var(--ease), transform 0.7s var(--ease);
+  pointer-events: none;
+  border-radius: calc(var(--r-device) - 9px);
+  overflow: hidden;
+}
+.rail-screen.is-live { opacity: 1; transform: none; }
+/* screens already passed sit slightly *behind* rather than ahead, so the
+   dissolve has a direction and the stack reads as a stack */
+.rail-screen.is-past { transform: scale(0.972) translateY(-1.6%); }
+.rail-screen:first-child { position: relative; inset: auto; }
+.rail-screen img { width: 100%; height: auto; display: block; }
+
+/* ---- step rail ------------------------------------------------------
+   A running index down the side of the pinned sequence. It tells the
+   visitor how long the scene is and where they are in it, which is the
+   thing pinned sections most often fail to communicate. */
+
+.pips { display: none; }
+@media (min-width: 940px) {
+  .pips {
+    display: grid; gap: 10px;
+    position: absolute; top: 50%;
+    /* anchored to the phone, not the column. The device is centred at
+       max-width 340px inside a much wider rail, so a plain negative left
+       stranded the rail dozens of pixels away from the thing it indexes. */
+    left: calc(50% - 170px - 28px);
+    transform: translateY(-50%);
+  }
+  .pip {
+    width: 2px; height: 26px; border-radius: 2px;
+    background: var(--rule); position: relative; overflow: hidden;
+  }
+  .pip::after {
+    content: ""; position: absolute; inset: 0;
+    background: var(--teal); transform: scaleY(0); transform-origin: 50% 0;
+    transition: transform 0.45s var(--ease);
+  }
+  .pip.is-live::after { transform: scaleY(1); }
+}
+
+/* Steps dim until they are the active one. Reading position and visual
+   emphasis stay in sync, so the eye is never in a different place from
+   the phone. */
+@media (min-width: 940px) {
+  .scene-steps .step {
+    opacity: 0.34;
+    transition: opacity 0.5s var(--ease);
+  }
+  .scene-steps .step.is-live { opacity: 1; }
+}
+
+.no-motion .rail-screen { transition: none; }
+.no-motion .rail-stack .device-shell { transform: none; }
+.no-motion .scene-steps .step { opacity: 1; }
 
 /* ---------------------------------------------------------- figure
    The brand's own asset. Every competitor in this category illustrates
@@ -464,29 +859,37 @@ a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
   fill: currentColor;
 }
 
-/* Each series draws itself in on reveal. dasharray is set to the path's
-   own length in JS so the stroke length is exact rather than guessed. */
+/* Scroll-scrubbed, not one-shot. The three lines draw against scroll
+   position, so the visitor is drawing the argument themselves: weight
+   first, then the split into fat and lean, then the bracket that names
+   the gap. Stalling halfway leaves it halfway. dasharray is the path's
+   own measured length so the stroke ends exactly on the geometry.
+
+   Each series consumes a slice of the scene's progress, offset so they
+   cascade instead of racing — the staggering is arithmetic on --p
+   rather than transition-delay, which is what makes it scrubbable. */
 .fig-line {
   fill: none;
   stroke-width: 3;
   stroke-linecap: round;
   stroke-dasharray: var(--len, 1200);
-  stroke-dashoffset: var(--len, 1200);
-  transition: stroke-dashoffset 1.5s var(--ease);
+  stroke-dashoffset: calc(var(--len, 1200) * (1 - var(--s, 0)));
 }
-.figure.in .fig-line { stroke-dashoffset: 0; }
-
+/* --s is written per frame by the engine from each element's
+   data-slice range, so these are plain numbers and always resolve. */
 .fig-line--total { stroke: currentColor; opacity: 0.85; }
-.fig-line--fat   { stroke: var(--teal-bright); transition-delay: 0.45s; }
-.fig-line--lean  { stroke: var(--ember); transition-delay: 0.75s; }
+.fig-line--fat   { stroke: var(--teal-bright); }
+.fig-line--lean  { stroke: var(--ember); }
 
-/* The bracket that names the gap. It is the punchline, so it arrives
-   last and slightly late, the way a punchline should. */
+/* The bracket is the punchline, so it lands last, once both component
+   lines exist to be compared. */
 .fig-note {
-  opacity: 0; transform: translateX(-10px);
-  transition: opacity 0.6s var(--ease) 1.5s, transform 0.6s var(--ease) 1.5s;
+  opacity: var(--s, 0);
+  transform: translateX(calc((1 - var(--s, 0)) * -12px));
 }
-.figure.in .fig-note { opacity: 1; transform: none; }
+
+.no-motion .fig-line { stroke-dashoffset: 0; }
+.no-motion .fig-note { opacity: 1; transform: none; }
 .fig-bracket { stroke: var(--ember); stroke-width: 1.5; fill: none; opacity: 0.85; }
 
 .fig-cap {
@@ -534,8 +937,36 @@ a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fig-line { stroke-dashoffset: 0; transition: none; }
-  .fig-note { opacity: 1; transform: none; transition: none; }
+  .fig-line { stroke-dashoffset: 0 !important; }
+  .fig-note { opacity: 1 !important; transform: none !important; }
+}
+
+/* ---------------------------------------------------------- chain
+   The four-beat mechanism reads as a causal sequence, so a line is
+   literally drawn through it as the visitor scrolls, and each beat
+   lifts as the line reaches it. Without this the four beats are just
+   four boxes; with it they're one argument moving left to right.      */
+
+.chain { position: relative; }
+.chain::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px;
+  background: var(--teal-bright);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--p, 0));
+  z-index: 2;
+}
+.chain > * {
+  opacity: calc(0.42 + var(--s, 0) * 0.58);
+  transform: translate3d(0, calc((1 - var(--s, 0)) * 14px), 0);
+}
+
+.chain .step-n { color: var(--teal-bright); }
+
+.no-motion .chain::before { transform: scaleX(1); }
+.no-motion .chain > * { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .chain::before { transform: scaleX(1) !important; }
+  .chain > * { opacity: 1 !important; transform: none !important; }
 }
 
 /* The same idea shrunk to a glyph: a repeatable mark the brand can reuse
