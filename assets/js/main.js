@@ -1,124 +1,94 @@
 /* ===========================================================
-   hearthlyapps — DOM/CSS animations (nav, hero, scroll-reveal)
-   GSAP + ScrollTrigger, loaded from cdnjs on each page. The phone, the five
-   3D objects, and the animated background used to be driven from here too
-   (a DOM/CSS phone-frame + inline SVG icons); that's all moved to
-   assets/js/scene.js's persistent Three.js world now, so this file only
-   handles plain 2D page chrome — the nav's frosted-on-scroll state, the
-   hero's entrance animation, and generic reveal-on-scroll for the
-   non-pinned sections (feature grid, pricing, etc).
+   hearthlyapps — site behaviour, v3
+   2026-08-19.
 
-   Important: every entrance/reveal animation below uses gsap.from(), not
-   gsap.to(). CSS never hides this content by default (see style.css) — the
-   hidden starting point is only ever applied here, in JS, right before
-   animating it away. If these CDN scripts fail to load, are blocked, or
-   load slowly, the page simply renders normally with no entrance animation
-   instead of staying invisible.
+   Replaces v2's GSAP + ScrollTrigger + Three.js stack (roughly 700KB of
+   CDN JavaScript plus a 1,500-line WebGL scene) with ~80 lines of vanilla
+   JS and no dependencies at all. Everything here is either a scroll
+   reveal or the sticky product rail; nothing animates for decoration.
+
+   Both features are progressive enhancements: with JS disabled or
+   IntersectionObserver unavailable, every reveal is forced visible and
+   the rail falls back to showing its first screen, so the page still
+   reads completely.
    =========================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-  /* ---------- Nav: transparent at top, frosted once scrolled ----------
-     Plain scroll listener, no GSAP dependency — always works. */
-  const navs = document.querySelectorAll(".nav");
-  const setNavState = () => {
-    const solid = window.scrollY > 32;
-    navs.forEach((n) => n.classList.toggle("is-solid", solid));
-  };
-  setNavState();
-  window.addEventListener("scroll", setNavState, { passive: true });
+(function () {
+  "use strict";
 
-  /* ---------- Waitlist forms (pre-launch email capture) ----------
-     This is a static site with no backend of its own, so each
-     .waitlist-form POSTs directly to a third-party form-handling service
-     (Formspree by default — see the action URL in each page's HTML).
-     Plain HTML form submission already works with zero JS (the browser
-     just navigates to Formspree's own confirmation page); this only
-     intercepts that submit to show a nicer inline success/error message
-     without leaving the page. No GSAP dependency, so this runs
-     unconditionally rather than being gated behind the GSAP check below. */
-  document.querySelectorAll(".waitlist-form").forEach((form) => {
-    // The status message is always the next sibling right after the form's
-    // wrapping .btn-row in the markup (see index.html/sustain/index.html) —
-    // simpler and more reliable than searching for it.
-    const status = form.parentElement.nextElementSibling;
-    const button = form.querySelector("button[type='submit']");
-    const input = form.querySelector("input[type='email']");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!input.checkValidity()) {
-        input.reportValidity();
-        return;
-      }
-      const originalLabel = button.textContent;
-      button.disabled = true;
-      button.textContent = "Joining...";
-      if (status) {
-        status.textContent = "";
-        status.classList.remove("is-success", "is-error");
-      }
+  /* ---------------------------------------------------- scroll reveal */
 
-      try {
-        const res = await fetch(form.action, {
-          method: "POST",
-          body: new FormData(form),
-          headers: { Accept: "application/json" },
+  var reveals = document.querySelectorAll(".reveal");
+
+  if (!("IntersectionObserver" in window) || reduced) {
+    // No observer, or the visitor asked for no motion: show everything now.
+    Array.prototype.forEach.call(reveals, function (el) { el.classList.add("in"); });
+  } else {
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        // Stagger siblings slightly so a row of items arrives as a phrase
+        // rather than all at once. Capped so nothing ever feels slow.
+        var i = Number(e.target.getAttribute("data-i") || 0);
+        e.target.style.transitionDelay = Math.min(i, 4) * 70 + "ms";
+        e.target.classList.add("in");
+        revealObs.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
+
+    Array.prototype.forEach.call(reveals, function (el, i) {
+      // index within the immediate parent, for the stagger above
+      var sibs = el.parentNode ? el.parentNode.querySelectorAll(":scope > .reveal") : [];
+      el.setAttribute("data-i", Array.prototype.indexOf.call(sibs, el));
+      revealObs.observe(el);
+    });
+  }
+
+  /* ---------------------------------------------------- sticky rail
+
+     The product tour: copy steps scroll past a pinned phone, and the
+     phone swaps to the screenshot belonging to whichever step is
+     currently centred. Desktop only — below 940px the steps carry their
+     own inline screenshot instead (see .step-shot in the CSS), because
+     pinning inside a short viewport strands the reader.                  */
+
+  var rail = document.querySelector("[data-rail]");
+  if (rail) {
+    var frames = rail.querySelectorAll("[data-frame]");
+    var steps  = document.querySelectorAll("[data-step]");
+
+    var show = function (idx) {
+      Array.prototype.forEach.call(frames, function (f, i) {
+        f.classList.toggle("is-live", i === idx);
+      });
+    };
+    show(0);
+
+    if ("IntersectionObserver" in window && steps.length) {
+      var stepObs = new IntersectionObserver(function (entries) {
+        // Pick the entry closest to the middle of the viewport, so fast
+        // scrolling can't leave the phone on a step that's already gone.
+        var best = null, bestDist = Infinity;
+        var mid = window.innerHeight / 2;
+        Array.prototype.forEach.call(steps, function (s) {
+          var r = s.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > window.innerHeight) return;
+          var d = Math.abs(r.top + r.height / 2 - mid);
+          if (d < bestDist) { bestDist = d; best = s; }
         });
-        if (!res.ok) throw new Error("Request failed");
-        form.hidden = true;
-        if (status) {
-          status.textContent = "You're on the list — we'll email you the moment Sustain is live.";
-          status.classList.add("is-success");
-        }
-      } catch (err) {
-        button.disabled = false;
-        button.textContent = originalLabel;
-        if (status) {
-          status.textContent = "Something went wrong — please try again in a moment.";
-          status.classList.add("is-error");
-        }
-      }
-    });
-  });
+        if (best) show(Number(best.getAttribute("data-step")));
+      }, { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: "-10% 0px -10% 0px" });
 
-  /* Everything below needs GSAP + ScrollTrigger. If the CDN scripts didn't
-     load, skip straight out — content is already visible by default (see
-     style.css), so this is a silent, harmless no-op, not a blank page. */
-  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
-    console.warn("hearthlyapps: GSAP failed to load — scroll animations skipped, content still visible.");
-    return;
+      Array.prototype.forEach.call(steps, function (s) { stepObs.observe(s); });
+    }
   }
 
-  gsap.registerPlugin(ScrollTrigger);
+  /* ---------------------------------------------------- current year */
 
-  /* ---------- Hero entrance ---------- */
-  const hero = document.querySelector(".hero");
-  if (hero) {
-    const eyebrow = hero.querySelector(".eyebrow");
-    const h1 = hero.querySelector("h1");
-    const lede = hero.querySelector("p.lede");
-    const btnRow = hero.querySelector(".btn-row");
-    const tl = gsap.timeline({ delay: 0.2 });
-    if (eyebrow) tl.from(eyebrow, { opacity: 0, y: 14, duration: 0.7, ease: "power3.out" });
-    if (h1) tl.from(h1, { opacity: 0, y: 24, duration: 0.9, ease: "power3.out" }, "-=0.5");
-    if (lede) tl.from(lede, { opacity: 0, y: 24, duration: 0.8, ease: "power3.out" }, "-=0.6");
-    if (btnRow) tl.from(btnRow, { opacity: 0, y: 24, duration: 0.8, ease: "power3.out" }, "-=0.6");
-  }
-
-  /* ---------- Generic reveal-on-scroll for non-pinned sections ---------- */
-  gsap.utils.toArray(".reveal").forEach((el, i) => {
-    gsap.from(el, {
-      opacity: 0,
-      y: 32,
-      duration: 0.9,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: el,
-        start: "top 88%",
-      },
-      delay: (i % 3) * 0.06,
-    });
+  var y = document.querySelectorAll("[data-year]");
+  Array.prototype.forEach.call(y, function (el) {
+    el.textContent = String(new Date().getFullYear());
   });
-
-  ScrollTrigger.refresh();
-});
+})();

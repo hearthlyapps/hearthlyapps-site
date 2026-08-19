@@ -3,183 +3,331 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>hearthlyapps: health apps built around trust</title>
-<meta name="description" content="hearthlyapps builds focused, trustworthy iPhone apps. Our first, Sustain, helps people on GLP-1 medications protect muscle while they lose weight." />
+
+<title>hearthlyapps — small iPhone apps that don't hold your life hostage</title>
+<meta name="description" content="hearthlyapps builds small, focused iPhone apps with free tiers that stay free, data that stays yours, and one AI feature done properly instead of ten bolted on. First out: Sustain, for people on GLP-1 medications." />
+<link rel="canonical" href="https://hearthlyapps.com/" />
 <link rel="icon" href="assets/img/app-icon.png" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hearthlyapps.com/" />
+<meta property="og:title" content="hearthlyapps — small apps that don't hold your life hostage" />
+<meta property="og:description" content="Free tiers that stay free, data that stays yours, one AI feature done properly. First out: Sustain." />
+<meta property="og:image" content="https://hearthlyapps.com/assets/img/app-icon.png" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/style.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "hearthlyapps",
+  "url": "https://hearthlyapps.com",
+  "logo": "https://hearthlyapps.com/assets/img/app-icon.png",
+  "email": "support@hearthlyapps.com",
+  "description": "A small studio building focused iPhone apps with free tiers that stay free and data that stays private.",
+  "founder": { "@type": "Person", "name": "Dhanvanth Sundar Sankar" }
+}
+</script>
 </head>
 <body>
 
-<canvas id="scene-canvas"></canvas>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <nav class="nav">
-  <a class="nav-brand" href="/">
-    <img src="assets/img/app-icon.png" alt="" />
-    hearthlyapps
-  </a>
-  <div class="nav-links">
-    <a href="/sustain/">Sustain</a>
+  <div class="nav-in">
+    <a class="brand" href="/">
+      <img src="assets/img/app-icon.png" alt="" width="26" height="26" />
+      hearthlyapps
+    </a>
+    <div class="nav-links">
+      <a href="#rules">How we build</a>
+      <a href="#products">Products</a>
+      <a href="/sustain/">Sustain</a>
+      <a href="/support/">Support</a>
+    </div>
+    <a class="btn btn--primary" href="/sustain/">Meet Sustain</a>
   </div>
-  <a class="nav-cta" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">Get Sustain</a>
 </nav>
 
+<main id="main">
+
+<!-- ============================================================
+     HERO
+     The parent brand's job is not to sell Sustain a second time. It
+     is to answer "who made this and can I trust them" in five
+     seconds. So the hero names the thing the visitor already
+     distrusts about app companies, and takes a position on it.
+     ============================================================ -->
 <header class="hero">
-  <div class="hero-glow"></div>
-  <span class="eyebrow">hearthlyapps</span>
-  <h1 class="display-1">Apps built to earn<br />your trust, not your time.</h1>
-  <p class="lede center">
-    We build small, focused iPhone apps for the parts of life that deserve better software,
-    starting with the moment you're managing your own health.
-  </p>
-  <div class="btn-row">
-    <a class="btn btn-primary" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.687 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.53-3.257c.837-1.012 1.4-2.42 1.245-3.822-1.207.052-2.662.805-3.53 1.818-.776.896-1.454 2.326-1.271 3.696 1.336.104 2.719-.68 3.556-1.692z"/></svg>
-      Download on the App Store
-    </a>
-    <a class="btn btn-ghost" href="/sustain/">Meet Sustain</a>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow reveal">hearthlyapps</span>
+      <!-- max-width lives on the h1, not a wrapper: `ch` resolves against the
+           element's own font-size, so a ch limit set on a 17px parent silently
+           crushes a 72px headline into seven lines. -->
+      <h1 class="d1 reveal" style="margin: 16px 0 0; max-width: 15ch;">
+        Apps that don't hold<br /><span class="mark--ember mark">your life hostage.</span>
+      </h1>
+      <p class="lede reveal" style="margin-top: 28px;">
+        A small studio making focused iPhone apps for the parts of life you're
+        already managing alone. Free tiers that stay free. Data that stays yours.
+        One AI feature done properly instead of ten bolted on.
+      </p>
+      <div class="btn-row reveal" style="margin-top: 32px;">
+        <a class="btn btn--primary btn--lg" href="/sustain/">See what we've shipped</a>
+        <a class="btn btn--ghost btn--lg" href="#rules">How we build</a>
+      </div>
+    </div>
+
+    <!-- The right column is the studio's actual index rather than
+         decoration. It means the first screen answers both "who are you"
+         and "what have you actually made", and it is honest about the
+         ratio: one shipped, three not yet. -->
+    <aside class="reveal" aria-label="What hearthlyapps is working on">
+      <div class="foot-h" style="color: var(--ink-4); margin-bottom: 14px;">The workshop</div>
+      <a class="index-row" href="/sustain/">
+        <span class="product-status"><span class="dot dot--live"></span>Live</span>
+        <span class="index-name">Sustain</span>
+        <span class="index-note">GLP-1 companion, on the App Store</span>
+      </a>
+      <div class="index-row">
+        <span class="product-status"><span class="dot dot--build"></span>Building</span>
+        <span class="index-name">Estimates for solo trades</span>
+        <span class="index-note">Photo to priced quote</span>
+      </div>
+      <div class="index-row">
+        <span class="product-status"><span class="dot"></span>Exploring</span>
+        <span class="index-name">Mileage &amp; expenses</span>
+        <span class="index-note">Honest pricing, no hikes</span>
+      </div>
+      <div class="index-row">
+        <span class="product-status"><span class="dot"></span>Exploring</span>
+        <span class="index-name">Task-initiation coaching</span>
+        <span class="index-note">Less planner, more companion</span>
+      </div>
+    </aside>
   </div>
 </header>
 
-<!-- Pinned cinematic reel: the persistent 3D phone + object scene (scene.js)
-     reads --steps plus data-screens/data-objects to choreograph itself. -->
-<section class="reel-track" style="--steps: 3;" data-screens='["assets/img/screenshots/01-dashboard.jpg","assets/img/screenshots/02-camera-viewfinder.jpg","assets/img/screenshots/03-trends.jpg"]' data-objects='["pen","plate","scale"]'>
-  <div class="reel-stage">
-    <div class="reel-caption">
-      <div data-step="0" class="pos-br">
-        <div class="caption-pane">
-          <span class="eyebrow">Sustain</span>
-          <h2>Losing weight and losing muscle<br />are not the same thing.</h2>
-          <p class="caption-desc">
-            Rapid weight loss without enough protein puts your muscle at risk, not
-            just your fat. Sustain tracks the one variable most trackers ignore, so
-            you can see the tradeoff before it becomes a problem.
-          </p>
-        </div>
-      </div>
-      <div data-step="1" class="pos-tl">
-        <div class="caption-pane">
-          <span class="eyebrow">Sustain</span>
-          <h2>Every gram of protein,<br />tracked without the grind.</h2>
-          <p class="caption-desc">
-            Snap a photo of your plate and Sustain's AI estimates the protein
-            instantly, no manual searching or portion math required. Manual
-            logging stays free forever; the AI layer is what Sustain+ unlocks.
-          </p>
-        </div>
-      </div>
-      <div data-step="2" class="pos-bl">
-        <div class="caption-pane">
-          <span class="eyebrow">Sustain</span>
-          <h2>A weekly recap that actually<br />connects the dots.</h2>
-          <p class="caption-desc">
-            Every week, Sustain surfaces three real findings connecting your
-            protein intake, dose adherence, and weight trend, the kind of pattern
-            a generic tracker would never catch on its own.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<hr class="rule" />
 
-<section id="philosophy">
-  <div class="container" style="padding: 120px 24px;">
-    <span class="eyebrow reveal">Our approach</span>
-    <h2 class="display-2 reveal" style="max-width: 720px;">
-      Every hearthlyapps product follows the same three rules.
+<!-- ============================================================
+     THE RULES
+     Anyone can claim principles. What makes them believable is
+     naming the cost, so each rule is paired with what it actually
+     gives up. Three items, but deliberately not three identical
+     cards in a row: a numbered editorial list, full width.
+     ============================================================ -->
+<section class="band" id="rules">
+  <div class="wrap">
+    <span class="eyebrow reveal">How we build</span>
+    <h2 class="d2 reveal" style="margin: 16px 0 12px; max-width: 20ch;">
+      Three rules, and what each one costs us.
     </h2>
-    <div class="grid">
-      <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4" /><circle cx="12" cy="12" r="10" /></svg>
-        </div>
-        <h3>Trust-first, always</h3>
-        <p>Clear pricing, generous free tiers, and no trial traps. If a feature needs AI, only the AI part is paywalled, never the basics.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
-        </div>
-        <h3>Private by default</h3>
-        <p>Your data is backed up to your own account, kept private to you, and never sold. We ask for the minimum, and explain exactly why.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
-        </div>
-        <h3>One magic moment</h3>
-        <p>We'd rather nail a single AI feature that genuinely helps than bolt AI onto everything. Depth over noise.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container" style="padding: 130px 24px;">
-    <div style="max-width: 640px; margin: 0 auto; text-align: center;">
-      <span class="eyebrow reveal">Flagship product</span>
-      <h2 class="display-2 reveal">Sustain</h2>
-      <p class="lede reveal center" style="margin-top: 18px;">
-        The companion app for people on Ozempic, Wegovy, Zepbound, Mounjaro, and more,
-        built around the one thing most trackers ignore: protecting the muscle you worked for.
-      </p>
-      <div class="btn-row reveal" style="justify-content: center; margin-top: 34px;">
-        <a class="btn btn-primary" href="/sustain/">Explore Sustain</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container" style="padding: 120px 24px;">
-    <span class="eyebrow reveal">What's next</span>
-    <h2 class="display-2 reveal" style="max-width: 680px;">
-      Sustain is the first. We're already building the next ones.
-    </h2>
-    <p class="lede reveal" style="margin-top: 18px;">
-      Same philosophy, new corners of everyday life, each one picked because the
-      existing options were generic, expensive, or both.
+    <p class="lede reveal" style="margin-bottom: 56px;">
+      Principles are cheap when they're free. These are the ones we've actually
+      paid for.
     </p>
-    <div class="grid" style="margin-top: 48px;">
-      <div class="soon-card reveal">
-        <span class="tag">In development</span>
-        <h3>Photo-to-estimate, for solo trades</h3>
-        <p>Walk the job, snap a few photos, talk through the details, and get a priced, editable estimate in minutes instead of an evening.</p>
+
+    <div class="product-row reveal" style="border-top: 1px solid var(--rule);">
+      <div class="product-status"><span class="dot dot--live"></span>Rule 01</div>
+      <div>
+        <h3 class="d3" style="margin-bottom: 10px;">The free tier is free forever.</h3>
+        <p class="body">
+          Not a trial with a countdown. In Sustain, logging your dose, weight,
+          protein and side effects costs nothing and always will. Only the AI
+          layer is paid.
+        </p>
       </div>
-      <div class="soon-card reveal">
-        <span class="tag">Exploring</span>
-        <h3>A fairer mileage &amp; expense tracker</h3>
-        <p>Built for freelancers tired of subscription price hikes: reliable tracking, honest pricing, nothing sneaky.</p>
+      <p class="small" style="max-width: 22ch;"><em>The cost:</em> most of our users will never pay us anything, and we built the pricing knowing that.</p>
+    </div>
+
+    <div class="product-row reveal">
+      <div class="product-status"><span class="dot dot--live"></span>Rule 02</div>
+      <div>
+        <h3 class="d3" style="margin-bottom: 10px;">Your health data is not the product.</h3>
+        <p class="body">
+          It is never sold, never handed to advertisers, and never used to train
+          an AI model. You can delete your account and everything in it from
+          inside the app, permanently, without emailing anyone.
+        </p>
       </div>
-      <div class="soon-card reveal">
-        <span class="tag">Exploring</span>
-        <h3>Task-initiation coaching</h3>
-        <p>A calmer way to get started on the things you keep putting off: less planner, more companion.</p>
+      <p class="small" style="max-width: 22ch;"><em>The cost:</em> the entire revenue model that most free health apps run on is closed to us.</p>
+    </div>
+
+    <div class="product-row reveal">
+      <div class="product-status"><span class="dot dot--live"></span>Rule 03</div>
+      <div>
+        <h3 class="d3" style="margin-bottom: 10px;">One magic moment, not AI everywhere.</h3>
+        <p class="body">
+          We'd rather ship a single AI feature that genuinely changes the
+          workflow than sprinkle a chatbot over every screen. In Sustain that
+          moment is photographing a plate and getting the protein back.
+        </p>
+      </div>
+      <p class="small" style="max-width: 22ch;"><em>The cost:</em> a shorter feature list than every competitor, on purpose.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRODUCTS
+     A roster with honest status, not a grid of equal-looking cards
+     implying a fuller catalogue than exists.
+     ============================================================ -->
+<section class="band band--paper2" id="products">
+  <div class="wrap">
+    <span class="eyebrow reveal">Products</span>
+    <h2 class="d2 reveal" style="margin: 16px 0 48px; max-width: 20ch;">
+      One shipped. Three in the workshop.
+    </h2>
+
+    <div class="reveal" style="background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-panel); padding: 8px;">
+      <div class="hero-grid" style="gap: 32px; align-items: center; padding: 24px;">
+        <div>
+          <div class="product-status" style="margin-bottom: 16px;"><span class="dot dot--live"></span>Live on the App Store</div>
+          <h3 class="d2" style="font-size: clamp(1.9rem, 3vw, 2.6rem); margin-bottom: 14px;">Sustain</h3>
+          <p class="body" style="margin-bottom: 22px;">
+            The GLP-1 companion built around the one number most trackers ignore.
+            Dose, protein and weight tracked together, so rapid weight loss
+            doesn't quietly cost you the muscle you worked for.
+          </p>
+          <div class="btn-row">
+            <a class="btn btn--teal" href="/sustain/">Explore Sustain</a>
+            <a class="btn btn--ghost" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">App Store</a>
+          </div>
+        </div>
+        <div class="device-halo">
+          <div class="device">
+            <picture>
+          <source srcset="assets/img/screenshots/01-dashboard.webp" type="image/webp" />
+          <img src="assets/img/screenshots/01-dashboard.jpg" width="700" height="1520" loading="lazy"
+                 alt="The Sustain Today screen showing next dose, protein progress and weight trend." />
+        </picture>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 56px;">
+      <div class="product-row reveal" style="border-top: 1px solid var(--rule);">
+        <div class="product-status"><span class="dot dot--build"></span>In development</div>
+        <div>
+          <h3 class="d3" style="margin-bottom: 8px;">Photo-to-estimate, for solo trades</h3>
+          <p class="body">Walk the job, snap a few photos, talk through the details, and leave with a priced, editable estimate instead of another evening at the kitchen table.</p>
+        </div>
+        <span class="small">&nbsp;</span>
+      </div>
+      <div class="product-row reveal">
+        <div class="product-status"><span class="dot"></span>Exploring</div>
+        <div>
+          <h3 class="d3" style="margin-bottom: 8px;">A fairer mileage and expense tracker</h3>
+          <p class="body">For freelancers tired of annual price hikes on software that hasn't changed. Reliable tracking, honest pricing, nothing sneaky.</p>
+        </div>
+        <span class="small">&nbsp;</span>
+      </div>
+      <div class="product-row reveal">
+        <div class="product-status"><span class="dot"></span>Exploring</div>
+        <div>
+          <h3 class="d3" style="margin-bottom: 8px;">Task-initiation coaching</h3>
+          <p class="body">A calmer way into the things you keep putting off. Less planner, more companion.</p>
+        </div>
+        <span class="small">&nbsp;</span>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ============================================================
+     WHO
+     The strongest credibility asset a small studio has is being
+     small, so it's stated plainly rather than hidden behind
+     corporate "we".
+     ============================================================ -->
+<section class="band band--dark">
+  <div class="wrap">
+    <div class="hero-grid" style="align-items: start;">
+      <div>
+        <span class="eyebrow eyebrow--pale reveal">Who's behind this</span>
+        <h2 class="d2 reveal" style="margin: 16px 0 20px; max-width: 18ch;">
+          Small enough that we answer our own support email.
+        </h2>
+      </div>
+      <div>
+        <p class="lede reveal" style="margin-bottom: 20px;">
+          hearthlyapps is a small independent studio, not a venture-funded team
+          with a growth department. Every reply from
+          <a href="mailto:support@hearthlyapps.com" style="color: var(--teal-bright); text-decoration: underline; text-underline-offset: 3px;">support@hearthlyapps.com</a>
+          is written by the person who built the thing you're asking about.
+        </p>
+        <p class="body reveal">
+          That's the reason the rules above are possible. There's no board asking
+          why the free tier is so generous, and no quarterly target that makes
+          selling your data suddenly look reasonable.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CLOSE — one ask
+     ============================================================ -->
+<section class="band band--tight">
+  <div class="wrap" style="text-align: center;">
+    <h2 class="d2 reveal" style="margin: 0 auto 20px; max-width: 20ch;">
+      Start with the one that's already out.
+    </h2>
+    <p class="lede reveal" style="margin: 0 auto 32px; max-width: 42ch;">
+      Sustain is on the App Store now, and the part most people need is the part
+      that's free.
+    </p>
+    <div class="btn-row reveal" style="justify-content: center;">
+      <a class="btn btn--primary btn--lg" href="/sustain/">Meet Sustain</a>
+    </div>
+  </div>
+</section>
+
+</main>
 
 <footer>
-  <div class="footer-top">
-    <a class="footer-brand" href="/">
-      <img src="assets/img/app-icon.png" alt="" />
-      hearthlyapps
-    </a>
-    <div class="footer-links">
-      <a href="/sustain/">Sustain</a>
-      <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" style="color: var(--paper);">
+          <img src="assets/img/app-icon.png" alt="" width="26" height="26" />
+          hearthlyapps
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;">
+          Small, focused iPhone apps for the parts of life that deserve better software.
+        </p>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Products</div>
+        <a href="/sustain/">Sustain</a>
+        <a href="/sustain/faq/">GLP-1 &amp; muscle FAQ</a>
+        <a href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">App Store</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Company</div>
+        <a href="#rules">How we build</a>
+        <a href="/support/">Support</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+      </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <span>&copy; 2026 Dhanvanth Sundar Sankar. All rights reserved.</span>
-    <span>Made for the people building better habits, one day at a time.</span>
+    <div class="foot-bottom">
+      <span>&copy; <span data-year>2026</span> Dhanvanth Sundar Sankar. All rights reserved.</span>
+      <span>Made for people building better habits, one day at a time.</span>
+    </div>
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="assets/js/main.js"></script>
-<script type="module" src="assets/js/scene.js"></script>
+<script src="assets/js/main.js" defer></script>
 </body>
 </html>

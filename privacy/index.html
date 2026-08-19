@@ -3,84 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sustain Privacy Policy</title>
-<style>
-  * { box-sizing: border-box; }
-  /* Background is set on html (not just body) and repeated with
-     background-color as a fallback — on overscroll/rubber-band scrolling
-     (dragging past the top or bottom of the page, common on trackpads),
-     the browser reveals whatever's behind the document itself, which
-     defaults to white if only body has a background. That's the white bar
-     that showed up while scrolling past the top/bottom edge. */
-  html {
-    min-height: 100%;
-    overscroll-behavior-y: none;
-    background-color: #0b0620;
-    background-image:
-      radial-gradient(circle at 16% 18%, rgba(47, 184, 159, 0.32), transparent 55%),
-      radial-gradient(circle at 86% 12%, rgba(255, 95, 168, 0.24), transparent 50%),
-      radial-gradient(circle at 50% 95%, rgba(70, 40, 150, 0.32), transparent 60%),
-      linear-gradient(160deg, #0b0620 0%, #16102e 45%, #0d2230 100%);
-  }
-  body {
-    min-height: 100%;
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
-    color: #1a1a1a;
-    padding: 40px 20px 72px;
-    background: transparent;
-  }
-  .top-link {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 22px;
-  }
-  .top-link a {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #eafff8;
-    text-decoration: none;
-    padding: 8px 18px;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    backdrop-filter: blur(10px);
-  }
-  .top-link a:hover { background: rgba(255, 255, 255, 0.2); }
-  .page-card {
-    max-width: 720px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 22px;
-    padding: 44px 40px 56px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-  }
-  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
-  h2 { font-size: 1.2rem; margin-top: 2rem; }
-  .updated { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
-  a { color: #0a7d5c; }
-  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; color: #666; font-size: 0.85rem; }
-</style>
+<title>Sustain privacy policy — hearthlyapps</title>
+<meta name="description" content="What Sustain collects, how it is used, and what choices you have. Your health data is never sold, never shared with advertisers, and never used to train an AI model.">
+<link rel="canonical" href="https://hearthlyapps.com/privacy/">
+<link rel="icon" href="../assets/img/app-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 
-<div class="top-link">
-  <a href="/sustain/">Sustain</a>
-</div>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<div class="page-card">
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/">
+      <img src="../assets/img/app-icon.png" alt="" width="26" height="26" />
+      hearthlyapps
+    </a>
+    <div class="nav-links">
+      <a href="/sustain/">Sustain</a>
+      <a href="/sustain/faq/">FAQ</a>
+      <a href="/support/">Support</a>
+    </div>
+    <a class="btn btn--primary" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">Get Sustain</a>
+  </div>
+</nav>
 
-<h1>Sustain Privacy Policy</h1>
-<p class="updated">Last updated: August 6, 2026 (added lab result import as a third optional AI feature)</p>
-
+<main id="main" class="band band--tight">
+  <div class="wrap">
+    <span class="eyebrow">Privacy</span>
+    <h1 class="d2" style="margin: 16px 0 0; max-width: 20ch;">Your health data belongs to you.</h1>
+    <p class="lede" style="margin: 22px 0 52px;">What Sustain collects, how it's used, and what choices you have. <span class="small">Last updated: August 12, 2026 (added the AI chat coach, AI body scan, AI-feature-usage analytics, and TelemetryDeck app-usage analytics)</span></p>
+    <div class="prose">
 <p>This policy explains what information the Sustain app ("Sustain," "we," "the app") collects, how it's used, and what choices you have. Sustain is a personal medication and nutrition tracker for people using GLP-1 medications, built around one principle: your health data belongs to you, not to us.</p>
 
 <h2>The short version</h2>
-<p>Sustain requires a free account, created with Sign in with Apple or Continue with Google, and backs up your health data, dose logs, weight, protein intake, and side-effect notes, to your own account so it's available if you switch phones or reinstall. We don't sell or share it with advertisers, we don't use it to train any AI model, and only you can ever access your own data. Three optional AI features (described below) send limited data to our AI provider only when you actively use them.</p>
+<p>Sustain requires a free account, created with Sign in with Apple or Continue with Google, and backs up your health data, dose logs, weight, protein intake, and side-effect notes, to your own account so it's available if you switch phones or reinstall. We don't sell or share it with advertisers, we don't use it to train any AI model, and only you can ever access your own data. Several optional AI features (described below) send limited data to our AI provider only when you actively use them.</p>
 
 <h2>Information we collect</h2>
 
@@ -95,6 +55,14 @@
 <p><strong>Photos, only when you use lab result import.</strong> If you choose to photograph a lab or bloodwork report, that image is sent to our AI provider (Anthropic) solely to transcribe the printed values (test name, number, unit) so you can review and save them. Sustain does not interpret, flag, or evaluate any value &mdash; it transcribes what the report says, nothing more. The photo isn't stored by Sustain after the values are extracted, and the same no-training terms described above apply. Progress photos, a separate feature, are stored on your device only and are never sent anywhere &mdash; they aren't part of this.</p>
 
 <p><strong>Weekly AI summary data, only when you use that feature.</strong> If you use the optional "your week" AI recap, a small set of already-aggregated numbers (your dose adherence, average protein intake, and weight trend for the past 7 days, not raw logs) is sent to our AI provider to generate the written summary. The same no-training terms apply.</p>
+
+<p><strong>Chat messages, only when you use the AI chat coach.</strong> If you ask the chat coach a question, your typed question and that same weekly summary of your dose, protein, and weight figures are sent to our AI provider to generate a response. Nothing is saved after the conversation ends; Sustain does not keep a chat history.</p>
+
+<p><strong>Photos, only when you use the AI body scan.</strong> If you use the optional body-fat estimate, the two photos you take (front and side) are sent to our AI provider to generate the estimate, then discarded, the same no-storage handling as the other AI photo features above.</p>
+
+<p><strong>AI feature usage.</strong> So we can tell whether the AI features above are actually useful to subscribers over time, we record which of them you've used and when, and share that (tied to your subscriber account) with RevenueCat, our subscription-billing provider. This is never the content of anything you asked or logged, just which feature and when. It's never shared with advertisers or used to track you across other apps or websites.</p>
+
+<p><strong>App usage analytics.</strong> We use TelemetryDeck, a privacy-focused analytics provider, to understand how people use Sustain at a basic level: which onboarding steps are reached, whether a session was opened, which screen led to a paywall being shown, and whether an AI feature attempt succeeded or was blocked. TelemetryDeck doesn't use advertising identifiers and doesn't need Apple's App Tracking Transparency permission, because it isn't used for tracking. Your account identifier is hashed on your device before it's sent, and hashed and salted again when it arrives, so the value TelemetryDeck actually stores can't be reversed back to your account. We never send message content, photos, health values, medication names, weight, or dose amounts to TelemetryDeck, only which screen or feature was involved. See TelemetryDeck's own privacy documentation at <a href="https://telemetrydeck.com/privacy">https://telemetrydeck.com/privacy</a> for how they handle this data.</p>
 
 <p><strong>Basic device and diagnostic information.</strong> Standard crash and performance diagnostics collected automatically by the operating system (not by us directly) if you've opted into sharing this with app developers in your iOS settings.</p>
 
@@ -123,8 +91,43 @@
 <footer>
 This document describes Sustain's actual data practices as implemented in the app as of this writing. It is not legal advice, and hasn't been reviewed by an attorney.
 </footer>
+    </div>
+  </div>
+</main>
 
-</div>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" style="color: var(--paper);">
+          <img src="../assets/img/app-icon.png" alt="" width="26" height="26" />
+          hearthlyapps
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;">
+          Small, focused iPhone apps for the parts of life that deserve better software.
+        </p>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Sustain</div>
+        <a href="/sustain/#how">How it works</a>
+        <a href="/sustain/#pricing">Pricing</a>
+        <a href="/sustain/faq/">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Company</div>
+        <a href="/">hearthlyapps</a>
+        <a href="/support/">Support</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span data-year>2026</span> Dhanvanth Sundar Sankar. All rights reserved.</span>
+      <span>Not a substitute for medical advice.</span>
+    </div>
+  </div>
+</footer>
 
+<script src="../assets/js/main.js" defer></script>
 </body>
 </html>
