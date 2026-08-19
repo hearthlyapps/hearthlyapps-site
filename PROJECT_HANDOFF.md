@@ -1,5 +1,34 @@
 # hearthlyapps.com — Website Engineering Handoff / Project Memory Dump
 
+## 0. COMPLIANCE — read before touching any screenshot, phone mockup, or app UI content
+
+**Never show a specific prescription drug brand name anywhere on this site** (Wegovy,
+Ozempic, Mounjaro, Zepbound, Tirzepatide, Semaglutide, or any other GLP-1 brand/generic
+name), in any screenshot, live-rendered UI mockup, image, or piece of copy that depicts
+or implies the product's own on-screen content. This is not a style preference — it's the
+same rule the sibling `Sustain/marketing/` video project enforces (see that project's
+`marketing/LESSONS_LEARNED.md`), established after real TikTok Community Guidelines
+strikes caused by drug brand names visible in marketing video frames.
+
+**Real incident, 2026-08-19:** the `/sustain` hero (§5's live-rendered `.ui` component,
+not a screenshot — see `sustain/index.html`'s dose card) had "Wegovy" and "1.7 mg" typed
+directly into the markup as literal, fully legible text, live on the site, for some
+unknown period before being caught by Dhanvanth looking at the page directly. This
+happened because the hero was hand-built from a real screenshot's visible content without
+checking it against the drug-brand-name rule that every other part of this project
+already enforces. Fixed by replacing "Wegovy" with the generic "GLP-1 dose" label —
+same dose amount, date, and button all preserved, just no specific brand identified.
+
+**Rule going forward, structural not just remembered:** before shipping any change to
+`sustain/index.html`'s hero `.ui` block (or any future live UI mockup, screenshot crop,
+or video-style asset embedded in this site), grep the actual rendered page text for
+`Wegovy|Ozempic|Mounjaro|Zepbound|Tirzepatide|Semaglutide` (case-insensitive) and confirm
+zero matches before calling it done — don't just eyeball it. The one exception:
+`/sustain/faq/index.html`'s AEO content, which factually discusses these drug names in
+question-and-answer form ("Does Ozempic, Wegovy, Mounjaro, or Zepbound cause muscle
+loss?") — that's legitimate informational/SEO content, not a product mockup depicting
+the app's own screen, and is fine to keep as-is.
+
 **Purpose of this document:** a lossless knowledge transfer from the Claude conversation
 that designed and built this website, written for an AI (or human) who will continue
 development with zero access to that conversation. It captures what was built, why, every
