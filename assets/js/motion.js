@@ -93,11 +93,19 @@
       // plain number from JS is unambiguous and always valid.
       var slices = [];
       Array.prototype.forEach.call(el.querySelectorAll("[data-slice]"), function (c) {
-        var parts = (c.getAttribute("data-slice") || "0,1").split(",");
-        var a = parseFloat(parts[0]) || 0;
-        var bb = parseFloat(parts[1]);
-        if (isNaN(bb)) bb = 1;
-        slices.push({ el: c, a: a, span: Math.max(bb - a, 0.0001), last: -1 });
+        var parts = (c.getAttribute("data-slice") || "0,1").split(",").map(parseFloat);
+        // Two numbers  -> a ramp: 0 at `a`, 1 from `b` onward.
+        // Four numbers -> a trapezoid: in over a..b, hold b..c, out over
+        // c..d. Captions over a continuous film need the exit as much as
+        // the entrance, otherwise every line that has ever appeared is
+        // still sitting on screen at the end of the sequence.
+        if (parts.length >= 4) {
+          slices.push({ el: c, trap: parts.slice(0, 4), last: -1 });
+        } else {
+          var a = parts[0] || 0;
+          var bb = isNaN(parts[1]) ? 1 : parts[1];
+          slices.push({ el: c, a: a, span: Math.max(bb - a, 0.0001), last: -1 });
+        }
       });
 
       scenes.push({ el: el, start: start, end: Math.max(end, start + 1), last: -1, slices: slices });
@@ -122,8 +130,16 @@
       s.el.style.setProperty("--p", p.toFixed(4));
 
       for (var j = 0; j < s.slices.length; j++) {
-        var c = s.slices[j];
-        var sp = clamp01((p - c.a) / c.span);
+        var c = s.slices[j], sp;
+        if (c.trap) {
+          var t = c.trap;
+          sp = p < t[1] ? clamp01((p - t[0]) / Math.max(t[1] - t[0], 1e-4))
+             : p <= t[2] ? 1
+             : 1 - clamp01((p - t[2]) / Math.max(t[3] - t[2], 1e-4));
+          sp = clamp01(sp);
+        } else {
+          sp = clamp01((p - c.a) / c.span);
+        }
         if (Math.abs(sp - c.last) < 0.0006) continue;
         c.last = sp;
         c.el.style.setProperty("--s", sp.toFixed(4));

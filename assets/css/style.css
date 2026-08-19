@@ -744,6 +744,120 @@ a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
 .step-shot { margin-top: var(--s-5); }
 @media (min-width: 940px) { .step-shot { display: none; } }
 
+/* The nav is opaque paper and would cut a hard light bar across the
+   full-bleed film. Over the film scene it goes transparent and inverts,
+   so the sequence runs edge to edge. */
+body:has(.film-scene) .nav { transition: background 0.35s var(--ease), border-color 0.35s var(--ease); }
+.nav.over-film {
+  /* A scrim, not pure transparency. The film's brightness changes frame to
+     frame — one moment the top of shot is deep navy, the next it's a pale
+     blur — so white nav text over bare film is legible only some of the
+     time. A top-down gradient guarantees it on every frame while still
+     letting the sequence run edge to edge. */
+  background: linear-gradient(to bottom, rgba(6,12,20,0.72), rgba(6,12,20,0.18) 70%, transparent);
+  border-color: transparent; color: #fff;
+}
+.nav.over-film .brand { color: #fff; }
+.nav.over-film .nav-links a { color: rgba(255,255,255,0.82); }
+.nav.over-film .nav-links a:hover { color: #fff; }
+.nav.over-film .btn--primary { background: #fff; color: var(--ink); }
+
+/* ==========================================================
+   THE FILM
+   A pinned, full-viewport canvas that plays a real rendered sequence
+   against scroll. The scene is 620vh tall: the canvas sticks for the
+   whole of it, so ~5.2 screens of scrolling become ~5.2 screens of
+   continuous camera movement instead of five separate reveals.
+
+   Captions sit above the canvas and are handed their own slice of the
+   same timeline, so the words arrive on the beat the camera lands on
+   rather than on their own schedule.
+   ========================================================== */
+
+.film-scene {
+  position: relative;
+  height: 620vh;
+  background: #0d1826;      /* matches the render's darkest corner so
+                               there is no flash before the first decode */
+}
+@media (max-width: 760px) { .film-scene { height: 460vh; } }
+
+.film-stage {
+  position: sticky; top: 0;
+  height: 100vh; height: 100dvh;
+  overflow: hidden;
+}
+.film-stage canvas {
+  display: block; width: 100%; height: 100%;
+}
+
+/* A soft vignette and a floor gradient so overlaid type always has
+   something to sit on, whatever frame is showing underneath. */
+.film-stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 40%, transparent 40%, rgba(8,14,22,0.55) 100%),
+    linear-gradient(to top, rgba(8,14,22,0.82) 0%, transparent 42%);
+}
+
+.film-cap {
+  /* A fixed-height band the captions are absolutely placed inside, rather
+     than each one hanging off the bottom edge — a three-line caption was
+     running off the stage. */
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 40vh; z-index: 2; pointer-events: none;
+}
+
+.film-line {
+  position: absolute; bottom: 7vh;
+  left: var(--s-5); right: var(--s-5);
+  opacity: var(--s, 0);
+  transform: translate3d(0, calc((1 - var(--s, 0)) * 26px), 0);
+  color: #fff;
+  text-shadow: 0 1px 24px rgba(4,10,16,0.55);
+}
+@media (min-width: 900px) {
+  .film-line { left: var(--s-7); right: auto; max-width: 26ch; bottom: 9vh; }
+}
+.film-line h3 {
+  font-size: clamp(1.6rem, 3.4vw, 2.9rem);
+  color: #fff; margin-bottom: 10px;
+}
+.film-line p { color: rgba(255,255,255,0.76); font-size: 1.02rem; max-width: 34ch; }
+.film-line .step-n { color: var(--teal-bright); margin-bottom: 10px; }
+
+/* progress bar for the whole film, so the pin has a visible length */
+.film-bar {
+  position: absolute; left: 0; bottom: 0; height: 2px; z-index: 3;
+  width: 100%; transform-origin: 0 50%;
+  transform: scaleX(var(--film, 0));
+  background: var(--teal-bright);
+}
+
+.film-skip {
+  /* Top-right, not bottom-right: at the foot of the stage it sat on top of
+     the caption on a narrow screen. Up here it is out of the reading path
+     and still obviously an escape hatch. */
+  position: absolute; right: var(--s-5); top: calc(var(--s-8) + 18px); z-index: 4;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.3); border-radius: var(--r-control);
+  padding: 9px 16px; background: rgba(8,14,22,0.4);
+}
+.film-skip:hover { color: #fff; border-color: #fff; }
+@media (min-width: 900px) { .film-skip { right: var(--s-7); top: calc(var(--s-8) + 26px); } }
+
+/* Reduced motion: collapse the 620vh scrub to a single screen showing
+   one frame. No pinning, no scrubbing, nothing to fight. */
+@media (prefers-reduced-motion: reduce) {
+  .film-scene { height: auto; }
+  .film-stage { position: relative; height: 78vh; }
+  .film-line { opacity: 1 !important; transform: none !important; position: relative;
+    left: auto; right: auto; margin-bottom: 22px; }
+  .film-cap { position: relative; bottom: auto; padding: var(--s-6) var(--s-5); }
+  .film-bar { display: none; }
+}
+
 /* ---- the pinned tour -----------------------------------------------
    One phone, six screens. The device itself never leaves — it holds
    position and tilts with the scroll while its *screen* changes, so the
