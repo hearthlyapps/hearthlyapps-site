@@ -141,7 +141,89 @@
       </div>
     </div>
 
-    <p class="lede reveal" style="margin-top: 48px; max-width: 46ch;">
+    <!-- ------------------------------------------------------------
+         THE FIGURE — the site's one proprietary illustration.
+         It has to do argumentative work, not decorative work: the whole
+         proposition is that a single descending line is an incomplete
+         report, so the drawing is that line being taken apart.
+
+         It is explicitly labelled as illustrative. Presenting invented
+         numbers as though they were real user data would be the exact
+         kind of borrowed credibility this page is otherwise refusing.
+         It also deliberately makes no claim that the app changes the
+         outcome — only that it shows you the second line.
+         ------------------------------------------------------------ -->
+    <div class="figure reveal" style="margin-top: 72px;" data-figure>
+      <p class="eyebrow eyebrow--pale" style="margin-bottom: 8px;">The same twelve weeks</p>
+      <h3 class="d3" style="max-width: 20ch; margin-bottom: 4px;">One line down. Made of what?</h3>
+
+      <!-- The plot stops at x=700 so the end-labels live inside the viewBox
+           rather than relying on overflow, which clips unpredictably once a
+           container starts constraining width. -->
+      <svg viewBox="0 0 880 360" role="img"
+           aria-label="An illustration of twelve weeks. Total weight falls. Split into its parts, fat mass falls steeply and lean mass also falls. The drop in the lean mass line is the portion of the loss that was not fat, and a scale alone never reports it.">
+        <g class="fig-grid">
+          <line x1="60" y1="70"  x2="700" y2="70" />
+          <line x1="60" y1="140" x2="700" y2="140" />
+          <line x1="60" y1="210" x2="700" y2="210" />
+          <line x1="60" y1="280" x2="700" y2="280" />
+        </g>
+        <line class="fig-axis" x1="60" y1="300" x2="700" y2="300" />
+
+        <text class="fig-label" x="60"  y="330">Week 1</text>
+        <text class="fig-label" x="700" y="330" text-anchor="end">Week 12</text>
+
+        <!-- 1. what the scale reports -->
+        <path class="fig-line fig-line--total"
+              d="M60,70 C240,120 380,160 500,180 S660,192 700,195" />
+        <!-- 2. the same period, taken apart -->
+        <path class="fig-line fig-line--fat"
+              d="M60,70 C240,140 380,200 500,240 S660,272 700,279" />
+        <path class="fig-line fig-line--lean"
+              d="M60,70 C240,92 380,110 500,122 S660,131 700,133" />
+
+        <g class="fig-note">
+          <!-- The bracket measures the LEAN line's own fall, from the week-1
+               baseline down to where it ends. An earlier version bracketed
+               the gap between the lean and fat lines, which looks similar
+               and means nothing: two different series sitting apart is not
+               a quantity. This is the actual claim — that drop is loss that
+               wasn't fat. -->
+          <path class="fig-bracket" d="M624,70 L624,131 M617,70 L631,70 M617,131 L631,131" />
+          <!-- Label hidden on phones (.fig-anno), where it would sit on top
+               of the lean line; the HTML note below carries it instead. -->
+          <text class="fig-label fig-anno" x="609" y="105" text-anchor="end"
+                style="opacity:0.9; fill: var(--ember);">this part wasn't fat</text>
+
+          <!-- direct labels, desktop only (see .fig-keys in the CSS) -->
+          <g class="fig-keys">
+            <text class="fig-key" x="714" y="137" fill="var(--ember)">Lean mass</text>
+            <text class="fig-key" x="714" y="200" opacity="0.85">Weight</text>
+            <text class="fig-key" x="714" y="284" fill="var(--teal-bright)">Fat</text>
+          </g>
+        </g>
+      </svg>
+
+      <!-- Below ~760px the in-SVG labels scale down to roughly 5px and stop
+           being text in any useful sense, so the legend moves into real HTML
+           where it keeps its own type size. -->
+      <ul class="fig-legend" aria-hidden="true">
+        <li><span class="sw sw--lean"></span>Lean mass</li>
+        <li><span class="sw sw--total"></span>Weight</li>
+        <li><span class="sw sw--fat"></span>Fat</li>
+      </ul>
+      <p class="fig-anno-html">
+        The bracketed drop in the lean mass line is the part of the loss that
+        wasn't fat.
+      </p>
+
+      <div class="fig-cap">
+        <span>Illustrative, not user data</span>
+        <span>Sustain measures this. It does not promise a particular outcome.</span>
+      </div>
+    </div>
+
+    <p class="lede reveal" style="margin-top: 56px; max-width: 46ch;">
       You can't fix what you can't see. So the first thing Sustain does is
       make it visible.
     </p>
@@ -451,7 +533,14 @@
      ============================================================ -->
 <section class="band band--dark">
   <div class="wrap" style="text-align: center;">
-    <span class="eyebrow eyebrow--pale reveal">Lose fat. Not muscle.</span>
+    <!-- The figure, reduced to a mark. Same two lines, same meaning, at
+         14px: a stamp the brand can reuse anywhere the full drawing won't
+         fit. This is what makes it an identity rather than one nice chart. -->
+    <svg class="spark spark--lg reveal" viewBox="0 0 42 16" aria-hidden="true" style="margin-bottom: 20px;">
+      <path class="s-b" d="M2,4 C14,5 26,6 40,7" />
+      <path class="s-a" d="M2,4 C14,8 26,12 40,14" />
+    </svg>
+    <span class="eyebrow eyebrow--pale reveal" style="display:block;">Lose fat. Not muscle.</span>
     <h2 class="d2 reveal" style="margin: 18px auto 22px; max-width: 17ch;">
       Start with tonight's dinner.
     </h2>

@@ -206,6 +206,11 @@ section { position: relative; }
 .band--dark {
   background: var(--ink);
   color: var(--paper);
+  /* Terracotta tuned for paper reaches only 3.7:1 on this ground, so the
+     token is re-pointed for the whole dark scope rather than patched at
+     each call site. Everything downstream — annotation text, the lean
+     line, the bracket — lifts together and stays one colour idea. */
+  --ember: #e07a4e;
 }
 .band--dark .lede,
 .band--dark .body { color: rgba(247, 244, 239, 0.72); }
@@ -432,6 +437,117 @@ a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
 }
 .rail-stack .device.is-live { opacity: 1; transform: none; }
 .rail-stack .device:first-child { position: relative; }
+
+/* ---------------------------------------------------------- figure
+   The brand's own asset. Every competitor in this category illustrates
+   with stock food photography or a generic dashboard render; this site
+   illustrates with the argument itself — one line down, and what that
+   line is actually made of. It is drawn in SVG rather than generated or
+   photographed, which keeps it ~3KB, infinitely sharp, themeable, and
+   genuinely proprietary: nobody else's site can contain this drawing
+   because it is a picture of this product's specific thesis. */
+
+.figure {
+  position: relative;
+  margin: var(--s-7) 0 var(--s-5);
+}
+.figure svg { width: 100%; height: auto; overflow: visible; }
+
+.fig-grid   { stroke: currentColor; opacity: 0.14; stroke-width: 1; }
+.fig-axis   { stroke: currentColor; opacity: 0.3; stroke-width: 1.25; }
+.fig-label  {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; fill: currentColor; opacity: 0.55;
+}
+.fig-key {
+  font-family: var(--sans); font-size: 14.5px; font-weight: 600;
+  fill: currentColor;
+}
+
+/* Each series draws itself in on reveal. dasharray is set to the path's
+   own length in JS so the stroke length is exact rather than guessed. */
+.fig-line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: var(--len, 1200);
+  stroke-dashoffset: var(--len, 1200);
+  transition: stroke-dashoffset 1.5s var(--ease);
+}
+.figure.in .fig-line { stroke-dashoffset: 0; }
+
+.fig-line--total { stroke: currentColor; opacity: 0.85; }
+.fig-line--fat   { stroke: var(--teal-bright); transition-delay: 0.45s; }
+.fig-line--lean  { stroke: var(--ember); transition-delay: 0.75s; }
+
+/* The bracket that names the gap. It is the punchline, so it arrives
+   last and slightly late, the way a punchline should. */
+.fig-note {
+  opacity: 0; transform: translateX(-10px);
+  transition: opacity 0.6s var(--ease) 1.5s, transform 0.6s var(--ease) 1.5s;
+}
+.figure.in .fig-note { opacity: 1; transform: none; }
+.fig-bracket { stroke: var(--ember); stroke-width: 1.5; fill: none; opacity: 0.85; }
+
+.fig-cap {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
+  align-items: baseline;
+  margin-top: var(--s-4);
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.08em; opacity: 0.55;
+}
+
+/* Direct labels beat a legend when there's room for them, so the in-SVG
+   keys are the desktop treatment and the HTML legend is the small-screen
+   one. Only ever one of the two is present. */
+.fig-keys  { display: none; }
+.fig-legend {
+  list-style: none; margin: var(--s-4) 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
+  font-size: 0.9rem; font-weight: 600;
+}
+.fig-legend li { display: flex; align-items: center; gap: 8px; }
+.sw { width: 18px; height: 3px; border-radius: 2px; flex: none; }
+.sw--total { background: currentColor; opacity: 0.85; }
+.sw--fat   { background: var(--teal-bright); }
+.sw--lean  { background: var(--ember); }
+
+.fig-anno-html {
+  margin-top: var(--s-3);
+  font-size: 0.92rem;
+  max-width: 40ch;
+  color: var(--ember);
+}
+
+@media (min-width: 760px) {
+  .fig-keys      { display: block; }
+  .fig-legend    { display: none; }
+  .fig-anno-html { display: none; }
+}
+/* On a phone the whole drawing is about a third of its authored size, so
+   the remaining in-SVG type is scaled up to survive the reduction, and
+   the annotation that would land on top of the lean line is dropped in
+   favour of the HTML note underneath. */
+@media (max-width: 759px) {
+  .fig-label { font-size: 20px; letter-spacing: 0.06em; }
+  .fig-anno  { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fig-line { stroke-dashoffset: 0; transition: none; }
+  .fig-note { opacity: 1; transform: none; transition: none; }
+}
+
+/* The same idea shrunk to a glyph: a repeatable mark the brand can reuse
+   at any size, derived from the figure rather than bolted on beside it. */
+.spark { display: inline-block; width: 42px; height: 16px; vertical-align: -2px; }
+/* Inline beside a word it can stay tiny; standing alone above a headline
+   it needs size or it reads as a stray mark rather than a deliberate one. */
+.spark--lg { width: 64px; height: 24px; }
+.spark path { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.spark--lg path { stroke-width: 2; }
+.spark .s-a { stroke: var(--teal-bright); }
+.spark .s-b { stroke: var(--ember); }
 
 /* ---------------------------------------------------------- panels */
 

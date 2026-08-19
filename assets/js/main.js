@@ -85,6 +85,39 @@
     }
   }
 
+  /* ---------------------------------------------------- figure
+
+     The divergence figure draws each line on with stroke-dashoffset. The
+     dash length has to equal the path's own length or the stroke either
+     finishes early or never arrives, so it's measured from the geometry
+     rather than hard-coded to a guess that breaks the moment a curve is
+     nudged. Purely additive: if this never runs, the CSS fallback length
+     still reveals the lines.                                             */
+
+  var figs = document.querySelectorAll("[data-figure] .fig-line");
+  Array.prototype.forEach.call(figs, function (path) {
+    try {
+      var len = Math.ceil(path.getTotalLength());
+      if (len && isFinite(len)) path.style.setProperty("--len", len);
+    } catch (e) { /* getTotalLength unsupported: CSS fallback covers it */ }
+  });
+
+  /* The authored viewBox reserves ~180px on the right for the direct
+     labels. Those labels are hidden below 760px (the HTML legend takes
+     over), so on a phone that reservation is just dead margin making an
+     already-wide 880x360 drawing shorter than it needs to be. Cropping it
+     buys back about 20% of drawing height for free. */
+  var figSvg = document.querySelector("[data-figure] svg");
+  if (figSvg) {
+    var narrow = window.matchMedia("(max-width: 759px)");
+    var fitViewBox = function (mq) {
+      figSvg.setAttribute("viewBox", mq.matches ? "0 0 720 350" : "0 0 880 360");
+    };
+    fitViewBox(narrow);
+    if (narrow.addEventListener) narrow.addEventListener("change", fitViewBox);
+    else if (narrow.addListener) narrow.addListener(fitViewBox);
+  }
+
   /* ---------------------------------------------------- current year */
 
   var y = document.querySelectorAll("[data-year]");
