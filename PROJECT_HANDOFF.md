@@ -29,6 +29,40 @@ question-and-answer form ("Does Ozempic, Wegovy, Mounjaro, or Zepbound cause mus
 loss?") — that's legitimate informational/SEO content, not a product mockup depicting
 the app's own screen, and is fine to keep as-is.
 
+**Second real incident, same day (2026-08-19), found by a text grep, not caught by it:**
+the homepage (`index.html`, the `.device` frame in its Sustain product row) embeds
+`assets/img/screenshots/01-dashboard.jpg`/`.webp` directly as an `<img>` — a real
+simulator screenshot, not a text mockup. That screenshot had "Wegovy" baked into its
+pixels, because Sustain's `ScreenshotModeSeeder.swift` (see `Sustain/Sustain/Services/`)
+hardcodes "Wegovy" as the seeded demo drug name for every App Store/marketing screenshot
+taken from the simulator. A text grep across the HTML never would have caught this — the
+brand name only exists as pixels inside a binary image file. This had been live on the
+homepage since the site's original screenshot import and was missed by the sweep that
+found the hero `.ui` text issue above.
+
+**Fix, and the reason it also solved a second, separate complaint:** Dhanvanth
+separately flagged that the `/sustain` hero's hand-built HTML/CSS `.ui` recreation
+"looked so fake" and asked to use a real screenshot instead — the same screenshot the
+homepage already uses. Doing that directly would have re-introduced the exact "Wegovy"
+pixel exposure described above, so instead: `01-dashboard.jpg`/`.webp` were edited in
+place (erased the "Wegovy" pixels, redrew "GLP-1 dose" in the app's own teal, matching
+the surrounding real screenshot's weight/size/position closely) rather than replaced
+with a new screenshot, so the fix is a single real asset used in both places. The
+`/sustain` hero's entire `.ui`/`.ui-boot` block was then deleted and replaced with the
+same `<picture>`/`<img>`/`.device`/`.device--lg` markup the homepage already uses,
+pointing at the corrected image. One real, compliant screenshot now backs both the
+homepage device frame and the `/sustain` hero — no more hand-built HTML UI recreation
+anywhere on the site, and the Wegovy exposure is fixed in the one place it actually
+lived (the image file), not just in hand-typed markup.
+
+**Standing caution:** the other files in `assets/img/screenshots/` (`13-medication-level.*`
+etc.) and everything in `Sustain/App Store Assets/Marketing Screenshots 2.1/` are raw
+simulator captures from the same seeder and almost certainly still have "Wegovy" baked
+into their pixels wherever a dose/medication card is visible. They are not currently
+used anywhere in this site's HTML. Before using any of them here, visually check for the
+brand name in the actual pixels — a text grep on the HTML will not catch it, per the
+incident above.
+
 **Purpose of this document:** a lossless knowledge transfer from the Claude conversation
 that designed and built this website, written for an AI (or human) who will continue
 development with zero access to that conversation. It captures what was built, why, every
