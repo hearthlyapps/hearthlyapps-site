@@ -263,8 +263,13 @@ section { position: relative; }
   height: 1.5px; background: var(--teal);
   transition: right 0.3s var(--ease);
 }
-.nav-links a:hover { color: var(--ink); }
-.nav-links a:hover::after { right: 0; }
+/* Hover-only motion is gated to devices that actually have hover, here and
+   throughout the sheet — otherwise a tap on touch leaves the link "stuck"
+   in its hovered colour/underline until something else is tapped. */
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { right: 0; }
+}
 
 /* ---------------------------------------------------------- buttons */
 
@@ -281,20 +286,27 @@ section { position: relative; }
               border-color 0.25s var(--ease), color 0.25s var(--ease);
   white-space: nowrap;
 }
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
+/* Press feedback fires everywhere (it's the "the UI heard you" signal,
+   not a hover effect) — quick and slightly separate from the slower
+   hover-lift transition so a tap reads as instant regardless of device. */
+.btn:active { transform: scale(0.97); transition: transform 120ms ease-out; }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { transform: translateY(-2px); }
+  .btn.is-mag:active { transform: scale(0.97) translate3d(var(--mx, 0px), calc(var(--my, 0px) - 2px), 0); }
+}
 
 .btn--primary { background: var(--ink); color: var(--paper); }
-.btn--primary:hover { background: var(--teal-deep); }
-
 .btn--teal { background: var(--teal); color: #fff; }
-.btn--teal:hover { background: var(--teal-deep); }
-
 .btn--ghost { border-color: var(--rule); color: var(--ink); background: transparent; }
-.btn--ghost:hover { border-color: var(--ink); background: rgba(20,32,30,0.04); }
-
 .band--dark .btn--ghost { border-color: rgba(255,255,255,0.28); color: var(--paper); }
-.band--dark .btn--ghost:hover { border-color: var(--paper); background: rgba(255,255,255,0.08); }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover { background: var(--teal-deep); }
+  .btn--teal:hover { background: var(--teal-deep); }
+  .btn--ghost:hover { border-color: var(--ink); background: rgba(20,32,30,0.04); }
+  .band--dark .btn--ghost:hover { border-color: var(--paper); background: rgba(255,255,255,0.08); }
+}
 
 .btn--lg { padding: 16px 30px; font-size: 1.02rem; }
 
@@ -415,8 +427,13 @@ section { position: relative; }
   align-items: baseline;
 }
 .index-row:last-child { border-bottom: 1px solid var(--rule-soft); }
-a.index-row { transition: background 0.2s var(--ease), padding-left 0.2s var(--ease); }
-a.index-row:hover { background: rgba(31,138,116,0.05); padding-left: 8px; }
+/* transform, not padding-left: padding is a layout property and forces a
+   reflow of the row's own content on every animated frame; translateX does
+   the same visual nudge on the compositor for free. */
+a.index-row { transition: background 0.2s var(--ease), transform 0.2s var(--ease); }
+@media (hover: hover) and (pointer: fine) {
+  a.index-row:hover { background: rgba(31,138,116,0.05); transform: translateX(8px); }
+}
 .index-name { font-weight: 600; letter-spacing: -0.012em; }
 
 /* The index rows wipe in from their own rule line rather than fading, so
@@ -759,7 +776,9 @@ body:has(.film-scene) .nav { transition: background 0.35s var(--ease), border-co
 }
 .nav.over-film .brand { color: #fff; }
 .nav.over-film .nav-links a { color: rgba(255,255,255,0.82); }
-.nav.over-film .nav-links a:hover { color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .nav.over-film .nav-links a:hover { color: #fff; }
+}
 .nav.over-film .btn--primary { background: #fff; color: var(--ink); }
 
 /* ==========================================================
@@ -844,7 +863,9 @@ body:has(.film-scene) .nav { transition: background 0.35s var(--ease), border-co
   border: 1px solid rgba(255,255,255,0.3); border-radius: var(--r-control);
   padding: 9px 16px; background: rgba(8,14,22,0.4);
 }
-.film-skip:hover { color: #fff; border-color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .film-skip:hover { color: #fff; border-color: #fff; }
+}
 @media (min-width: 900px) { .film-skip { right: var(--s-7); top: calc(var(--s-8) + 26px); } }
 
 /* Reduced motion: collapse the 620vh scrub to a single screen showing
@@ -1223,7 +1244,9 @@ footer a { color: rgba(247,244,239,0.72); font-size: 0.94rem; }
 /* .small carries a light-mode muted colour; on the dark footer that landed
    at 3.7:1, so it needs an explicit override rather than inheriting. */
 footer .small { color: rgba(247, 244, 239, 0.66); }
-footer a:hover { color: var(--paper); }
+@media (hover: hover) and (pointer: fine) {
+  footer a:hover { color: var(--paper); }
+}
 .foot-h {
   font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em;
   text-transform: uppercase; color: rgba(247,244,239,0.62);
