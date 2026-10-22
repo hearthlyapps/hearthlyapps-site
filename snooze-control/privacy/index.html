@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snooze Control privacy policy | hearthlyapps</title>
+<meta name="description" content="What Snooze Control stores, what it sends, and what it never collects. No account, no ads, no tracking. Your alarms and history stay on your iPhone.">
+<link rel="canonical" href="https://hearthlyapps.com/snooze-control/privacy/">
+<link rel="icon" href="../../assets/img/snooze-control/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+
+<!--
+  DEPLOYMENT
+  Lives at https://hearthlyapps.com/snooze-control/privacy/. The app links here
+  from Settings > Your data, and this URL goes in App Store Connect's privacy
+  policy field. Asset paths are ../../ because the page is two levels deep,
+  same as /hum/privacy/.
+
+  CONTENT SOURCE
+  Every statement below describes code in the SnoozeControl repo as of
+  2026-10-22:
+    - on-device storage: App/Department.swift (Application Support JSON +
+      UserDefaults), Audio/VoiceRenderer.swift (Library/Sounds)
+    - on-device AI: AI/WritersRoom.swift (FoundationModels)
+    - analytics: App/Analytics.swift (every signal listed below) and the
+      TelemetryDeck SDK 2.14.2 default parameters
+    - notifications: Alarm/AlarmIntents.swift (ReportNotifier, local only)
+    - erase: App/Department.swift eraseHistory(), Views/SettingsView.swift
+  If any of those change, this page changes in the same commit.
+-->
+
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/">
+      <img src="../../assets/img/app-icon.png" alt="" width="26" height="26" />
+      hearthlyapps
+    </a>
+    <div class="nav-links">
+      <a href="/snooze-control/">Snooze Control</a>
+      <a href="/snooze-control/support/">Support</a>
+    </div>
+    <a class="btn btn--primary" href="/snooze-control/support/">Get help</a>
+  </div>
+</nav>
+
+<main id="main" class="band band--tight">
+  <div class="wrap">
+    <span class="eyebrow">Privacy</span>
+    <h1 class="d2" style="margin: 16px 0 0; max-width: 22ch;">Your mornings stay on your phone.</h1>
+    <p class="lede" style="margin: 22px 0 52px;">What Snooze Control stores, what it sends, and what it never collects. <span class="small">Last updated: October 22, 2026 (before first release)</span></p>
+    <div class="prose">
+
+<p>This policy explains what the Snooze Control app ("Snooze Control," "we," "the app")
+stores, what leaves your iPhone, and the choices you have. Snooze Control is an alarm clock
+that plays comedy lines from fictional characters and gives you a report card when you get
+up.</p>
+
+<h2>The short version</h2>
+<p>There is no account and no sign-in. Your alarms, your wake-up history and anything you
+type stay on your iPhone. The only thing that leaves it is anonymous usage counts sent to
+TelemetryDeck, an analytics service built to work without identifying people. There are no
+ads, no advertising identifiers and no tracking across apps or websites, so iOS never needs
+to ask permission to track you.</p>
+
+<h2>What stays on your iPhone</h2>
+<p>Snooze Control keeps the following in its own storage on your device. None of it is sent
+to us or to anyone else.</p>
+<ul>
+  <li><strong>Your alarms:</strong> time, repeat days, chosen character, roast level and
+  snooze length.</li>
+  <li><strong>Your wake-up history:</strong> for each morning, the scheduled time, the time
+  you tapped I'm up, the number of snoozes, the character, and the grade and superlative on
+  your report card. This is what the Hall of Shame shows.</li>
+  <li><strong>"What do you wake up for" (optional):</strong> if you type something in this
+  Settings field, it is stored on your device and used only to personalise your report
+  card, as described below.</li>
+  <li><strong>Alarm sound files:</strong> the app assembles each alarm's sound from
+  recordings built into the app and saves the result in its own folder, because iOS can
+  only ring an alarm from a sound file.</li>
+  <li><strong>Settings:</strong> your default character and your toggles.</li>
+</ul>
+<p>Like any app's data, this is included in your iPhone's own backups if you use iCloud
+Backup or back up to a computer. We have no access to those backups.</p>
+
+<h2>On-device AI</h2>
+<p>On iPhones with Apple Intelligence turned on, Snooze Control can write a personal "Most
+likely to..." line for your report card using Apple's on-device language model. The model
+is given only your snooze count for that morning and the text in "What do you wake up for,"
+and it runs entirely on your iPhone. Neither is sent to us, to Apple's servers or to any
+other company. You can switch this off in Settings, under "Personal report cards." Without
+Apple Intelligence, the app uses superlatives written in advance and nothing is
+generated.</p>
+
+<h2>Anonymous usage analytics</h2>
+<p>To learn which parts of the app people use, Snooze Control sends short anonymous messages
+("signals") to <a href="https://telemetrydeck.com" target="_blank" rel="noopener">TelemetryDeck</a>.
+A signal names an event and carries a few coarse values. It never contains your name, email
+address, phone number, location, contacts, the text you type, or the content of your
+alarms' lines.</p>
+<p>The complete list of signals the app sends:</p>
+<ul>
+  <li>an alarm was created or edited, with the character chosen, whether it repeats, and
+  the roast level;</li>
+  <li>your first alarm was set;</li>
+  <li>an alarm was snoozed, with the snooze level;</li>
+  <li>you got up, with the character and the number of snoozes;</li>
+  <li>the Roast Simulator was started or finished, with the character and the snooze
+  count;</li>
+  <li>a character's sample was played;</li>
+  <li>a report card was opened, or its Share button was tapped, with the grade and whether
+  it came from the Simulator;</li>
+  <li>a Home Screen quick action was used, and which one;</li>
+  <li>an alarm failed to schedule, with the first 80 characters of the error iOS
+  reported;</li>
+  <li>an app session started.</li>
+</ul>
+<p>With each signal, the TelemetryDeck software also includes general technical details:
+device model, iOS version, app version and build, screen size, time zone, language and
+region settings, light or dark mode, text size and similar accessibility settings, and
+whether the app came from the App Store or a test build. To count unique users without
+knowing who they are, it uses a random identifier that iOS assigns to our apps on your
+device, scrambled on your iPhone with a one-way hash (SHA-256, with a value unique to this
+app) before it is sent. That hash cannot be turned back into the identifier or matched with
+data from other apps. TelemetryDeck processes signals under its own
+<a href="https://telemetrydeck.com/privacy/" target="_blank" rel="noopener">privacy policy</a>.</p>
+
+<h2>Permissions the app asks for</h2>
+<ul>
+  <li><strong>Alarms.</strong> Required. This lets Snooze Control schedule system alarms
+  that ring through silent mode and Focus. iOS asks the first time you save an alarm.</li>
+  <li><strong>Notifications.</strong> Optional. Used for one local notification after you
+  get up, linking to your report card. It is created on your iPhone; we run no notification
+  server.</li>
+  <li><strong>Photos, add only.</strong> Asked only if you choose "Save Image" from the
+  share sheet on a report card, so iOS can save that one image. The app cannot see your
+  photo library.</li>
+</ul>
+<p>The app never asks for your location, microphone, camera, contacts, calendar or health
+data.</p>
+
+<h2>Sharing</h2>
+<p>Your report card is shared only when you tap Share, through the standard iOS share
+sheet, to the place you choose. We don't receive a copy.</p>
+
+<h2>Siri and Shortcuts</h2>
+<p>If you set or turn off alarms with Siri, Apple processes your request under
+<a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple's privacy
+policy</a>. Snooze Control receives only the result, such as the time you asked for.</p>
+
+<h2>What Snooze Control does not do</h2>
+<ul>
+  <li>No account, sign-in, email address or phone number.</li>
+  <li>No advertising, advertising identifiers or ad networks.</li>
+  <li>No tracking across other companies' apps or websites, and no data brokers.</li>
+  <li>No sale or sharing of data for advertising. There is no personal data for us to
+  sell.</li>
+  <li>No use of your data to train AI models.</li>
+</ul>
+
+<h2>Deleting your data</h2>
+<p>In Settings, "Erase wake-up history" deletes every report card, the Hall of Shame and
+your "What do you wake up for" text, immediately. Your alarms stay. Deleting an alarm
+removes it. Deleting the app removes everything Snooze Control stored on your iPhone.</p>
+<p>Analytics signals are anonymous, so we have no way to find the ones that came from your
+phone. If you'd like no more signals sent, delete the app.</p>
+
+<h2>Children</h2>
+<p>Snooze Control is a comedy app for teenagers and adults and is not directed at children
+under 13. It collects no personal information from anyone, including children.</p>
+
+<h2>Your rights</h2>
+<p>Depending on where you live, laws such as the GDPR and the CCPA give you rights over
+personal data held about you. Because Snooze Control keeps your information on your device
+and sends only anonymous analytics, we hold no personal data that could be tied to you. If
+you have a question or request anyway, email us and we'll answer it.</p>
+
+<h2>Terms</h2>
+<p>Snooze Control is licensed under Apple's standard
+<a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Licensed
+Application End User License Agreement</a>. It is an entertainment app. Please don't rely
+on any single alarm, this one included, for anything you can't afford to miss.</p>
+
+<h2>Changes to this policy</h2>
+<p>If a future version changes what the app stores or sends, this page will be updated
+before that version is released, with a new date at the top. If a change ever involves
+sending anything beyond anonymous analytics, the app will ask you first.</p>
+
+<h2>Contact</h2>
+<p>Questions about this policy:
+<a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>.</p>
+
+<footer>
+This document describes Snooze Control's data practices as implemented in the app as of
+this writing. It is not legal advice, and it hasn't been reviewed by an attorney.
+</footer>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" style="color: var(--paper);">
+          <img src="../../assets/img/app-icon.png" alt="" width="26" height="26" />
+          hearthlyapps
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;">
+          Small, focused iPhone apps for the parts of life that deserve better software.
+        </p>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Snooze Control</div>
+        <a href="/snooze-control/">Overview</a>
+        <a href="/snooze-control/support/">Support</a>
+        <a href="/snooze-control/privacy/">Privacy</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Company</div>
+        <a href="/">hearthlyapps</a>
+        <a href="/support/">Support</a>
+        <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span data-year>2026</span> Dhanvanth Sundar Sankar. All rights reserved.</span>
+      <span>All characters are fictional.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js" defer></script>
+</body>
+</html>

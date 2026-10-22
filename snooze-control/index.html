@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Snooze Control | an alarm that takes snoozing personally</title>
+<meta name="description" content="Snooze Control is an iPhone alarm that roasts you awake. Pick a character, and every snooze makes them louder, sharper and more specific. Rings through silent mode. No account." />
+<link rel="canonical" href="https://hearthlyapps.com/snooze-control/" />
+<link rel="icon" href="../assets/img/snooze-control/icon.png" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hearthlyapps.com/snooze-control/" />
+<meta property="og:title" content="Snooze Control: an alarm that takes snoozing personally" />
+<meta property="og:description" content="Six characters. Seven levels. Every snooze gets more personal. Rings through silent mode." />
+<meta property="og:image" content="https://hearthlyapps.com/assets/img/snooze-control/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://hearthlyapps.com/assets/img/snooze-control/og.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/style.css" />
+
+<!-- No offers, rating or downloadUrl: the app isn't on the App Store yet,
+     and inventing any of those would be the fabricated social proof
+     DESIGN_STANDARDS.md item 12 rules out. Add them on release. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Snooze Control",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "iOS 26 or later",
+  "url": "https://hearthlyapps.com/snooze-control/",
+  "image": "https://hearthlyapps.com/assets/img/snooze-control/icon.png",
+  "description": "An iPhone alarm that roasts you awake. Pick one of six fictional characters; every snooze escalates through seven levels with new lines, faster beeps and a new alarm-screen title. Uses Apple's AlarmKit to ring through silent mode and Focus. No account.",
+  "author": { "@type": "Organization", "name": "hearthlyapps", "url": "https://hearthlyapps.com" }
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/">
+      <img src="../assets/img/app-icon.png" alt="" width="26" height="26" />
+      hearthlyapps
+    </a>
+    <div class="nav-links">
+      <a href="#levels">How it escalates</a>
+      <a href="#cast">The cast</a>
+      <a href="#loud">Loudness</a>
+      <a href="/snooze-control/support/">Support</a>
+    </div>
+    <a class="btn btn--primary" href="#launch">Get it at launch</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ============================================================
+     SCENE 1 — HERO
+     The product is a sound, so the hero is a sound. The player plays
+     a real morning cut from the app's own recorded lines, alarm beeps
+     and stings, and the caption, level ticks and clock follow the
+     audio from measured cue times. Nothing on screen pretends to be a
+     screenshot.
+     ============================================================ -->
+<header class="hero band--dark">
+  <div class="wrap hero-grid">
+    <div>
+      <img class="sc-icon reveal" src="../assets/img/snooze-control/icon.png" alt="The Snooze Control app icon, an alarm clock on black." width="64" height="64" />
+      <span class="eyebrow eyebrow--pale reveal" style="display:block; margin-top: 22px;">Snooze Control · alarm for iPhone</span>
+      <h1 class="d1 reveal" style="max-width: 20ch;">
+        <span class="line"><span>An alarm that takes</span></span>
+        <!-- The mark sits on an inner inline span: on the block-level line
+             span its highlight would run the full column width. -->
+        <span class="line"><span><span class="mark mark--ember">snoozing personally.</span></span></span>
+      </h1>
+      <p class="lede reveal">
+        Pick who wakes you up. Every snooze makes them louder, sharper and
+        more specific, until you're out of bed or they give up on you
+        completely.
+      </p>
+      <div class="btn-row reveal" style="margin-top: 32px;">
+        <a class="btn btn--paper btn--lg" href="#launch">Get it at launch</a>
+        <a class="btn btn--ghost btn--lg" href="#cast">Meet the cast</a>
+      </div>
+      <div class="sc-req reveal">
+        <span>In development</span><span>iOS 26 or later</span><span>No account</span><span>Rings on silent</span>
+      </div>
+    </div>
+
+    <div class="sc-player reveal" data-morning="../assets/audio/snooze-control/morning.mp3" aria-label="Hear a morning with Snooze Control">
+      <div class="sc-player-top">
+        <img src="../assets/img/snooze-control/icon.webp" alt="" width="34" height="34" />
+        <span>A real morning · 0:45</span>
+        <span class="sc-clock" aria-hidden="true">7:00 AM</span>
+      </div>
+
+      <div class="sc-stage" aria-live="polite">
+        <div class="sc-title">WAKE UP · 7:00 AM</div>
+        <div class="sc-who">Mom</div>
+        <p class="sc-line">Good morning. Your brother called. He's doing great. I just thought you should hear that first thing.</p>
+      </div>
+
+      <div class="sc-levels" aria-hidden="true">
+        <span class="is-now"></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="sc-levels-key" aria-hidden="true"><span>Alarm</span><span>Snooze 5</span><span>Gives up</span></div>
+
+      <div class="sc-controls">
+        <button class="sc-play sc-play--lg" type="button" data-morning-play aria-pressed="false">
+          <span class="sc-glyph" aria-hidden="true"></span>Play the morning
+        </button>
+        <span class="sc-time" aria-hidden="true">0:00 / 0:45</span>
+      </div>
+      <p class="small" style="margin-top: 18px;">
+        Five characters across one morning, as they sound in the app. On a real
+        alarm each level plays at full volume and loops its beeps between lines.
+      </p>
+    </div>
+  </div>
+</header>
+
+<script type="application/json" id="sc-cues">
+{"cues": [
+ {"t": 0.0,   "title": "WAKE UP · 7:00 AM",            "who": "Mom",            "level": 0, "line": "Good morning. Your brother called. He's doing great. I just thought you should hear that first thing."},
+ {"t": 8.98,  "title": "SNOOZE #2 · embarrassing",     "who": "Your Bestie",    "level": 2, "line": "Two. I'd roast you harder, but honestly, your life is already doing it for me."},
+ {"t": 16.03, "title": "SNOOZE #4 · pathetic",         "who": "Coach Brick",    "level": 4, "line": "Four. You've got potential, kid. That's what we say about players we've given up on."},
+ {"t": 23.17, "title": "SNOOZE #5 · historic failure", "who": "Duke Hollister", "level": 5, "line": "Five. Duke trained his whole life to never quit. Watching you made Duke think about it."},
+ {"t": 33.78, "title": "WE GIVE UP ON YOU",            "who": "Lady Penelope",  "level": 6, "line": "Six. I accept you now, the way one accepts damp. Permanently, and with regret."}
+]}
+</script>
+
+<!-- ============================================================
+     SCENE 2 — THE ESCALATION
+     A ladder, read top to bottom like the morning it describes. The
+     titles and button labels are the exact strings the app sends to
+     the iPhone alarm screen (scripts/build_library.py in the app).
+     ============================================================ -->
+<section class="band" id="levels">
+  <div class="wrap">
+    <span class="eyebrow eyebrow--ember reveal">Seven levels</span>
+    <h2 class="d2 reveal" style="margin: 16px 0 20px; max-width: 18ch;">
+      Every snooze changes the alarm.
+    </h2>
+    <p class="lede reveal" style="margin-bottom: 52px;">
+      Snooze still works instantly, every time. What changes is everything
+      around it: the title on your Lock Screen, the label on the snooze
+      button, the pitch and speed of the beeps, and what gets said next.
+    </p>
+
+    <div class="sc-ladder-head" aria-hidden="true">
+      <span>Level</span><span>Alarm screen</span><span>Snooze button</span><span>What changes</span>
+    </div>
+    <div class="sc-ladder reveal">
+      <div class="sc-rung"><span class="sc-rung-n">00</span><span class="sc-rung-title">Wake up · 7:00 AM</span><span class="sc-rung-btn">Snooze</span><span class="sc-rung-what">Your character's opening line, then four-beep bursts at full volume.</span></div>
+      <div class="sc-rung"><span class="sc-rung-n">01</span><span class="sc-rung-title">Snooze #1 · weak</span><span class="sc-rung-btn">Snooze (weak)</span><span class="sc-rung-what">A new line. The beeps climb in pitch.</span></div>
+      <div class="sc-rung"><span class="sc-rung-n">02</span><span class="sc-rung-title">Snooze #2 · embarrassing</span><span class="sc-rung-btn">Snooze (again?)</span><span class="sc-rung-what">Your life choices come up.</span></div>
+      <div class="sc-rung"><span class="sc-rung-n">03</span><span class="sc-rung-title">Snooze #3 · screenshotted</span><span class="sc-rung-btn">Snooze (coward)</span><span class="sc-rung-what">Faster bursts. Now it's about your future.</span></div>
+      <div class="sc-rung"><span class="sc-rung-n">04</span><span class="sc-rung-title">Snooze #4 · pathetic</span><span class="sc-rung-btn">Snooze (pathetic)</span><span class="sc-rung-what">Shorter gaps between bursts. Less patience in every line.</span></div>
+      <div class="sc-rung"><span class="sc-rung-n">05</span><span class="sc-rung-title">Snooze #5 · historic failure</span><span class="sc-rung-btn">Snooze (no shame)</span><span class="sc-rung-what">A klaxon goes off before anyone speaks.</span></div>
+      <div class="sc-rung sc-rung--last"><span class="sc-rung-n">06</span><span class="sc-rung-title">We give up on you</span><span class="sc-rung-btn">Snooze (we gave up)</span><span class="sc-rung-what">A calm chime, and they accept you as you are. It's the worst one.</span></div>
+    </div>
+    <p class="small reveal" style="margin-top: 22px;">
+      Snooze length is yours to set, from 5 to 15 minutes. Every snooze after the
+      sixth stays at level six.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCENE 3 — THE CAST
+     A roster read like a lineup, not a card grid. Each quote is a real
+     line from the app, and each button plays that line's recording.
+     ============================================================ -->
+<section class="band band--dark" id="cast">
+  <div class="wrap">
+    <span class="eyebrow eyebrow--pale reveal">The cast</span>
+    <h2 class="d2 reveal" style="margin: 16px 0 20px; max-width: 17ch;">
+      Six people who expected more from you.
+    </h2>
+    <p class="lede reveal" style="margin-bottom: 48px;">
+      Every character is fictional, written by hand and recorded ahead of time,
+      so nothing is generated while your alarm is ringing. Press play to hear one.
+    </p>
+
+    <div class="sc-cast">
+      <div class="sc-member reveal">
+        <div><h3>Your Bestie</h3><p class="small">Zero filter. Has the receipts. The default.</p></div>
+        <p class="sc-quote">Wake up. Your phone has more battery than you have ambition, and it's at nine percent.</p>
+        <button class="sc-play" type="button" data-sample="../assets/audio/snooze-control/bestie.mp3" aria-pressed="false"><span class="sc-glyph" aria-hidden="true"></span>Hear Bestie</button>
+      </div>
+      <div class="sc-member reveal">
+        <div><h3>Mom</h3><p class="small">Not mad. Just disappointed. And telling everyone.</p></div>
+        <p class="sc-quote">Four. I'm not disappointed. Disappointed would mean I expected something.</p>
+        <button class="sc-play" type="button" data-sample="../assets/audio/snooze-control/mom.mp3" aria-pressed="false"><span class="sc-glyph" aria-hidden="true"></span>Hear Mom</button>
+      </div>
+      <div class="sc-member reveal">
+        <div><h3>Coach Brick</h3><p class="small">Has coached champions. Got stuck with you.</p></div>
+        <p class="sc-quote">Two snoozes. You've got the drive of a parked car. With the hazards on. Out of gas.</p>
+        <button class="sc-play" type="button" data-sample="../assets/audio/snooze-control/coach.mp3" aria-pressed="false"><span class="sc-glyph" aria-hidden="true"></span>Hear Coach</button>
+      </div>
+      <div class="sc-member reveal">
+        <div><h3>Lady Penelope</h3><p class="small">Old money. No patience. Openly ashamed of you.</p></div>
+        <p class="sc-quote">Two snoozes. You're not lazy, darling. Lazy implies you'd be doing something otherwise.</p>
+        <button class="sc-play" type="button" data-sample="../assets/audio/snooze-control/lady.mp3" aria-pressed="false"><span class="sc-glyph" aria-hidden="true"></span>Hear Lady P</button>
+      </div>
+      <div class="sc-member reveal">
+        <div><h3>Rick the Commentator</h3><p class="small">Calls your morning live. You're losing.</p></div>
+        <p class="sc-quote">Two! Folks, the analytics say this person peaked in middle school, and honestly, the data looks solid!</p>
+        <button class="sc-play" type="button" data-sample="../assets/audio/snooze-control/rick.mp3" aria-pressed="false"><span class="sc-glyph" aria-hidden="true"></span>Hear Rick</button>
+      </div>
+      <div class="sc-member reveal">
+        <div><h3>Duke Hollister</h3><p class="small">Hall of Famer. Talks about himself in the third person.</p></div>
+        <p class="sc-quote">Two. Duke is not impressed. Duke's statue outside the arena is more active than you.</p>
+        <button class="sc-play" type="button" data-sample="../assets/audio/snooze-control/duke.mp3" aria-pressed="false"><span class="sc-glyph" aria-hidden="true"></span>Hear Duke</button>
+      </div>
+    </div>
+
+    <p class="body reveal" style="margin-top: 40px; max-width: 64ch;">
+      Two settings. <strong style="color: var(--paper);">Harsh</strong> leans on the milder lines.
+      <strong style="color: var(--paper);">No mercy</strong> plays everything. In both, the writing
+      goes after snoozing, ambition and follow-through, and never after looks,
+      weight, health, race, religion, gender, sexuality or disability. Nobody swears.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCENE 4 — LOUDNESS
+     The objection that matters most for an alarm. Four concrete
+     mechanisms, plus the one limit stated plainly instead of hidden.
+     ============================================================ -->
+<section class="band band--paper2" id="loud">
+  <div class="wrap">
+    <span class="eyebrow eyebrow--ember reveal">Loudness</span>
+    <h2 class="d2 reveal" style="margin: 16px 0 44px; max-width: 18ch;">
+      Funny is optional. Getting you up isn't.
+    </h2>
+
+    <div class="stack stack--2">
+      <div class="reveal">
+        <h4>Rings through silent mode and Focus</h4>
+        <p>Snooze Control schedules real system alarms through Apple's AlarmKit, so it rings with the app closed, the phone locked and the switch set to silent, the same way the Clock app does.</p>
+      </div>
+      <div class="reveal">
+        <h4>Mixed loud on purpose</h4>
+        <p>Every recorded line is compressed and limited well above typical podcast loudness, and the beeps play at full volume from the first ring, pitched between 1.8 and 2.9 kHz, near where human hearing is most sensitive.</p>
+      </div>
+      <div class="reveal">
+        <h4>A backup alarm, on by default</h4>
+        <p>If you haven't touched the alarm a minute after it starts, the standard iPhone alarm sound joins in. Tap Snooze or I'm up and it stands down.</p>
+      </div>
+      <div class="reveal">
+        <h4>Test it before you trust it</h4>
+        <p>Settings has a button that rings a real alarm in 20 seconds, so you can hear exactly how loud it is at your current volume before you go to bed.</p>
+      </div>
+    </div>
+
+    <div class="note note--ember reveal" style="max-width: 68ch; margin-top: 36px;">
+      <p class="body" style="margin: 0;"><strong>The one thing no app can change:</strong> iPhone alarms play at your ringer volume. Turn it up in Settings, under Sounds &amp; Haptics, before you rely on any alarm, this one included.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCENE 5 — THE REPORT
+     The share moment, shown as the data it's built from: the real
+     grade scale and the real superlative library, not a mock poster.
+     ============================================================ -->
+<section class="band" id="report">
+  <div class="wrap">
+    <span class="eyebrow eyebrow--ember reveal">The morning report</span>
+    <div class="hero-grid" style="align-items: start; margin: 16px 0 48px;">
+      <h2 class="d2 reveal" style="max-width: 14ch;">Then it grades your morning.</h2>
+      <div>
+        <p class="lede reveal">
+          Tap I'm up and a report card arrives: when the alarm was set, when you
+          actually got up, how many snoozes, how many minutes late, a grade, and a
+          yearbook superlative. It's sized for Stories, because you'll want to send
+          it to someone.
+        </p>
+        <p class="body reveal" style="margin-top: 18px;">
+          On iPhones with Apple Intelligence, the superlative can be written for you,
+          around what you said you wake up for. That runs on the phone with Apple's
+          on-device model. Nothing you type leaves it.
+        </p>
+      </div>
+    </div>
+      <div class="reveal">
+        <div class="sc-grades" role="table" aria-label="Grades by number of snoozes">
+          <div class="sc-grade" role="row"><span class="sc-g" role="cell">A+</span><span class="sc-snz" role="cell">0 snoozes</span><span class="sc-rating" role="cell">Suspiciously Functional</span><span class="sc-sup" role="cell"><em>Most likely to</em>become a morning person and make it everyone's problem</span></div>
+          <div class="sc-grade" role="row"><span class="sc-g" role="cell">B+</span><span class="sc-snz" role="cell">1 snooze</span><span class="sc-rating" role="cell">Barely Acceptable</span><span class="sc-sup" role="cell"><em>Most likely to</em>show up on time and make it a personality trait</span></div>
+          <div class="sc-grade" role="row"><span class="sc-g" role="cell">C</span><span class="sc-snz" role="cell">2 snoozes</span><span class="sc-rating" role="cell">Mid</span><span class="sc-sup" role="cell"><em>Most likely to</em>show up with wet hair and an excuse</span></div>
+          <div class="sc-grade" role="row"><span class="sc-g" role="cell">D+</span><span class="sc-snz" role="cell">3 snoozes</span><span class="sc-rating" role="cell">Concerning</span><span class="sc-sup" role="cell"><em>Most likely to</em>text "omw" from bed</span></div>
+          <div class="sc-grade" role="row"><span class="sc-g sc-g--bad" role="cell">D-</span><span class="sc-snz" role="cell">4 snoozes</span><span class="sc-rating" role="cell">Down Horrendous</span><span class="sc-sup" role="cell"><em>Most likely to</em>get fired from a job they never showed up to</span></div>
+          <div class="sc-grade" role="row"><span class="sc-g sc-g--bad" role="cell">F</span><span class="sc-snz" role="cell">5 snoozes</span><span class="sc-rating" role="cell">Catastrophic</span><span class="sc-sup" role="cell"><em>Most likely to</em>snooze through their own wedding</span></div>
+          <div class="sc-grade" role="row"><span class="sc-g sc-g--bad" role="cell">F-</span><span class="sc-snz" role="cell">6 or more</span><span class="sc-rating" role="cell">Professionally Horizontal</span><span class="sc-sup" role="cell"><em>Most likely to</em>be found by archaeologists, still asleep</span></div>
+        </div>
+        <p class="small" style="margin-top: 14px;">One of two superlatives per grade, from the app's own library.</p>
+      </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCENE 6 — OBJECTIONS
+     Specific, checkable answers. No testimonials or download counts:
+     the app isn't out yet, and inventing either would be fabrication.
+     ============================================================ -->
+<section class="band band--paper2">
+  <div class="wrap">
+    <span class="eyebrow reveal">Before you download</span>
+    <h2 class="d2 reveal" style="margin: 16px 0 44px; max-width: 18ch;">
+      The parts people ask about first.
+    </h2>
+
+    <div class="stack stack--2">
+      <div class="reveal">
+        <h4>Is it as easy as the Clock app?</h4>
+        <p>Setting an alarm takes the same two taps: plus, then Save. There are no setup screens. Long-press the app icon for a new alarm, or ask Siri to set one.</p>
+      </div>
+      <div class="reveal">
+        <h4>Do I need an account?</h4>
+        <p>No. There is no sign-up and no server. Your alarms, your reports and your Hall of Shame stay on your iPhone, and Settings can erase your history at any time.</p>
+      </div>
+      <div class="reveal">
+        <h4>What does it collect?</h4>
+        <p>Anonymous usage counts, such as how many alarms are set and how many snoozes a morning takes, through TelemetryDeck, which never learns who you are. No ads and no cross-app tracking. The <a href="/snooze-control/privacy/" style="text-decoration: underline; text-underline-offset: 3px;">privacy policy</a> lists every signal.</p>
+      </div>
+      <div class="reveal">
+        <h4>Will it work on my iPhone?</h4>
+        <p>It needs iOS 26 or later, the first version that lets apps schedule true system alarms. Personal superlatives also need Apple Intelligence; everything else works without it.</p>
+      </div>
+      <div class="reveal">
+        <h4>Are the voices real people?</h4>
+        <p>No. Every character is fictional and every voice is synthetic, recorded ahead of time with an open-source voice model. No celebrity voices and no impressions of real people.</p>
+      </div>
+      <div class="reveal">
+        <h4>What if I just want to see it?</h4>
+        <p>The Roast Simulator plays all seven levels in about half a minute without touching your real alarms. It was built to be screen-recorded.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCENE 7 — CLOSE
+     One ask. The app isn't released, so the ask is honest: one email
+     on launch day, sent by hand from the support inbox.
+     ============================================================ -->
+<section class="band band--dark" id="launch">
+  <div class="wrap" style="text-align: center;">
+    <img class="sc-icon reveal" src="../assets/img/snooze-control/icon.png" alt="" width="64" height="64" style="margin: 0 auto 22px;" />
+    <span class="eyebrow eyebrow--pale reveal" style="display:block;">Coming to iPhone</span>
+    <h2 class="d2 reveal" style="margin: 18px auto 22px; max-width: 16ch;">
+      Set it once. Find out what Mom thinks.
+    </h2>
+    <p class="lede reveal" style="margin: 0 auto 34px; max-width: 46ch;">
+      Snooze Control is in development. Send one email and you'll get one reply,
+      on the day it reaches the App Store, and nothing else.
+    </p>
+    <div class="btn-row reveal" style="justify-content: center;">
+      <a class="btn btn--paper btn--lg" href="mailto:support@hearthlyapps.com?subject=Snooze%20Control%20launch&amp;body=Tell%20me%20when%20Snooze%20Control%20is%20on%20the%20App%20Store.">Email me at launch</a>
+      <a class="btn btn--ghost btn--lg" href="#main">Hear it again</a>
+    </div>
+    <p class="cta-note reveal">
+      Snooze Control is a comedy alarm. For flights, exams and medication, set a second alarm. That's good advice for any alarm.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" style="color: var(--paper);">
+          <img src="../assets/img/app-icon.png" alt="" width="26" height="26" />
+          hearthlyapps
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;">
+          Small, focused iPhone apps for the parts of life that deserve better software.
+        </p>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Snooze Control</div>
+        <a href="#levels">How it escalates</a>
+        <a href="#cast">The cast</a>
+        <a href="/snooze-control/support/">Support</a>
+        <a href="/snooze-control/privacy/">Privacy</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Company</div>
+        <a href="/">hearthlyapps</a>
+        <a href="/sustain/">Sustain</a>
+        <a href="/support/">Support</a>
+        <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span data-year>2026</span> Dhanvanth Sundar Sankar. All rights reserved.</span>
+      <span>All characters are fictional.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js" defer></script>
+<script src="../assets/js/snooze.js" defer></script>
+</body>
+</html>

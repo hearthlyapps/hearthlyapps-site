@@ -69,7 +69,8 @@ development with zero access to that conversation. It captures what was built, w
 rejected alternative, every bug found and fixed (with root cause), and everything still
 open. Treat it as this project's permanent engineering journal, not a summary.
 
-**Sibling project:** this repo root (`Claude Idea/`) also contains `Sustain/`, a separate
+**Sibling project:** this repo's parent folder (`Developer/` as of the 2026-09-27
+external-drive move; formerly `Claude Idea/`) also contains `Sustain/`, a separate
 native iOS app (Swift/SwiftUI) that hearthlyapps' first product page (`/sustain`) markets.
 That project has its own much larger handoff document at `../Sustain/Documentation/PROJECT_HANDOFF.md`
 — read it if you need to understand Sustain-the-app itself (features, architecture,
@@ -605,7 +606,10 @@ the history isn't lost. Current open items follow.
 3. Consider the reduced-motion gap (§7) if accessibility is a priority before wider launch.
    Still open, not revisited.
 4. Homepage's "what's next" section content was originally scoped to pull from
-   `../iPhone-App-Opportunity-Report.md` — still open, not revisited this session.
+   `../iPhone-App-Opportunity-Report.md`. **[PATH UPDATED 2026-09-06]** That file moved
+   in a folder cleanup and is now at `../Research & Planning/iPhone-App-Opportunity-Report.md`
+   — still one directory up, just inside that subfolder now. This item itself — still
+   open, not revisited this session.
 5. ~~If/when Sustain's real App Store listing goes live, swap the `/sustain` page's "Coming
    soon" buttons for real App Store links~~ — **[DONE, 2026-07-29]**. Sustain has been live
    since 1.0(3) (`apps.apple.com/us/app/sustain-glp-1-companion/id6793802192`); a major 2.0
@@ -648,3 +652,51 @@ the history isn't lost. Current open items follow.
    possible then (no root, blocked network paths, a one-library-short-of-working
    headless Chromium) — worth knowing as background even though a later session's
    environment didn't share those limits.
+
+## 10. Snooze Control pages (added 2026-10-22)
+
+**Request (Dhanvanth):** "add to the hearthlyapps.com website by making marketing material
+for snooze control. This should be an incredibly professional website. This should also have
+the privacy policy, etc. Use the other apps in the developer folder as reference."
+
+**What was added**
+- `/snooze-control/` product page, 7 scenes: hero with a real-audio player; the seven-level
+  escalation ladder (the exact alarm-screen titles and snooze labels from the app's
+  `scripts/build_library.py`); the cast of six with play buttons for each character's real
+  recording; loudness (AlarmKit, mastering, backup alarm, test button, the ringer-volume
+  limit stated plainly); the report-card grade scale and superlatives from the app's
+  library; objections; a launch-notify close (mailto, since the app is unreleased).
+- `/snooze-control/privacy/` modeled on `/hum/privacy/`. Every statement maps to code in
+  `Developer/SnoozeControl` (see the HTML comment at its top). Lists every TelemetryDeck
+  signal from `App/Analytics.swift` and the SDK's default parameters (checked in SDK 2.14.2
+  source). Terms: Apple's standard EULA, same as Hum. No custom ToS (DESIGN_STANDARDS
+  says legal text shouldn't be auto-generated).
+- `/snooze-control/support/` FAQ with FAQPage schema. This is the App Store support URL.
+- Homepage: Snooze Control added to "The workshop" index and the products roster
+  ("One shipped. Four in the workshop."), footer link. `/support/` links to the Snooze
+  Control support page.
+
+**Design decisions**
+- No new palette or typefaces. The app is dark and red; the page uses the system's own
+  `band--dark` and ember instead, since ember is already the "urgent, human" note.
+  Added only `.btn--paper` (light button for dark bands) and the `.sc-*` components.
+- No phone mockups or screenshots: the app has never been built, and DESIGN_STANDARDS
+  item 18 forbids inventing them. The demo is the real product output, its audio, played
+  through `assets/js/snooze.js` with captions synced to measured cue times.
+- No offers/ratings/downloadUrl in JSON-LD and no social proof: unreleased app.
+- Audio is normalized to -16 LUFS for web listening (the in-app alarm files are far louder).
+
+**Verified (2026-10-22, headless Chromium):** no horizontal overflow at 1440 and 390 px;
+no JS errors; the player advances captions/clock/level ticks with the audio and a
+character sample stops the morning; zero em dashes, emoji, checkmarks or "it's not X,
+it's Y" in visible text of every new/changed page.
+
+**Open**
+- Not pushed. Deploy with git from this folder (commit + push to `main`); GitHub Pages
+  serves it.
+- On App Store release: replace the mailto CTAs with the App Store link, add `offers` and
+  `downloadUrl` to the JSON-LD, change status dots to live, and update "One shipped."
+- If the app's data practices change, update `/snooze-control/privacy/` in the same session.
+- Pre-existing, not touched: the homepage hero's `.mark--ember` on a block-level span draws
+  its highlight across the full column width (the Snooze Control hero wraps its mark in an
+  inner inline span to avoid this).

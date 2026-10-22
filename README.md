@@ -21,6 +21,13 @@ Quick orientation:
 - `index.html` — homepage
 - `sustain/index.html` — Sustain product page
 - `privacy/`, `support/` — pre-existing static pages, unrelated to this build
+
+- `snooze-control/` — Snooze Control product page (added 2026-10-22), plus
+  `snooze-control/privacy/` (App Store privacy URL) and `snooze-control/support/`
+  (App Store support URL). Page-specific CSS is the `.sc-*` block at the end of
+  `assets/css/style.css`; audio player logic is `assets/js/snooze.js`; real app
+  audio lives in `assets/audio/snooze-control/`.
+- `hum/privacy/` — Hum's privacy policy.
 - `assets/css/style.css` — shared design system ("another universe" dark/glass theme)
 - `assets/js/main.js` — 2D DOM chrome (nav, hero entrance, scroll-reveal fades)
 - `assets/js/scene.js` — the persistent Three.js 3D world (spinning phone, 5 objects,
