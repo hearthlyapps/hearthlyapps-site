@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1312" />
 
 <title>Sustain — the GLP-1 companion built around your muscle, not the scale</title>
 <meta name="description" content="On a GLP-1, appetite drops fast and protein usually goes with it. Sustain tracks dose, protein and weight together, with an AI photo scan that estimates protein from a picture of your plate. Manual logging free forever. iPhone." />
@@ -20,6 +21,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/css/style.css" />
+<link rel="stylesheet" href="../assets/css/scrub.css" />
+<script>document.documentElement.classList.add("js");</script>
+
+<!-- frame 0 of whichever sequence this screen will use, fetched first -->
+<link rel="preload" as="image" href="../assets/scrub/land/f_000.webp" media="(min-aspect-ratio: 9/10)" />
+<link rel="preload" as="image" href="../assets/scrub/port/f_000.webp" media="(max-aspect-ratio: 9/10)" />
 
 <script type="application/ld+json">
 {
@@ -40,431 +47,497 @@
 }
 </script>
 </head>
-<body>
+<body class="scrub">
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<nav class="nav">
-  <div class="nav-in">
+<!-- ============================================================
+     THE FILM
+     A fixed full-viewport canvas behind the whole page. Scroll is the
+     playhead: assets/js/scrub.js maps scroll position to one of 144
+     rendered frames (assets/scrub/land for wide screens, /port for
+     phones). The frames are this project's own three.js scene (the
+     phone and objects from marketing/v3_build), re-rendered for this
+     page; source and render notes live in
+     marketing/v3_build/scrub_render/ on the project drive.
+
+     Every phone screen in the film is a real Sustain screenshot from
+     assets/img/screenshots/, with the dose card already edited to the
+     generic "GLP-1 dose" label. No drug brand name appears in any frame.
+     ============================================================ -->
+<div class="scrub-film" data-scrub data-frames="144" data-base="../assets/scrub/" aria-hidden="true">
+  <picture>
+    <source media="(max-aspect-ratio: 9/10)" srcset="../assets/scrub/port/f_000.webp" />
+    <img src="../assets/scrub/land/f_000.webp" alt="" width="1920" height="1080" fetchpriority="high" />
+  </picture>
+  <canvas></canvas>
+</div>
+
+<!-- ============================================================
+     HUD
+     The nav, restyled as the film's instrument bar. Telemetry reads
+     off the film itself (chapter, which app screen is on the phone,
+     frame and timecode). None of it is presented as user data.
+     ============================================================ -->
+<header class="hud">
+  <div class="hud-in">
     <a class="brand" href="/">
       <img src="../assets/img/app-icon.png" alt="" width="26" height="26" />
-      hearthlyapps
+      <span>Sustain</span>
+      <small aria-hidden="true">// hearthlyapps</small>
     </a>
-    <div class="nav-links">
-      <a href="#how">How it works</a>
+
+    <dl class="hud-tel" aria-hidden="true">
+      <div><dt>Chapter</dt><dd data-hud="scene" class="is-accent">Today</dd></div>
+      <span class="hud-sep"></span>
+      <div><dt>On screen</dt><dd data-hud="screen">Today</dd></div>
+      <span class="hud-sep"></span>
+      <div><dt>Frame</dt><dd data-hud="frame">000 / 143</dd></div>
+      <span class="hud-sep"></span>
+      <div><dt>Film</dt><dd data-hud="clock">00:00:00</dd></div>
+    </dl>
+
+    <nav class="hud-nav" aria-label="Sections">
+      <a href="#scan">How it works</a>
       <a href="#different">Why it's different</a>
       <a href="#pricing">Pricing</a>
       <a href="/sustain/faq/">FAQ</a>
-    </div>
-    <a class="btn btn--primary" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">Get Sustain</a>
-  </div>
-</nav>
+    </nav>
 
-<main id="main">
+    <a class="btn btn--teal hud-cta" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">Get Sustain</a>
+  </div>
+</header>
+
+
+<main id="main" class="scrub-page">
 
 <!-- ============================================================
-     SCENE 1 — HERO
-     One thought: the scale is lying to you by omission.
-     One ask: download. The product is visible immediately rather
-     than being teased three screens down.
+     00 — HERO
+     One thought: the scale is lying to you by omission. One ask:
+     download. The phone is already on screen in frame 0.
      ============================================================ -->
-<header class="hero" data-scene="exit">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow reveal">Sustain · GLP-1 companion</span>
+<section class="sc sc--hero sc--left" id="top" data-film="0" data-chapter="Today">
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="col">
+      <span class="chap chap--lead reveal">Sustain · GLP-1 companion</span>
       <h1 class="d1 reveal">
         <span class="line"><span>The scale can't tell you</span></span>
-        <span class="line"><span class="mark">what you're losing.</span></span>
+        <span class="line"><span class="dim">what you're losing.</span></span>
       </h1>
-      <p class="lede reveal">
+      <p class="lede reveal" style="margin-top: 28px;">
         On a GLP-1, appetite drops fast and protein usually goes with it.
         Sustain tracks your dose, your protein and your weight in one place,
         so the number going down never hides the one that shouldn't.
       </p>
-      <div class="btn-row reveal" style="margin-top: 32px;">
-        <a class="btn btn--primary btn--lg" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">
+      <div class="btn-row reveal" style="margin-top: 34px;">
+        <a class="btn btn--teal btn--lg" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.687 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.53-3.257c.837-1.012 1.4-2.42 1.245-3.822-1.207.052-2.662.805-3.53 1.818-.776.896-1.454 2.326-1.271 3.696 1.336.104 2.719-.68 3.556-1.692z"/></svg>
           Download free on iPhone
         </a>
-        <a class="btn btn--ghost btn--lg" href="#how">See how it works</a>
+        <a class="btn btn--ghost btn--lg" href="#scan">See how it works</a>
       </div>
       <p class="cta-note reveal">Manual logging is free forever. No trial, no card.</p>
-    </div>
-
-    <!-- The hero phone is a real screenshot of Sustain's Today screen, the
-         same asset used on the homepage device frame (assets/img/screenshots/
-         01-dashboard). It replaced an earlier HTML/CSS recreation of this
-         screen: the recreation looked visibly fake next to the rest of the
-         site and, once, drifted out of sync with a compliance fix (see
-         PROJECT_HANDOFF.md's compliance note). The drug brand name visible
-         in the original screenshot has been edited out to the generic
-         "GLP-1 dose" label, identically to how it's handled everywhere
-         else on this site. -->
-    <div class="device-halo hero-phone">
-      <div class="device device--lg">
-        <picture>
-          <source srcset="../assets/img/screenshots/01-dashboard.webp" type="image/webp" />
-          <img src="../assets/img/screenshots/01-dashboard.jpg" width="700" height="1520" loading="eager"
-               alt="The Sustain Today screen showing next dose, protein progress and weight trend." />
-        </picture>
+      <div class="hero-tags reveal" aria-label="At a glance">
+        <span class="tag">Dose · protein · weight</span>
+        <span class="tag">Apple Health sync</span>
+        <span class="tag">iPhone + Apple Watch</span>
       </div>
     </div>
   </div>
-</header>
+  <div class="cue" aria-hidden="true"><i></i>Scroll to play the film</div>
+</section>
 
 <!-- ============================================================
-     SCENE 2 — THE MECHANISM
-     Name the pain, and make it causal rather than abstract. Four
-     beats, not three cards: this is a chain of events, and it
-     should read as one.
+     01 — THE MECHANISM
+     Name the pain and make it causal. The film pulls the phone back
+     while the dose bottle drifts past: the thing that's working is
+     also the thing that's quietly costing protein.
      ============================================================ -->
-<section class="band band--dark">
+<section class="sc sc--left sc--tall" id="mechanism" data-film="0.115" data-chapter="What happens">
+  <div class="scrim"></div>
   <div class="wrap">
-    <span class="eyebrow eyebrow--pale reveal">What actually happens</span>
-    <h2 class="d2 reveal" style="margin: 16px 0 20px; max-width: 20ch;">
-      Nobody decides to lose muscle. It just isn't the thing being measured.
-    </h2>
-    <p class="lede reveal" style="margin-bottom: 56px;">
-      Rapid weight loss without enough protein costs you lean mass as well as fat.
-      Most of the time the sequence looks like this, and every step of it feels like progress.
-    </p>
-
-    <div class="stack stack--4 chain" data-scene="cover">
-      <div data-slice="0.02,0.2">
-        <div class="step-n" style="margin-bottom: 10px;">01</div>
-        <h4>The dose goes up</h4>
-        <p>Titration is working exactly the way it's supposed to.</p>
-      </div>
-      <div data-slice="0.22,0.4">
-        <div class="step-n" style="margin-bottom: 10px;">02</div>
-        <h4>Food stops appealing</h4>
-        <p>Half a plate is plenty. Dinner gets skipped without much thought.</p>
-      </div>
-      <div data-slice="0.44,0.62">
-        <div class="step-n" style="margin-bottom: 10px;">03</div>
-        <h4>Protein drops first</h4>
-        <p>It's the hardest thing to eat when nothing sounds good.</p>
-      </div>
-      <div data-slice="0.66,0.84">
-        <div class="step-n" style="margin-bottom: 10px;">04</div>
-        <h4>The body makes up the difference</h4>
-        <p>Some of it comes from muscle. The scale reads it as a good week.</p>
-      </div>
-    </div>
-
-    <!-- ------------------------------------------------------------
-         THE FIGURE — the site's one proprietary illustration.
-         It has to do argumentative work, not decorative work: the whole
-         proposition is that a single descending line is an incomplete
-         report, so the drawing is that line being taken apart.
-
-         It is explicitly labelled as illustrative. Presenting invented
-         numbers as though they were real user data would be the exact
-         kind of borrowed credibility this page is otherwise refusing.
-         It also deliberately makes no claim that the app changes the
-         outcome — only that it shows you the second line.
-         ------------------------------------------------------------ -->
-    <div class="figure" style="margin-top: 72px;" data-figure data-scene="cover">
-      <p class="eyebrow eyebrow--pale" style="margin-bottom: 8px;">The same twelve weeks</p>
-      <h3 class="d3" style="max-width: 20ch; margin-bottom: 4px;">One line down. Made of what?</h3>
-
-      <!-- The plot stops at x=700 so the end-labels live inside the viewBox
-           rather than relying on overflow, which clips unpredictably once a
-           container starts constraining width. -->
-      <svg viewBox="0 0 880 360" role="img"
-           aria-label="An illustration of twelve weeks. Total weight falls. Split into its parts, fat mass falls steeply and lean mass also falls. The drop in the lean mass line is the portion of the loss that was not fat, and a scale alone never reports it.">
-        <g class="fig-grid">
-          <line x1="60" y1="70"  x2="700" y2="70" />
-          <line x1="60" y1="140" x2="700" y2="140" />
-          <line x1="60" y1="210" x2="700" y2="210" />
-          <line x1="60" y1="280" x2="700" y2="280" />
-        </g>
-        <line class="fig-axis" x1="60" y1="300" x2="700" y2="300" />
-
-        <text class="fig-label" x="60"  y="330">Week 1</text>
-        <text class="fig-label" x="700" y="330" text-anchor="end">Week 12</text>
-
-        <!-- 1. what the scale reports -->
-        <path data-slice="0.05,0.42" class="fig-line fig-line--total"
-              d="M60,70 C240,120 380,160 500,180 S660,192 700,195" />
-        <!-- 2. the same period, taken apart -->
-        <path data-slice="0.24,0.62" class="fig-line fig-line--fat"
-              d="M60,70 C240,140 380,200 500,240 S660,272 700,279" />
-        <path data-slice="0.40,0.78" class="fig-line fig-line--lean"
-              d="M60,70 C240,92 380,110 500,122 S660,131 700,133" />
-
-        <g class="fig-note" data-slice="0.68,0.86">
-          <!-- The bracket measures the LEAN line's own fall, from the week-1
-               baseline down to where it ends. An earlier version bracketed
-               the gap between the lean and fat lines, which looks similar
-               and means nothing: two different series sitting apart is not
-               a quantity. This is the actual claim — that drop is loss that
-               wasn't fat. -->
-          <path class="fig-bracket" d="M624,70 L624,131 M617,70 L631,70 M617,131 L631,131" />
-          <!-- Label hidden on phones (.fig-anno), where it would sit on top
-               of the lean line; the HTML note below carries it instead. -->
-          <text class="fig-label fig-anno" x="609" y="105" text-anchor="end"
-                style="opacity:0.9; fill: var(--ember);">this part wasn't fat</text>
-
-          <!-- direct labels, desktop only (see .fig-keys in the CSS) -->
-          <g class="fig-keys">
-            <text class="fig-key" x="714" y="137" fill="var(--ember)">Lean mass</text>
-            <text class="fig-key" x="714" y="200" opacity="0.85">Weight</text>
-            <text class="fig-key" x="714" y="284" fill="var(--teal-bright)">Fat</text>
-          </g>
-        </g>
-      </svg>
-
-      <!-- Below ~760px the in-SVG labels scale down to roughly 5px and stop
-           being text in any useful sense, so the legend moves into real HTML
-           where it keeps its own type size. -->
-      <ul class="fig-legend" aria-hidden="true">
-        <li><span class="sw sw--lean"></span>Lean mass</li>
-        <li><span class="sw sw--total"></span>Weight</li>
-        <li><span class="sw sw--fat"></span>Fat</li>
-      </ul>
-      <p class="fig-anno-html">
-        The bracketed drop in the lean mass line is the part of the loss that
-        wasn't fat.
+    <div class="col col--wide">
+      <span class="chap reveal">01 / What actually happens</span>
+      <h2 class="d2 reveal" style="max-width: 18ch;">
+        Nobody decides to lose muscle. <span class="dim">It just isn't the thing being measured.</span>
+      </h2>
+      <p class="body reveal" style="margin-top: 24px;">
+        Rapid weight loss without enough protein costs you lean mass as well as fat.
+        Most of the time the sequence looks like this, and every step of it feels like progress.
       </p>
 
-      <div class="fig-cap">
-        <span>Illustrative, not user data</span>
-        <span>Sustain measures this. It does not promise a particular outcome.</span>
+      <div class="stack stack--4 chain" style="margin-top: 44px;" data-scene="cover">
+        <div data-slice="0.02,0.2">
+          <div class="step-n" style="margin-bottom: 10px;">01</div>
+          <h4>The dose goes up</h4>
+          <p>Titration is working exactly the way it's supposed to.</p>
+        </div>
+        <div data-slice="0.22,0.4">
+          <div class="step-n" style="margin-bottom: 10px;">02</div>
+          <h4>Food stops appealing</h4>
+          <p>Half a plate is plenty. Dinner gets skipped without much thought.</p>
+        </div>
+        <div data-slice="0.44,0.62">
+          <div class="step-n" style="margin-bottom: 10px;">03</div>
+          <h4>Protein drops first</h4>
+          <p>It's the hardest thing to eat when nothing sounds good.</p>
+        </div>
+        <div data-slice="0.66,0.84">
+          <div class="step-n" style="margin-bottom: 10px;">04</div>
+          <h4>The body makes up the difference</h4>
+          <p>Some of it comes from muscle. The scale reads it as a good week.</p>
+        </div>
       </div>
-    </div>
 
-    <p class="lede reveal" style="margin-top: 56px; max-width: 46ch;">
-      You can't fix what you can't see. So the first thing Sustain does is
-      make it visible.
-    </p>
+      <!-- THE FIGURE — the site's one proprietary illustration, unchanged
+           in substance: one descending line taken apart into fat and lean.
+           Explicitly labelled illustrative. Seated in a solid ink panel
+           because a chart has to be read, not watched. -->
+      <div class="panel-film figure" style="margin-top: 40px;" data-figure data-scene="cover">
+        <p class="eyebrow eyebrow--pale" style="margin-bottom: 8px;">The same twelve weeks</p>
+        <h3 class="d3" style="max-width: 20ch; margin-bottom: 4px;">One line down. Made of what?</h3>
+
+        <svg viewBox="0 0 880 360" role="img"
+             aria-label="An illustration of twelve weeks. Total weight falls. Split into its parts, fat mass falls steeply and lean mass also falls. The drop in the lean mass line is the portion of the loss that was not fat, and a scale alone never reports it.">
+          <g class="fig-grid">
+            <line x1="60" y1="70"  x2="700" y2="70" />
+            <line x1="60" y1="140" x2="700" y2="140" />
+            <line x1="60" y1="210" x2="700" y2="210" />
+            <line x1="60" y1="280" x2="700" y2="280" />
+          </g>
+          <line class="fig-axis" x1="60" y1="300" x2="700" y2="300" />
+          <text class="fig-label" x="60"  y="330">Week 1</text>
+          <text class="fig-label" x="700" y="330" text-anchor="end">Week 12</text>
+
+          <path data-slice="0.05,0.42" class="fig-line fig-line--total"
+                d="M60,70 C240,120 380,160 500,180 S660,192 700,195" />
+          <path data-slice="0.24,0.62" class="fig-line fig-line--fat"
+                d="M60,70 C240,140 380,200 500,240 S660,272 700,279" />
+          <path data-slice="0.40,0.78" class="fig-line fig-line--lean"
+                d="M60,70 C240,92 380,110 500,122 S660,131 700,133" />
+
+          <g class="fig-note" data-slice="0.68,0.86">
+            <path class="fig-bracket" d="M624,70 L624,131 M617,70 L631,70 M617,131 L631,131" />
+            <text class="fig-label fig-anno" x="609" y="105" text-anchor="end"
+                  style="opacity:0.9; fill: var(--ember);">this part wasn't fat</text>
+            <g class="fig-keys">
+              <text class="fig-key" x="714" y="137" fill="var(--ember)">Lean mass</text>
+              <text class="fig-key" x="714" y="200" opacity="0.85">Weight</text>
+              <text class="fig-key" x="714" y="284" fill="var(--teal-bright)">Fat</text>
+            </g>
+          </g>
+        </svg>
+
+        <ul class="fig-legend" aria-hidden="true">
+          <li><span class="sw sw--lean"></span>Lean mass</li>
+          <li><span class="sw sw--total"></span>Weight</li>
+          <li><span class="sw sw--fat"></span>Fat</li>
+        </ul>
+        <p class="fig-anno-html">
+          The bracketed drop in the lean mass line is the part of the loss that
+          wasn't fat.
+        </p>
+        <div class="fig-cap">
+          <span>Illustrative, not user data</span>
+          <span>Sustain measures this. It does not promise a particular outcome.</span>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="margin-top: 44px; max-width: 40ch;">
+        You can't fix what you can't see. So the first thing Sustain does is
+        make it visible.
+      </p>
+    </div>
   </div>
 </section>
 
 <!-- ============================================================
-     SCENE 3 — THE FILM
-     A pinned canvas playing a real rendered sequence against scroll.
-     The frames are this project's own v3 WebGL render (781 originals in
-     marketing/v3_build/raw_frames_v4), resampled to 132 and scrubbed —
-     so scrolling literally plays a film of the product rather than
-     triggering a series of separate animations.
+     02 — THE SCAN  (phone right, copy left)
      ============================================================ -->
-<section class="film-scene" id="how" data-film-scene data-scene="pin" aria-label="A film of Sustain, played by scrolling">
-  <div class="film-stage" data-film data-frames="132" data-path="../assets/film/">
-    <canvas width="810" height="1440" role="img"
-      aria-label="A rendered sequence: a phone travels through a teal field, its screen moving through Sustain's camera scan, trends, Ask Sustain, lab results and Today screens."></canvas>
-
-    <div class="film-cap">
-      <div class="film-line" data-slice="0.04,0.08,0.13,0.17">
-        <div class="step-n">01 — Today</div>
-        <h3>Everything on one screen.</h3>
-        <p>Your next dose, today's protein against a target set for your body, and where your weight is actually heading.</p>
-      </div>
-      <div class="film-line" data-slice="0.18,0.22,0.29,0.33">
-        <div class="step-n">02 — The scan</div>
-        <h3>Point it at dinner.</h3>
-        <p>Photograph the plate and Sustain estimates the protein. No database, no portion maths, and you can edit the number.</p>
-      </div>
-      <div class="film-line" data-slice="0.36,0.40,0.54,0.58">
-        <div class="step-n">03 — Trends</div>
-        <h3>Two lines, not one.</h3>
-        <p>Body fat and lean mass tracked separately, so a falling number finally tells you what it was made of.</p>
-      </div>
-      <div class="film-line" data-slice="0.61,0.65,0.75,0.79">
-        <div class="step-n">04 — Ask Sustain</div>
-        <h3>It answers from your data.</h3>
-        <p>Not the internet's. It never diagnoses, never reads a lab value and never suggests a dose.</p>
-      </div>
-      <div class="film-line" data-slice="0.82,0.86,0.94,0.98">
-        <div class="step-n">05 — Labs</div>
-        <h3>Bring your bloodwork in.</h3>
-        <p>Photograph a report and Sustain transcribes the values for you to review. Interpretation stays with your prescriber.</p>
+<section class="sc sc--left" id="scan" data-film="0.30" data-chapter="The scan">
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="col">
+      <span class="chap reveal">02 / The scan</span>
+      <h2 class="d2 reveal">Point it at dinner. <span class="dim">The protein comes back.</span></h2>
+      <p class="body reveal" style="margin-top: 24px;">
+        Photograph the plate and Sustain estimates the protein. No database,
+        no portion maths, and you can edit the number before it's logged.
+      </p>
+      <div class="readout reveal">
+        <div class="readout-row"><span class="readout-k">Logging a meal</span><span class="readout-v is-key">One photo</span></div>
+        <div class="readout-row"><span class="readout-k">Database search</span><span class="readout-v">None</span></div>
+        <div class="readout-row"><span class="readout-k">The estimate</span><span class="readout-v">Yours to edit</span></div>
       </div>
     </div>
-
-    <a class="film-skip" href="#different">Skip the film</a>
-    <span class="film-bar" aria-hidden="true"></span>
   </div>
 </section>
 
 <!-- ============================================================
-     SCENE 4 — DIFFERENTIATION
+     03 — TRENDS  (phone left, copy right)
+     ============================================================ -->
+<section class="sc sc--right" id="trends" data-film="0.455" data-chapter="Trends">
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="col is-flush">
+      <span class="chap reveal">03 / Trends</span>
+      <h2 class="d2 reveal">Two lines, <span class="dim">not one.</span></h2>
+      <p class="body reveal" style="margin-top: 24px;">
+        Body fat and lean mass tracked separately, so a falling number finally
+        tells you what it was made of.
+      </p>
+      <div class="readout reveal">
+        <div class="readout-row"><span class="readout-k">Body fat</span><span class="readout-v">Tracked</span></div>
+        <div class="readout-row"><span class="readout-k">Lean mass</span><span class="readout-v is-key">Tracked separately</span></div>
+        <div class="readout-row"><span class="readout-k">Apple Health</span><span class="readout-v">Syncs both ways</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     04 — ASK SUSTAIN  (phone right, copy left)
+     The three "never" facts get the reference's telemetry strip,
+     in ember: they are the limits, stated as loudly as the feature.
+     ============================================================ -->
+<section class="sc sc--left" id="ask" data-film="0.605" data-chapter="Ask Sustain">
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="col">
+      <span class="chap reveal">04 / Ask Sustain</span>
+      <h2 class="d2 reveal">It answers from your data. <span class="dim">Not the internet's.</span></h2>
+      <p class="body reveal" style="margin-top: 24px;">
+        Ask how your protein is trending or what changed this week, and the
+        answer comes from what you've logged. Every clinical decision stays
+        with your prescriber.
+      </p>
+      <dl class="strip reveal">
+        <div><dt>Diagnoses</dt><dd>Never</dd></div>
+        <span class="hud-sep" aria-hidden="true"></span>
+        <div><dt>Reads a lab value</dt><dd>Never</dd></div>
+        <span class="hud-sep" aria-hidden="true"></span>
+        <div><dt>Suggests a dose</dt><dd>Never</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     05 — LABS  (phone left, copy right)
+     ============================================================ -->
+<section class="sc sc--right" id="labs" data-film="0.728" data-chapter="Labs">
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="col is-flush">
+      <span class="chap reveal">05 / Labs</span>
+      <h2 class="d2 reveal">Bring your bloodwork in. <span class="dim">Keep the reading of it.</span></h2>
+      <p class="body reveal" style="margin-top: 24px;">
+        Photograph a report and Sustain transcribes the values for you to
+        review. Interpretation stays with your prescriber.
+      </p>
+      <div class="readout reveal">
+        <div class="readout-row"><span class="readout-k">Input</span><span class="readout-v">A photo of the report</span></div>
+        <div class="readout-row"><span class="readout-k">Output</span><span class="readout-v is-key">Values to review</span></div>
+        <div class="readout-row"><span class="readout-k">Interpretation</span><span class="readout-v">Your prescriber</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     06 — DIFFERENTIATION
      A direct contrast table instead of a wall of feature cards.
-     Every row is a real objection a shopper is already holding.
+     The film pulls the phone far back here so the table can be read.
      ============================================================ -->
-<section class="band band--paper2" id="different">
+<section class="sc sc--center" id="different" data-film="0.85" data-chapter="The difference">
+  <div class="scrim"></div>
   <div class="wrap">
-    <span class="eyebrow reveal">Why it's different</span>
-    <h2 class="d2 reveal" style="margin: 16px 0 44px; max-width: 20ch;">
-      Every other tracker was built around the scale.
-    </h2>
+    <div class="panel-film" style="text-align: left;">
+      <span class="chap reveal">06 / Why it's different</span>
+      <h2 class="d2 reveal" style="margin: 0 0 40px; max-width: 20ch;">
+        Every other tracker was built <span class="dim">around the scale.</span>
+      </h2>
 
-    <div class="compare reveal">
-      <div class="compare-row">
-        <div class="compare-head">The moment</div>
-        <div class="compare-head">A general tracker</div>
-        <div class="compare-head">Sustain</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-q">Your protein runs low for a week</div>
-        <div class="compare-a">Counts it as calories, if you logged it at all</div>
-        <div class="compare-a compare-a--us">Measures it against a target set for your body, and says so</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-q">You want to log a meal</div>
-        <div class="compare-a">Search a database, pick the closest match, guess the portion</div>
-        <div class="compare-a compare-a--us">Photograph the plate, edit the estimate if it's off</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-q">Your weekly summary arrives</div>
-        <div class="compare-a">Restates the number already at the top of the screen</div>
-        <div class="compare-a compare-a--us">Connects protein, dose adherence and how fast weight is moving</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-q">You're tracking an injection schedule</div>
-        <div class="compare-a">No concept of it. It's a food app.</div>
-        <div class="compare-a compare-a--us">Doses, titration steps, injection sites and a refill nudge</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-q">You reach your goal weight</div>
-        <div class="compare-a">Nothing left to say. The graph just stops going down.</div>
-        <div class="compare-a compare-a--us">A maintenance range and a guide for the prescriber conversation</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-q">You just want to log today</div>
-        <div class="compare-a">Free for 7 days, then it's a subscription</div>
-        <div class="compare-a compare-a--us">Free forever. The AI layer is the only thing you ever pay for.</div>
+      <div class="compare reveal">
+        <div class="compare-row">
+          <div class="compare-head">The moment</div>
+          <div class="compare-head">A general tracker</div>
+          <div class="compare-head">Sustain</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-q">Your protein runs low for a week</div>
+          <div class="compare-a">Counts it as calories, if you logged it at all</div>
+          <div class="compare-a compare-a--us">Measures it against a target set for your body, and says so</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-q">You want to log a meal</div>
+          <div class="compare-a">Search a database, pick the closest match, guess the portion</div>
+          <div class="compare-a compare-a--us">Photograph the plate, edit the estimate if it's off</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-q">Your weekly summary arrives</div>
+          <div class="compare-a">Restates the number already at the top of the screen</div>
+          <div class="compare-a compare-a--us">Connects protein, dose adherence and how fast weight is moving</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-q">You're tracking an injection schedule</div>
+          <div class="compare-a">No concept of it. It's a food app.</div>
+          <div class="compare-a compare-a--us">Doses, titration steps, injection sites and a refill nudge</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-q">You reach your goal weight</div>
+          <div class="compare-a">Nothing left to say. The graph just stops going down.</div>
+          <div class="compare-a compare-a--us">A maintenance range and a guide for the prescriber conversation</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-q">You just want to log today</div>
+          <div class="compare-a">Free for 7 days, then it's a subscription</div>
+          <div class="compare-a compare-a--us">Free forever. The AI layer is the only thing you ever pay for.</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     SCENE 5 — TRUST
-     Objections, answered with specifics that can be checked rather
-     than adjectives that can't. No testimonials, no download
-     counts, no star ratings: the app is new and inventing social
-     proof would be the fastest way to lose the trust this section
-     exists to build.
+     07 — TRUST
+     Objections answered with checkable specifics. No testimonials,
+     no download counts, no star ratings: the app is new and
+     inventing social proof would cost the trust this exists to build.
      ============================================================ -->
-<section class="band">
+<section class="sc sc--left" id="trust" data-film="0.885" data-chapter="Before you download">
+  <div class="scrim"></div>
   <div class="wrap">
-    <span class="eyebrow reveal">Before you download</span>
-    <h2 class="d2 reveal" style="margin: 16px 0 44px; max-width: 18ch;">
-      The parts people ask about first.
-    </h2>
+    <div class="col col--wide">
+      <span class="chap reveal">07 / Before you download</span>
+      <h2 class="d2 reveal" style="margin-bottom: 40px; max-width: 18ch;">
+        The parts people <span class="dim">ask about first.</span>
+      </h2>
+      <div class="stack stack--2">
+        <div class="reveal">
+          <h4>"Free" usually means free for a week.</h4>
+          <p>Not here. Logging your dose, weight, protein and side effects is free forever, with no card and no countdown. Sustain+ unlocks the AI features and your full history. That's the whole split.</p>
+        </div>
+        <div class="reveal">
+          <h4>Where does my health data go?</h4>
+          <p>To your own account, protected so only you can read it. It is never sold, never shared with advertisers, and never used to train an AI model. You can permanently delete the account and its data from inside the app.</p>
+        </div>
+        <div class="reveal">
+          <h4>Is this giving me medical advice?</h4>
+          <p>No, deliberately. Sustain never diagnoses, never interprets a lab value and never suggests a dose change. It transcribes, tracks and shows you patterns. Every clinical decision stays with your prescriber.</p>
+        </div>
+        <div class="reveal">
+          <h4>Does it work with what I already use?</h4>
+          <p>Weight and protein sync both ways with Apple Health, so you're not logging the same thing twice. There's a Lock Screen widget, a Live Activity and an Apple Watch complication for logging a dose in one tap.</p>
+        </div>
+      </div>
+      <p class="small reveal" style="margin-top: 20px;">More answers in the <a class="inline" href="/sustain/faq/">GLP-1 and muscle FAQ</a>.</p>
+    </div>
+  </div>
+</section>
 
-    <div class="stack stack--2">
-      <div class="reveal">
-        <h4>"Free" usually means free for a week.</h4>
-        <p>Not here. Logging your dose, weight, protein and side effects is free forever, with no card and no countdown. Sustain+ unlocks the AI features and your full history. That's the whole split.</p>
+<!-- ============================================================
+     08 — PRICING
+     The free tier stated as loudly as the paid ones.
+     ============================================================ -->
+<section class="sc sc--center" id="pricing" data-film="0.91" data-chapter="Pricing">
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="panel-film" style="text-align: left;">
+      <span class="chap reveal">08 / Pricing</span>
+      <h2 class="d2 reveal" style="margin: 0 0 36px; max-width: 20ch;">
+        Manual logging is free. <span class="dim">That isn't a trial.</span>
+      </h2>
+
+      <div class="free-line reveal">
+        <strong style="font-family: var(--serif); font-size: 1.6rem; font-variation-settings: 'SOFT' 30, 'WONK' 1;">$0</strong>
+        <span class="body" style="margin: 0;">Dose, weight, protein and side-effect logging. Forever, with no card required.</span>
       </div>
-      <div class="reveal">
-        <h4>Where does my health data go?</h4>
-        <p>To your own account, protected so only you can read it. It is never sold, never shared with advertisers, and never used to train an AI model. You can permanently delete the account and its data from inside the app.</p>
-      </div>
-      <div class="reveal">
-        <h4>Is this giving me medical advice?</h4>
-        <p>No, deliberately. Sustain never diagnoses, never interprets a lab value and never suggests a dose change. It transcribes, tracks and shows you patterns. Every clinical decision stays with your prescriber.</p>
-      </div>
-      <div class="reveal">
-        <h4>Does it work with what I already use?</h4>
-        <p>Weight and protein sync both ways with Apple Health, so you're not logging the same thing twice. There's a Lock Screen widget, a Live Activity and an Apple Watch complication for logging a dose in one tap.</p>
+
+      <div class="prices">
+        <div class="price price--best reveal">
+          <span class="flag">Best value</span>
+          <div class="tier">Sustain+ annual</div>
+          <div class="amt">$59.99<span> / year</span></div>
+          <div class="small">30-day free trial</div>
+          <ul>
+            <li>AI photo protein estimates</li>
+            <li>Full history and trends</li>
+            <li>Weekly AI recap</li>
+            <li>Side-effect pattern reports</li>
+            <li>Body composition and lab import</li>
+          </ul>
+        </div>
+        <div class="price reveal">
+          <div class="tier">Sustain+ monthly</div>
+          <div class="amt">$7.99<span> / month</span></div>
+          <div class="small">7-day free trial</div>
+          <ul>
+            <li>Everything in annual</li>
+            <li>Cancel anytime</li>
+          </ul>
+        </div>
+        <div class="price reveal">
+          <div class="tier">Maintenance program</div>
+          <div class="amt">$19.99<span> once</span></div>
+          <div class="small">Unlocks when you reach your goal</div>
+          <ul>
+            <li>A range to hold, not a number to chase</li>
+            <li>A prescriber conversation guide</li>
+            <li>One-time purchase, no new subscription</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     SCENE 6 — PRICING
-     The free tier stated as loudly as the paid ones, because it is
-     the single strongest differentiator on the page.
+     09 — CLOSE
+     The film lands back on Today, facing the reader. One ask, and the
+     disclaimer placed as a statement of values rather than fine print.
      ============================================================ -->
-<section class="band band--paper2" id="pricing">
+<section class="sc sc--left" id="start" data-film="0.935" data-chapter="Start">
+  <div class="scrim"></div>
   <div class="wrap">
-    <span class="eyebrow reveal">Pricing</span>
-    <h2 class="d2 reveal" style="margin: 16px 0 40px; max-width: 20ch;">
-      Manual logging is free. That isn't a trial.
-    </h2>
-
-    <div class="free-line reveal">
-      <strong style="font-family: var(--serif); font-size: 1.6rem; font-variation-settings: 'SOFT' 30, 'WONK' 1;">$0</strong>
-      <span class="body" style="margin: 0;">Dose, weight, protein and side-effect logging. Forever, with no card required.</span>
-    </div>
-
-    <div class="prices">
-      <div class="price price--best reveal">
-        <span class="flag">Best value</span>
-        <div class="tier">Sustain+ annual</div>
-        <div class="amt">$59.99<span> / year</span></div>
-        <div class="small">30-day free trial</div>
-        <ul>
-          <li>AI photo protein estimates</li>
-          <li>Full history and trends</li>
-          <li>Weekly AI recap</li>
-          <li>Side-effect pattern reports</li>
-          <li>Body composition and lab import</li>
-        </ul>
+    <div class="col">
+      <svg class="spark spark--lg reveal" viewBox="0 0 42 16" aria-hidden="true" style="margin-bottom: 22px;">
+        <path class="s-b" d="M2,4 C14,5 26,6 40,7" />
+        <path class="s-a" d="M2,4 C14,8 26,12 40,14" />
+      </svg>
+      <span class="chap reveal">Lose fat. Not muscle.</span>
+      <h2 class="d2 reveal" style="max-width: 14ch;">Start with <span class="dim">tonight's dinner.</span></h2>
+      <p class="lede reveal" style="margin-top: 24px; max-width: 40ch;">
+        Log one plate, one dose, one weigh-in. That's enough to start seeing the
+        second line the scale never showed you.
+      </p>
+      <div class="btn-row reveal" style="margin-top: 32px;">
+        <a class="btn btn--teal btn--lg" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.687 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.53-3.257c.837-1.012 1.4-2.42 1.245-3.822-1.207.052-2.662.805-3.53 1.818-.776.896-1.454 2.326-1.271 3.696 1.336.104 2.719-.68 3.556-1.692z"/></svg>
+          Download free on iPhone
+        </a>
       </div>
-      <div class="price reveal">
-        <div class="tier">Sustain+ monthly</div>
-        <div class="amt">$7.99<span> / month</span></div>
-        <div class="small">7-day free trial</div>
-        <ul>
-          <li>Everything in annual</li>
-          <li>Cancel anytime</li>
-        </ul>
-      </div>
-      <div class="price reveal">
-        <div class="tier">Maintenance program</div>
-        <div class="amt">$19.99<span> once</span></div>
-        <div class="small">Unlocks when you reach your goal</div>
-        <ul>
-          <li>A range to hold, not a number to chase</li>
-          <li>A prescriber conversation guide</li>
-          <li>One-time purchase, no new subscription</li>
-        </ul>
-      </div>
+      <p class="cta-note reveal">
+        Sustain is a tracking tool, not a medical device. It never diagnoses and never
+        suggests a dose change.
+      </p>
     </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SCENE 7 — CLOSE
-     One ask, and the disclaimer placed as a statement of values
-     rather than fine print.
-     ============================================================ -->
-<section class="band band--dark">
-  <div class="wrap" style="text-align: center;">
-    <!-- The figure, reduced to a mark. Same two lines, same meaning, at
-         14px: a stamp the brand can reuse anywhere the full drawing won't
-         fit. This is what makes it an identity rather than one nice chart. -->
-    <svg class="spark spark--lg reveal" viewBox="0 0 42 16" aria-hidden="true" style="margin-bottom: 20px;">
-      <path class="s-b" d="M2,4 C14,5 26,6 40,7" />
-      <path class="s-a" d="M2,4 C14,8 26,12 40,14" />
-    </svg>
-    <span class="eyebrow eyebrow--pale reveal" style="display:block;">Lose fat. Not muscle.</span>
-    <h2 class="d2 reveal" style="margin: 18px auto 22px; max-width: 17ch;">
-      Start with tonight's dinner.
-    </h2>
-    <p class="lede reveal" style="margin: 0 auto 34px; max-width: 44ch;">
-      Log one plate, one dose, one weigh-in. That's enough to start seeing the
-      second line the scale never showed you.
-    </p>
-    <div class="btn-row reveal" style="justify-content: center;">
-      <a class="btn btn--teal btn--lg" href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.687 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.53-3.257c.837-1.012 1.4-2.42 1.245-3.822-1.207.052-2.662.805-3.53 1.818-.776.896-1.454 2.326-1.271 3.696 1.336.104 2.719-.68 3.556-1.692z"/></svg>
-        Download free on iPhone
-      </a>
-    </div>
-    <p class="cta-note reveal">
-      Sustain is a tracking tool, not a medical device. It never diagnoses and never
-      suggests a dose change.
-    </p>
   </div>
 </section>
 
 </main>
+
+<!-- progress rail; its chapter ticks are built by scrub.js and jump to sections -->
+<div class="rail" data-rail>
+  <span class="rail-label" aria-hidden="true">The film</span>
+  <div class="rail-track">
+    <span class="rail-fill" aria-hidden="true"></span>
+    <span class="rail-dot" aria-hidden="true"></span>
+    <div data-rail-ticks></div>
+  </div>
+  <span class="rail-pct" data-rail-pct aria-hidden="true">00%</span>
+</div>
 
 <footer>
   <div class="wrap">
@@ -480,7 +553,7 @@
       </div>
       <div class="foot-col">
         <div class="foot-h">Sustain</div>
-        <a href="#how">How it works</a>
+        <a href="#scan">How it works</a>
         <a href="#pricing">Pricing</a>
         <a href="/sustain/faq/">FAQ</a>
         <a href="https://apps.apple.com/us/app/sustain-glp-1-companion/id6793802192" target="_blank" rel="noopener">App Store</a>
@@ -502,6 +575,6 @@
 
 <script src="../assets/js/main.js" defer></script>
 <script src="../assets/js/motion.js" defer></script>
-<script src="../assets/js/film.js" defer></script>
+<script src="../assets/js/scrub.js" defer></script>
 </body>
 </html>

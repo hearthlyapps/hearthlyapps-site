@@ -1,0 +1,468 @@
+/* ===========================================================
+   /sustain/ — page-scrub layout
+   2026-10-26.
+
+   Structure follows the "page scrub" pattern (reference: Kombai's Apsis
+   Aerospace study): one fixed full-viewport canvas plays a rendered
+   frame sequence behind the page, scroll position is the playhead, and
+   ordinary content sections scroll over it. A HUD bar and a progress
+   rail read off the same playhead.
+
+   What is NOT borrowed from the reference, on purpose (see
+   DESIGN_STANDARDS.md): its near-black + neon-orange palette, Space
+   Grotesk, the decorative 64px background grid and frosted-glass chips.
+   Ground is this site's own ink, accents are teal and ember, type is
+   Fraunces / Instrument Sans / IBM Plex Mono, and the radius languages
+   (4px panels, round controls) are unchanged.
+
+   Everything here is scoped under body.scrub so the shared stylesheet
+   and the other pages are untouched.
+   =========================================================== */
+
+body.scrub {
+  --ground: #0b1312;           /* below --ink: the film's darkest value */
+  --on: #f7f4ef;               /* paper, used as text on the film */
+  --on-2: rgba(247, 244, 239, 0.74);
+  --on-3: rgba(247, 244, 239, 0.58);
+  --line: rgba(247, 244, 239, 0.14);
+  --line-soft: rgba(247, 244, 239, 0.08);
+  /* ember tuned for a dark ground (paper-tuned #c4522f is 3.7:1 here) */
+  --ember: #e07a4e;
+  --hud-h: 58px;
+
+  background: var(--ground);
+  color: var(--on);
+}
+
+/* ---------------------------------------------------------- film layer */
+
+.scrub-film {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* lvh: on iOS the film is sized to the large viewport so it doesn't
+     jump when the toolbars collapse mid-scroll. */
+  height: 100vh;
+  height: 100lvh;
+  background: var(--ground);
+  pointer-events: none;
+}
+.scrub-film canvas,
+.scrub-film img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* The poster is frame 0 as a real <img>: it is what paints first, what a
+   no-JS visitor sees, and what stays if the sequence can't load. The
+   canvas fades in over it once it has a frame to draw. */
+.scrub-film canvas { opacity: 0; transition: opacity 0.5s var(--ease); }
+.scrub-film.is-live canvas { opacity: 1; }
+/* once the canvas is up, drop the poster so a reload mid-page doesn't
+   double-expose frame 0 under the current frame */
+.scrub-film.is-live picture { visibility: hidden; transition: visibility 0s linear 0.5s; }
+
+/* Edge darkening so the HUD and copy never sit on the brightest part of
+   the field. Functional (contrast), same job as the old film vignette. */
+.scrub-film::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 160px 10px rgba(6, 11, 10, 0.55);
+}
+
+/* ---------------------------------------------------------- HUD bar */
+
+.hud {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 10px var(--s-4) 0;
+  pointer-events: none;
+}
+@media (min-width: 900px) { .hud { padding: 12px var(--s-6) 0; } }
+
+.hud-in {
+  pointer-events: auto;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: var(--hud-h);
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  padding: 8px 8px 8px var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  /* solid enough to read over any frame without a backdrop blur */
+  background: rgba(9, 15, 14, 0.82);
+  font-family: var(--mono);
+}
+
+.hud .brand { color: var(--on); margin-right: 0; gap: 10px; }
+.hud .brand small {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--on-3);
+  font-weight: 500;
+  font-variation-settings: normal;
+}
+@media (max-width: 520px) { .hud .brand small { display: none; } }
+.hud-live {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--teal-bright);
+  box-shadow: 0 0 0 3px rgba(47, 184, 159, 0.2);
+  flex: none;
+}
+
+.hud-tel {
+  display: none;
+  align-items: center;
+  gap: var(--s-5);
+  margin-left: auto;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+@media (min-width: 1080px) { .hud-tel { display: flex; } }
+.hud-tel > div { display: grid; gap: 3px; line-height: 1; }
+.hud-tel dt { font-size: 0.62rem; color: var(--on-3); letter-spacing: 0.16em; }
+.hud-tel dd { margin: 0; color: var(--on); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hud-tel dd.is-accent { color: var(--teal-bright); }
+.hud-sep { width: 1px; height: 26px; background: var(--line); }
+
+.hud-nav { display: none; gap: var(--s-4); margin-left: auto; font-family: var(--sans); }
+@media (min-width: 820px) and (max-width: 1079px) { .hud-nav { display: flex; } }
+.hud-nav a { font-size: 0.9rem; color: var(--on-2); }
+@media (hover: hover) and (pointer: fine) { .hud-nav a:hover { color: var(--on); } }
+
+.hud-cta { margin-left: auto; font-family: var(--sans); }
+@media (min-width: 820px) { .hud-cta { margin-left: var(--s-2); } }
+.hud .btn { padding: 10px 18px; font-size: 0.9rem; }
+
+/* ---------------------------------------------------------- progress rail */
+
+.rail {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+}
+@media (min-width: 1080px) { .rail { display: flex; } }
+.rail-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--on-3);
+}
+.rail-track { position: relative; width: 1px; height: 220px; background: var(--line); }
+.rail-fill {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  background: var(--teal-bright);
+  transform-origin: 50% 0;
+  transform: scaleY(var(--rp, 0));
+}
+.rail-dot {
+  position: absolute; left: 50%; top: 0;
+  width: 8px; height: 8px; margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--teal-bright);
+  box-shadow: 0 0 0 4px rgba(47, 184, 159, 0.18);
+  transform: translateY(calc(var(--rp, 0) * 220px));
+}
+/* Chapter ticks double as a table of contents: each one jumps to its
+   section. Real buttons, so they're keyboard-reachable and labelled. */
+.rail-tick {
+  position: absolute; left: 50%;
+  width: 22px; height: 14px; margin: -7px 0 0 -11px;
+  padding: 0; border: 0; background: none; cursor: pointer;
+}
+.rail-tick::before {
+  content: ""; position: absolute; left: 7px; right: 7px; top: 6px; height: 1px;
+  background: var(--on-3);
+}
+.rail-tick span {
+  position: absolute; right: 26px; top: 50%; transform: translateY(-50%);
+  white-space: nowrap; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--on-2); opacity: 0; transition: opacity 0.2s var(--ease);
+  pointer-events: none;
+}
+.rail-tick.is-on::before { background: var(--teal-bright); }
+@media (hover: hover) and (pointer: fine) {
+  .rail-tick:hover span { opacity: 1; }
+}
+.rail-tick:focus-visible span { opacity: 1; }
+.rail-pct { font-size: 0.66rem; letter-spacing: 0.14em; color: var(--teal-bright); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------- page layer */
+
+.scrub-page { position: relative; z-index: 1; }
+
+.sc {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--hud-h) + var(--s-8)) 0 var(--s-9);
+}
+.sc--tall { min-height: 140vh; }
+/* A stretch of bare film between chapters. The phone crosses sides and
+   changes screens while nothing is written over it, so a turn never
+   happens behind a paragraph. scrub.js anchors each chapter so the turn
+   lands inside this gap. */
+.sc + .sc { margin-top: 38vh; }
+.sc--center + .sc--center, .sc--center + .sc--left#trust, #trust + .sc--center { margin-top: 18vh; }
+.sc > .scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  /* feathered top and bottom, so a section's scrim never shows up as a
+     hard horizontal edge across the film in the bare gaps between them */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16vh, #000 calc(100% - 12vh), transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 16vh, #000 calc(100% - 12vh), transparent 100%);
+}
+.sc--hero > .scrim {
+  -webkit-mask-image: linear-gradient(180deg, #000 0, #000 calc(100% - 12vh), transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0, #000 calc(100% - 12vh), transparent 100%);
+}
+.sc > .wrap { position: relative; max-width: 1440px; }
+@media (min-width: 900px) { .sc > .wrap { padding: 0 var(--s-8); } }
+
+/* Copy sits opposite the phone. The scrim is a directional falloff, not a
+   panel, so the film stays visible behind the words' far edge. */
+.sc--left  > .scrim { background: linear-gradient(90deg, rgba(9,15,14,0.86) 0%, rgba(9,15,14,0.50) 46%, rgba(9,15,14,0) 74%); }
+.sc--right > .scrim { background: linear-gradient(270deg, rgba(9,15,14,0.86) 0%, rgba(9,15,14,0.50) 46%, rgba(9,15,14,0) 74%); }
+.sc--center > .scrim { background: radial-gradient(70% 80% at 50% 50%, rgba(9,15,14,0.78) 0%, rgba(9,15,14,0.4) 60%, rgba(9,15,14,0.12) 100%); }
+.sc--hero > .scrim {
+  background:
+    linear-gradient(180deg, rgba(9,15,14,0.35) 0%, rgba(9,15,14,0) 30%, rgba(9,15,14,0.55) 100%),
+    radial-gradient(58% 70% at 22% 52%, rgba(9,15,14,0.72) 0%, rgba(9,15,14,0) 74%);
+}
+
+.col { max-width: 640px; }
+.col--wide { max-width: 860px; }
+.sc--right .col { margin-left: auto; }
+.sc--right .col.is-flush { text-align: right; }
+.sc--center .col { margin: 0 auto; text-align: center; }
+
+/* On phones the film's phone sits in the top half and copy rises from
+   the bottom over a vertical scrim, whatever the desktop side was. */
+@media (max-width: 899px), (max-aspect-ratio: 9/10) {
+  /* the portrait film keeps the phone between ~12% and ~55% of the
+     screen height, so copy starts just under it */
+  .sc { align-items: flex-end; padding-top: 56vh; padding-bottom: var(--s-8); }
+  /* the vertical scrim already fades in from transparent; feathering its
+     bottom too would leave the last lines of copy on bare film */
+  .sc > .scrim, .sc--hero > .scrim { -webkit-mask-image: none; mask-image: none; }
+  .sc > .scrim,
+  .sc--left > .scrim, .sc--right > .scrim, .sc--center > .scrim, .sc--hero > .scrim {
+    background: linear-gradient(180deg, rgba(9,15,14,0) 0%, rgba(9,15,14,0) 40vh, rgba(9,15,14,0.86) 56vh, rgba(9,15,14,0.94) 100%);
+  }
+  .sc--hero > .scrim {
+    background: linear-gradient(180deg, rgba(9,15,14,0.2) 0%, rgba(9,15,14,0) 12%, rgba(9,15,14,0) 46vh, rgba(9,15,14,0.86) 58vh, rgba(9,15,14,0.94) 100%);
+  }
+  .sc--right .col, .sc--center .col { margin-left: 0; text-align: left; }
+  .sc--right .col.is-flush { text-align: left; }
+}
+
+/* text shadow: a soft halo, so copy holds up even where the scrim thins */
+.sc h1, .sc h2, .sc .lede, .sc p { text-shadow: 0 1px 18px rgba(6, 11, 10, 0.6); }
+
+/* ---------------------------------------------------------- type on film */
+
+.scrub .d1 { font-size: clamp(2.7rem, 6vw, 5.2rem); line-height: 0.98; }
+/* the masked-line reveal clips at the line box; at this tight leading
+   that took the bottoms off descenders (the y in "you're") */
+.scrub .d1 .line { padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.scrub .d1 .dim, .scrub .d2 .dim { color: rgba(247, 244, 239, 0.5); }
+.scrub .d2 { font-size: clamp(2.2rem, 4.4vw, 3.7rem); }
+.scrub .lede { color: var(--on-2); }
+.scrub .body, .scrub .small { color: var(--on-3); }
+.scrub p.body { max-width: 52ch; }
+.sc--right .col.is-flush p.body { margin-left: auto; }
+@media (max-width: 899px), (max-aspect-ratio: 9/10) { .sc--right .col.is-flush p.body { margin-left: 0; } }
+
+/* chapter label: "02 / The scan" with a hairline running off it */
+.chap {
+  display: flex; align-items: center; gap: var(--s-3);
+  margin-bottom: var(--s-6);
+  font-family: var(--mono); font-size: 0.74rem; font-weight: 500;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--ember);
+}
+.chap::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.sc--right .col.is-flush .chap { flex-direction: row-reverse; }
+@media (max-width: 899px), (max-aspect-ratio: 9/10) { .sc--right .col.is-flush .chap { flex-direction: row; } }
+.chap--lead::after { display: none; }
+.chap--lead::before { content: ""; width: 40px; height: 1px; background: var(--ember); }
+
+/* ---------------------------------------------------------- readouts
+   The reference's big mono stat rows, used for what Sustain does and
+   doesn't do. Every value is a product fact, never a user number. */
+
+.readout { border-top: 1px solid var(--line); margin-top: var(--s-7); }
+.readout-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s-5);
+  padding: var(--s-5) 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.readout-k {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--on-3);
+  flex: none;
+}
+.readout-v {
+  font-family: var(--mono); font-weight: 500;
+  font-size: clamp(1.35rem, 2.6vw, 2.2rem);
+  line-height: 1; letter-spacing: 0.01em;
+  text-align: right;
+}
+.readout-v.is-key { color: var(--teal-bright); }
+.readout-v.is-no { color: var(--ember); }
+.sc--right .col.is-flush .readout-row { flex-direction: row-reverse; }
+.sc--right .col.is-flush .readout-v { text-align: left; }
+@media (max-width: 899px), (max-aspect-ratio: 9/10) {
+  .sc--right .col.is-flush .readout-row { flex-direction: row; }
+  .sc--right .col.is-flush .readout-v { text-align: right; }
+}
+@media (max-width: 520px) {
+  .readout-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .readout-v { text-align: left; }
+  .sc--right .col.is-flush .readout-row { flex-direction: column; }
+}
+
+/* a horizontal strip version, for the three "never" facts */
+.strip {
+  display: inline-flex; flex-wrap: wrap; align-items: center;
+  gap: var(--s-4) var(--s-6);
+  margin-top: var(--s-7);
+  padding: var(--s-4) var(--s-5);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  background: rgba(9, 15, 14, 0.5);
+  font-family: var(--mono);
+}
+.strip > div { display: grid; gap: 6px; }
+.strip dt { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-3); }
+.strip dd { margin: 0; font-size: 1.15rem; color: var(--ember); letter-spacing: 0.08em; }
+.strip .hud-sep { height: 34px; }
+@media (max-width: 560px) { .strip .hud-sep { display: none; } }
+
+/* ---------------------------------------------------------- hero */
+
+.hero-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: var(--s-6); }
+.tag {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--on-2);
+  border: 1px solid var(--line); border-radius: var(--r-panel);
+  background: rgba(9, 15, 14, 0.6);
+  padding: 7px 12px;
+}
+.scrub .cta-note { color: var(--on-3); }
+.scrub .btn--ghost { border-color: rgba(247, 244, 239, 0.3); color: var(--on); }
+@media (hover: hover) and (pointer: fine) {
+  .scrub .btn--ghost:hover { border-color: var(--on); background: rgba(247, 244, 239, 0.08); }
+  .scrub .btn--teal:hover { background: #22917b; }
+}
+.scrub .btn--light { background: var(--on); color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .scrub .btn--light:hover { background: #fff; } }
+
+.cue {
+  position: absolute; left: 50%; bottom: var(--s-6);
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--on-2);
+  white-space: nowrap;
+}
+.cue i { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--teal-bright); }
+.cue i::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: var(--teal-bright);
+  animation: cuePing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes cuePing { 75%, 100% { transform: scale(2.6); opacity: 0; } }
+@media (max-width: 899px), (max-aspect-ratio: 9/10) { .cue { display: none; } }
+
+/* ---------------------------------------------------------- mechanism
+   The chain and the figure from the old dark band, re-seated on the film
+   inside a solid ink panel: a chart has to be read, and a moving picture
+   behind a chart is noise. */
+
+.panel-film {
+  background: rgba(10, 17, 16, 0.9);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  padding: var(--s-6);
+}
+@media (min-width: 900px) { .panel-film { padding: var(--s-7); } }
+
+.scrub .stack { background: var(--line); border-color: var(--line); }
+.scrub .stack > * { background: rgba(10, 17, 16, 0.92); }
+.scrub .stack p { color: var(--on-3); }
+.scrub .chain .step-n { color: var(--teal-bright); }
+.scrub .step-n {
+  font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.12em; color: var(--on-3);
+}
+.scrub .figure { color: var(--on); margin: 0; }
+
+/* ---------------------------------------------------------- compare / trust / pricing on film */
+
+.scrub .compare { border-top-color: var(--line); }
+.scrub .compare-row { border-bottom-color: var(--line-soft); }
+.scrub .compare-head { color: var(--on-3); }
+.scrub .compare-q { color: var(--on); }
+.scrub .compare-a { color: var(--on-3); }
+.scrub .compare-a--us { color: var(--teal-bright); }
+.scrub .compare-a--us::before { color: var(--teal-bright); }
+
+.scrub .free-line { border-color: var(--line); }
+.scrub .free-line .body { color: var(--on-2); }
+
+.scrub .price {
+  background: rgba(10, 17, 16, 0.92);
+  border-color: var(--line);
+}
+.scrub .price--best { border-color: var(--teal-bright); box-shadow: 0 24px 50px -30px rgba(0, 0, 0, 0.8); }
+.scrub .price .tier { color: var(--on-3); }
+.scrub .price .amt span { color: var(--on-3); }
+.scrub .price li { color: var(--on-2); }
+.scrub .price li::before { background: var(--teal-bright); }
+.scrub .price .small { color: var(--on-3); }
+.scrub .flag { background: var(--teal-bright); color: var(--ink); }
+
+.scrub .stack h4 { color: var(--on); }
+
+.scrub a.inline { color: var(--teal-bright); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------------------------------------------------------- footer */
+
+.scrub footer { position: relative; z-index: 2; background: #0a1110; border-top: 1px solid var(--line); }
+
+/* ---------------------------------------------------------- no JS
+   Without scrub.js there is no playhead: the poster frame stays, the
+   telemetry and rail (which would only ever read zero) are hidden, and
+   the reveal-on-scroll copy is shown outright instead of waiting for an
+   observer that will never run. */
+html:not(.js) .scrub .reveal { opacity: 1; transform: none; }
+html:not(.js) .scrub .line > span { transform: none; }
+html:not(.js) .hud-tel,
+html:not(.js) .rail,
+html:not(.js) .cue { display: none; }
+@media (min-width: 1080px) { html:not(.js) .hud-cta { margin-left: auto; } }
+
+/* ---------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .cue i::after { animation: none; }
+  .scrub-film canvas { transition: none; }
+}

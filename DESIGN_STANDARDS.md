@@ -135,6 +135,37 @@ brief, nothing else.
     only pastel-adjacent tones and are used narrowly as tinted backgrounds
     behind teal/ember content (a chip, a callout), not as a primary palette.
 
+## 2026-10-26: /sustain/ rebuilt as a page-scrub film
+
+`/sustain/` now plays a 144-frame rendered film on a fixed full-viewport
+canvas behind the whole page (layout reference: Kombai's "Apsis Aerospace"
+page-scrub study). Files: `assets/css/scrub.css`, `assets/js/scrub.js`,
+`assets/scrub/{land,port}/f_NNN.webp` (render source on the project drive
+at `marketing/v3_build/scrub_render/`). How it squares with the list above:
+
+- Item 18 (real product demos): every phone screen in the film is a real
+  screenshot from `assets/img/screenshots/`. The old `assets/film/`
+  sequence and `assets/js/film.js` are no longer referenced by any page.
+  Note: several old `assets/film/` frames show the Today screen's
+  unedited dose card with a drug brand name; they should be deleted from
+  the repo, not just unlinked, since GitHub Pages still serves them.
+- Item 20 (purple/black): the page is dark, but it's this system's own
+  ink (#0b1312 / #14201e) with teal and ember. The reference's
+  near-black + neon orange and the film's old violet/magenta nebula were
+  both left out; the render's background shader was recoloured to ink,
+  teal and ember.
+- Item 10 (fonts): the reference's Space Grotesk was not adopted;
+  Fraunces / Instrument Sans / IBM Plex Mono unchanged.
+- Items 1 and 22 (gradients/orbs): the only gradients added are section
+  scrims (directional falloffs that keep copy legible over the film) and
+  the canvas's side-band fade on ultrawide screens. Both are functional.
+- Item 8 (glass): the HUD bar and panels are solid translucent ink with
+  no `backdrop-filter`.
+- Item 23 (grids): the reference's 64px background grid was not added.
+- Item 12 (fake proof): the HUD telemetry reads only off the film itself
+  (chapter, which app screen is showing, frame, timecode). Nothing on it
+  is presented as user data or as a health number.
+
 ## Findings from the 2026-09-27 pass that were NOT auto-fixed
 
 - **No Terms of Service page.** Real gap, but writing one requires legal
