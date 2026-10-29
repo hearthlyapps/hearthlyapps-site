@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit a roast | Snooze Control</title>
+<meta name="description" content="Write a line for Snooze Control's characters. The best ones get recorded into the app, with credit.">
+<link rel="canonical" href="https://hearthlyapps.com/snooze-control/roast/">
+<link rel="icon" href="../../assets/img/snooze-control/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/css/style.css">
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/">
+      <img src="../../assets/img/app-icon.png" alt="" width="26" height="26" />
+      hearthlyapps
+    </a>
+    <div class="nav-links">
+      <a href="/snooze-control/">Snooze Control</a>
+      <a href="/snooze-control/privacy/">Privacy</a>
+    </div>
+    <a class="btn btn--primary" href="https://apps.apple.com/app/id6825640216" target="_blank" rel="noopener">Get the app</a>
+  </div>
+</nav>
+
+<main id="main" class="band band--tight">
+  <div class="wrap">
+    <span class="eyebrow">Snooze Control</span>
+    <h1 class="d2" style="margin: 16px 0 0; max-width: 18ch;">Write a roast. Hear it in the app.</h1>
+    <p class="lede" style="margin: 22px 0 40px; max-width: 54ch;">Think you can insult a snoozer better than Mom? Pick a character and a snooze, write the line, and send it. The best lines get recorded into the app in that character's voice, credited to you.</p>
+
+    <form id="roast" class="prose" style="max-width: 620px; display: grid; gap: 18px;">
+      <label>Character<br>
+        <select name="character" required style="width:100%; padding:12px; font: inherit; border-radius:10px;">
+          <option>Your Bestie</option><option>Mom</option><option>Coach Brick</option>
+          <option>Lady Penelope</option><option>Rick the Commentator</option><option>Duke Hollister</option>
+        </select></label>
+      <label>Which snooze<br>
+        <select name="level" style="width:100%; padding:12px; font: inherit; border-radius:10px;">
+          <option>First ring</option><option>Snooze 1</option><option>Snooze 2</option><option>Snooze 3</option>
+          <option>Snooze 4</option><option>Snooze 5</option><option>They give up (snooze 6)</option>
+        </select></label>
+      <label>Your line (one or two sentences)<br>
+        <textarea name="line" required maxlength="220" rows="4" style="width:100%; padding:12px; font: inherit; border-radius:10px;" placeholder="Three snoozes. Your plants are more productive than you, and they're plants."></textarea></label>
+      <label>Credit me as (optional, your first name or @handle)<br>
+        <input name="credit" maxlength="40" style="width:100%; padding:12px; font: inherit; border-radius:10px;"></label>
+      <button class="btn btn--primary" type="submit" style="justify-self: start;">Send my roast</button>
+      <p class="small">This opens your email app with the roast filled in, addressed to support@hearthlyapps.com. Nothing is sent until you press send.</p>
+    </form>
+
+    <div class="prose" style="margin-top: 48px;">
+      <h2>House rules</h2>
+      <p>Roasts are about snoozing, ambition and follow-through. No swearing, and nothing about looks, weight, health, race, religion, gender, sexuality or disability. No real people's names. By sending a line you let Hearthly Apps record it into Snooze Control and use it in the app's videos; we credit you if you ask us to.</p>
+    </div>
+  </div>
+</main>
+
+<script>
+document.getElementById('roast').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var f = e.target;
+  var body = 'Character: ' + f.character.value + '\nSnooze: ' + f.level.value + '\nLine: ' + f.line.value.trim() +
+             '\nCredit: ' + (f.credit.value.trim() || '(none)') + '\n';
+  window.location.href = 'mailto:support@hearthlyapps.com?subject=' + encodeURIComponent('Roast submission: ' + f.character.value) +
+                         '&body=' + encodeURIComponent(body);
+});
+</script>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" style="color: var(--paper);">
+          <img src="../../assets/img/app-icon.png" alt="" width="26" height="26" />
+          hearthlyapps
+        </a>
+        <p class="small" style="margin-top: 14px; max-width: 34ch;">
+          Small, focused iPhone apps for the parts of life that deserve better software.
+        </p>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Snooze Control</div>
+        <a href="/snooze-control/">Overview</a>
+        <a href="/snooze-control/support/">Support</a>
+        <a href="/snooze-control/roast/">Submit a roast</a>
+        <a href="/snooze-control/privacy/">Privacy</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-h">Company</div>
+        <a href="/">hearthlyapps</a>
+        <a href="/support/">Sustain support</a>
+        <a href="mailto:support@hearthlyapps.com">support@hearthlyapps.com</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span data-year>2026</span> Dhanvanth Sundar Sankar. All rights reserved.</span>
+      <span>All characters are fictional.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js" defer></script>
+</body>
+</html>
